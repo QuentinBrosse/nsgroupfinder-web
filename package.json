@@ -3,11 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "firebase": "^4.8.2",
     "material-ui": "^1.0.0-beta.28",
     "material-ui-icons": "^1.0.0-beta.17",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.0"
+    "react-redux": "^5.0.6",
+    "react-redux-firebase": "^2.0.1",
+    "react-scripts": "1.1.0",
+    "redux": "^3.7.2",
+    "redux-firestore": "^0.2.5",
+    "redux-logger": "^3.0.6"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css,scss,less,md}": [

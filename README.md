@@ -19,6 +19,7 @@ You can find the most recent version of this guide [here](https://github.com/fac
   * [yarn eject](#yarn-eject)
 * [Folder Structure](#folder-structure)
 * [Component Structure](#component-structure)
+* [Firebase](#firebase)
 * [Formatting Code Automatically](#formatting-code-automatically)
 * [Static Typing](#static-typing)
 
@@ -27,9 +28,9 @@ You can find the most recent version of this guide [here](https://github.com/fac
 ## Quick Start
 
 1. Clone the project.
-2. Install the last LTS version of [node](https://nodejs.org/en/).
+2. Install the last LTS version of [node](https://nodejs.org/en).
 3. Run `yarn install` inside the project.
-4. Install the [VSCode](https://code.visualstudio.com/) extensions:
+4. Install the [VSCode](https://code.visualstudio.com) extensions:
    1. [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
    2. [Flow Language Support](https://marketplace.visualstudio.com/items?itemName=flowtype.flow-for-vscode)
    3. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
@@ -199,7 +200,7 @@ Read [this](https://github.com/facebookincubator/create-react-app/blob/master/pa
 
 ## Formatting Code Automatically
 
-Prettier is an opinionated code formatter with support for JavaScript, CSS and JSON. With Prettier you can format the code you write automatically to ensure a code style within your project. See the [Prettier's GitHub page](https://github.com/prettier/prettier) for more information, and look at this [page to see it in action](https://prettier.github.io/prettier/).
+Prettier is an opinionated code formatter with support for JavaScript, CSS and JSON. With Prettier you can format the code you write automatically to ensure a code style within your project. See the [Prettier's GitHub page](https://github.com/prettier/prettier) for more information, and look at this [page to see it in action](https://prettier.github.io/prettier).
 
 In this project, Prettier will format the changed files automatically when you make a commit.<br/>
 By default, this vscode environment is configured to format the current document automatically, on save.
@@ -215,5 +216,13 @@ Flow is a static type checker that helps you write code with fewer bugs. Check o
 As you installed the [Flow Language Support](https://marketplace.visualstudio.com/items?itemName=flowtype.flow-for-vscode) VSCode extention, the files will be checked in real-time in VSCode.
 You can also run [yarn flow](#yarn-flow).
 
-To learn more about Flow, check out [its documentation](https://flowtype.org/).
-To learn who to use it with React, read [this](https://flow.org/en/docs/react/) and [this](https://medium.com/flow-type/even-better-support-for-react-in-flow-25b0a3485627).
+To learn more about Flow, check out [its documentation](https://flowtype.org).
+To learn who to use it with React, read [this](https://flow.org/en/docs/react) and [this](https://medium.com/flow-type/even-better-support-for-react-in-flow-25b0a3485627).
+
+## Firebase
+
+This project use [Firebase](https://firebase.google.com/docs).
+
+We use [Firestore](https://firebase.google.com/docs/firestore) and not `Realtime Database` for all the data (even the user profiles).
+
+In order to use Firebase with Redux, we use [React Redux Firebase](http://react-redux-firebase.com);
