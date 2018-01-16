@@ -1,0 +1,37 @@
+{
+  "name": "nsgroupfinder",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "material-ui": "^1.0.0-beta.28",
+    "material-ui-icons": "^1.0.0-beta.17",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.1.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css,scss,less,md}": [
+      "npx prettier --config .prettierrc.json --write",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "flow": "flow",
+    "prettier":
+      "npx prettier --config .prettierrc.json --write 'src/**/*.{js,jsx,json,css,scss,less,md}'",
+    "precommit": "lint-staged"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "flow-bin": "^0.63.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.0.0",
+    "prettier": "1.10.2"
+  }
+}

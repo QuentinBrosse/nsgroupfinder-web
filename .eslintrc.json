@@ -1,0 +1,13 @@
+{
+  "extends": ["react-app", "airbnb", "prettier"],
+  "rules": {
+    "react/jsx-filename-extension": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
+  }
+}
