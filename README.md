@@ -22,6 +22,12 @@ You can find the most recent version of this guide [here](https://github.com/fac
 * [Firebase](#firebase)
 * [Formatting Code Automatically](#formatting-code-automatically)
 * [Static Typing](#static-typing)
+* [Material](#material)
+* [CSS-in-JS](#css-in-js)
+
+**External links:**
+
+* [Snippets](SNIPPETS.md)
 
 ---
 
@@ -96,14 +102,18 @@ nsgroupfinder/
     assets/
     common/
       components/
+        index.js
+        ExamplePresentationalComponent.js
       containers/
+        index.js
+        ExampleContainerComponent.js
     reducers/
     utils/
     views/
       ExampleView/
         index.js
-        styles.css
-    index.css
+        AComponentSpecificToThisView.js
+        AnotherComponentSpecificToThisView.js
     index.js
     registerServiceWorker.js
 ```
@@ -150,6 +160,8 @@ The created component can be imported like this:
 import { ComponentName } from 'common/components';
 ```
 
+(thanks to absolute imports)
+
 ### `src/reducers`
 
 Contain all the [Redux Reducers](https://redux.js.org/docs/basics/Reducers.html).<br>
@@ -172,11 +184,8 @@ Example:
 
 ```
 Home/
-  index.js
-  styles.css
-  HomeWelcomingMessage/ : A component specific to this view
-    index.js
-    styles.css
+  index.js : The view (always named `index.js` !)
+  HomeWelcomingMessage.js : A component specific to this view (which will be used nowhere else)
 ```
 
 ### Requirements
@@ -188,15 +197,8 @@ For the project to build, **these files must exist with exact filenames**:
 
 ## Component Structure
 
-A component will **always** use this structure:
-
-```
-ComponentName/
-  index.js:   Component Source
-  styles.css: Stylesheet
-```
-
-Read [this](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-stylesheet) in order to know who to add the stylesheet (`styles.css`).
+A component will **always** lives in a single `.js` file.<br>
+You can check [the snippets](SNIPPETS.md) to save time during the creation of your components.
 
 ## Formatting Code Automatically
 
@@ -226,3 +228,12 @@ This project use [Firebase](https://firebase.google.com/docs).
 We use [Firestore](https://firebase.google.com/docs/firestore) and not `Realtime Database` for all the data (even the user profiles).
 
 In order to use Firebase with Redux, we use [React Redux Firebase](http://react-redux-firebase.com);
+
+## Material
+
+This UI of this projet will use [Material UI Next (in beta)](https://material-ui-next.com) for the Material integration.
+
+## CSS-in-JS
+
+The project use a `CSS-in-JS` solution (we writing the `CSS` with `JS`).<br>
+I suggest [this reading](https://material-ui-next.com/customization/css-in-js) to know a little more about the subject and how it is implemented in the project.
