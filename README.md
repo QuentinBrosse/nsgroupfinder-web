@@ -99,6 +99,7 @@ nsgroupfinder/
     index.html
     favicon.ico
   src/
+    actions/
     assets/
     common/
       components/
@@ -107,6 +108,8 @@ nsgroupfinder/
       containers/
         index.js
         ExampleContainerComponent.js
+    config/
+    epics/
     reducers/
     utils/
     views/
@@ -132,6 +135,16 @@ Contain all the source code.
 
 For faster rebuilds, only files inside `src` are processed by Webpack.<br>
 You need to **put any JS and CSS files inside `src`**, otherwise Webpack won’t see them.
+
+### `src/actions`
+
+Contain all the [Redux Actions](https://redux.js.org/docs/basics/Actions.html).
+
+When you create a new action file, you have to reference it in `src/actions/index.js`:
+
+```js
+export * from './actionFile';
+```
 
 ### `src/assets`
 
@@ -161,6 +174,15 @@ import { ComponentName } from 'common/components';
 ```
 
 (thanks to absolute imports)
+
+### `src/config`
+
+All config files.
+
+### `src/epics`
+
+All epics files<br>
+A function who build the root epic lives in `src/epics/index.js`.
 
 ### `src/reducers`
 

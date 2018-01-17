@@ -5,5 +5,9 @@ import ReactDOM from 'react-dom';
 import App from 'views/App';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  ReactDOM.render(<App />, rootElement);
+  registerServiceWorker();
+}
