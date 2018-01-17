@@ -40,7 +40,8 @@ You can find the most recent version of this guide [here](https://github.com/fac
    1. [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
    2. [Flow Language Support](https://marketplace.visualstudio.com/items?itemName=flowtype.flow-for-vscode)
    3. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-5. Read the [Available Scripts](#available-scripts) section to start the project.
+5. To allow Prettier to auto-format your current file on save, add this line in your workspace settings: `"editor.formatOnSave": true,`.
+6. Read the [Available Scripts](#available-scripts) section to start the project.
 
 ## Available Scripts
 
@@ -227,7 +228,8 @@ You can check [the snippets](SNIPPETS.md) to save time during the creation of yo
 Prettier is an opinionated code formatter with support for JavaScript, CSS and JSON. With Prettier you can format the code you write automatically to ensure a code style within your project. See the [Prettier's GitHub page](https://github.com/prettier/prettier) for more information, and look at this [page to see it in action](https://prettier.github.io/prettier).
 
 In this project, Prettier will format the changed files automatically when you make a commit.<br/>
-By default, this vscode environment is configured to format the current document automatically, on save.
+To allow Prettier to auto-format your current file on save, add this line in your workspace settings: `"editor.formatOnSave": true,`.
+
 You can also:
 
 * Format all the project files with [yarn prettier](#yarn-prettier).
