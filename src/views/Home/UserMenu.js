@@ -5,6 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import IconButton from 'material-ui/IconButton';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import Menu, { MenuItem } from 'material-ui/Menu';
+import LogOutMenuItem from './LogOutMenuItem';
 
 type Props = {
   classes: Object,
@@ -58,7 +59,7 @@ class UserMenu extends React.Component<Props, State> {
           onClose={this.handleClose}
         >
           <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-          <MenuItem onClick={this.handleClose}>My account</MenuItem>
+          <LogOutMenuItem />
         </Menu>
       </div>
     );
