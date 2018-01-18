@@ -25,7 +25,6 @@ class NavBar extends React.Component<Props, State> {
   render() {
     const { auth, classes } = this.props;
     const connected = isConnected(auth);
-    console.log('Auth', auth);
     return (
       <AppBar position="static" color="default">
         <Toolbar>
@@ -48,10 +47,7 @@ const styles = {
 export default compose(
   firebaseConnect(),
   withStyles(styles),
-  connect(
-    // Map state to props
-    ({ firebase: { auth } }) => ({
-      auth,
-    })
-  )
+  connect(({ firebase: { auth } }) => ({
+    auth,
+  }))
 )(NavBar);

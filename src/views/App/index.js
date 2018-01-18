@@ -6,6 +6,7 @@ import type { Node } from 'react';
 import Reboot from 'material-ui/Reboot';
 import createStore from 'utils/createStore';
 import Home from 'views/Home';
+import { SnackbarContainer } from 'common/containers';
 
 const store = createStore();
 
@@ -14,6 +15,7 @@ const App = (): Node => (
     <div>
       <Reboot />
       <Home />
+      <SnackbarContainer />
     </div>
   </Provider>
 );

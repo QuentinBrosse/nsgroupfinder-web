@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
 import { firebaseStateReducer } from 'react-redux-firebase';
 import { firestoreReducer } from 'redux-firestore';
+import snackbar from './snackbar';
 
 const makeRootReducer = asyncReducers =>
   combineReducers({
-    // Add sync reducers here
+    snackbar,
     firebase: firebaseStateReducer,
     firestore: firestoreReducer,
     ...asyncReducers,

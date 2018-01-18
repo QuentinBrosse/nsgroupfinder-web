@@ -141,12 +141,6 @@ You need to **put any JS and CSS files inside `src`**, otherwise Webpack won’t
 
 Contain all the [Redux Actions](https://redux.js.org/docs/basics/Actions.html).
 
-When you create a new action file, you have to reference it in `src/actions/index.js`:
-
-```js
-export * from './actionFile';
-```
-
 ### `src/assets`
 
 Where all static assets are stored (e.g. `images/*.{svg|png|jpg|...}` or `fonts/*.{ttf|otf|...}`).

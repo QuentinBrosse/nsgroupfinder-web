@@ -4,7 +4,7 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import IconButton from 'material-ui/IconButton';
 import AccountCircle from 'material-ui-icons/AccountCircle';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import Menu from 'material-ui/Menu';
 import LogOutMenuItem from './LogOutMenuItem';
 
 type Props = {
@@ -37,7 +37,7 @@ class UserMenu extends React.Component<Props, State> {
     return (
       <div className={classes.container}>
         <IconButton
-          aria-owns={menuIsOpen ? 'menu-appbar' : null}
+          aria-owns={menuIsOpen ? 'user-menu-appbar' : null}
           aria-haspopup="true"
           onClick={this.handleMenu}
           color="inherit"
@@ -45,7 +45,7 @@ class UserMenu extends React.Component<Props, State> {
           <AccountCircle />
         </IconButton>
         <Menu
-          id="menu-appbar"
+          id="user-menu-appbar"
           anchorEl={anchorEl}
           anchorOrigin={{
             vertical: 'top',
@@ -58,7 +58,6 @@ class UserMenu extends React.Component<Props, State> {
           open={menuIsOpen}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose}>Profile</MenuItem>
           <LogOutMenuItem />
         </Menu>
       </div>
