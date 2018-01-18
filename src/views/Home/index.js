@@ -2,8 +2,12 @@
 
 import React from 'react';
 import type { Node } from 'react';
-import { Test } from 'common/components';
+import NavBar from './NavBar';
 
-const App = (): Node => <Test />;
+const App = (): Node => (
+  <div>
+    <NavBar />
+  </div>
+);
 
 export default App;
