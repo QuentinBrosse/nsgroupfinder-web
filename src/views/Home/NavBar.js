@@ -1,28 +1,48 @@
 // @flow
 
 import React from 'react';
-import type { Node } from 'react';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
+import LoginButton from './LoginButton';
+import UserMenu from './UserMenu';
 
-/*
 type Props = {
   classes: Object,
 };
-*/
 
-const NavBar = (/* { classes }: Props */): Node => (
-  <AppBar position="static" color="default">
-    <Toolbar>
-      <Typography type="title">Ns Group Finder</Typography>
-    </Toolbar>
-  </AppBar>
-);
+type State = {
+  connected: boolean,
+};
 
-NavBar.defaultProps = {};
+class NavBar extends React.Component<Props, State> {
+  static defaultProps = {};
 
-const styles = {};
+  state = {
+    connected: true,
+  };
+
+  render() {
+    const { classes } = this.props;
+    const { connected } = this.state;
+    return (
+      <AppBar position="static" color="default">
+        <Toolbar>
+          <Typography type="title" color="inherit" className={classes.flex}>
+            Ns Group Finder
+          </Typography>
+          {connected ? <UserMenu /> : <LoginButton />}
+        </Toolbar>
+      </AppBar>
+    );
+  }
+}
+
+const styles = {
+  flex: {
+    flex: 1,
+  },
+};
 
 export default withStyles(styles)(NavBar);
