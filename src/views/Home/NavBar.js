@@ -44,10 +44,12 @@ const styles = {
   },
 };
 
+const mapStateToProps = ({ firebase: { auth } }) => ({
+  auth,
+});
+
 export default compose(
   firebaseConnect(),
   withStyles(styles),
-  connect(({ firebase: { auth } }) => ({
-    auth,
-  }))
+  connect(mapStateToProps)
 )(NavBar);

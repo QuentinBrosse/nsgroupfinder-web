@@ -4,7 +4,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
-import Snackbar from 'material-ui/Snackbar';
+import DefaultSnackbar from 'material-ui/Snackbar';
 import { dismissSnackbar } from 'actions/snackbar';
 import type { SnackbarState } from 'types/snackbar';
 
@@ -16,7 +16,7 @@ type Props = {
 
 type State = {};
 
-class SnackbarContainer extends React.Component<Props, State> {
+class Snackbar extends React.Component<Props, State> {
   static defaultProps = {};
 
   handleClose = () => {
@@ -33,7 +33,7 @@ class SnackbarContainer extends React.Component<Props, State> {
     const { opened, message, button } = snackbar;
     const buttonColor = button.type === 'default' ? 'contrast' : button.type;
     return (
-      <Snackbar
+      <DefaultSnackbar
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -68,4 +68,4 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(SnackbarContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Snackbar);

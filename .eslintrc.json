@@ -1,7 +1,25 @@
 {
   "extends": ["react-app", "airbnb", "prettier"],
   "rules": {
-    "react/jsx-filename-extension": "off"
+    "react/jsx-filename-extension": "off",
+    "react/sort-comp": [
+      "error",
+      {
+        "order": [
+          "static-methods",
+          "lifecycle",
+          "/^on.+$/",
+          "getters",
+          "setters",
+          "/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/",
+          "type-annotations",
+          "everything-else",
+          "/^render.+$/",
+          "render"
+        ]
+      }
+    ],
+    "no-console": ["error", { "allow": ["warn", "error"] }]
   },
   "settings": {
     "import/resolver": {
