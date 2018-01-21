@@ -128,7 +128,7 @@ class StationAutocomplete extends React.Component<Props, State> {
 
   onSuggestionsFetchRequested({ value, reason }) {
     if (reason === 'input-changed') {
-      // Avoid useless call to firebase.
+      // Avoid a useless call to firebase.
       const clearedValue = value.trim().toLowerCase();
       this.fetchSuggestions(clearedValue);
     }
@@ -166,7 +166,6 @@ class StationAutocomplete extends React.Component<Props, State> {
 
     const inputProps = {
       classes,
-      autoFocus: true,
       value,
       onChange: this.onChange,
       id,

@@ -33,8 +33,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow",
-    "prettier":
-      "npx prettier --config .prettierrc.json --write 'src/**/*.{js,jsx,json,css,scss,less,md}'",
+    "prettier": "npx prettier --config .prettierrc.json --write 'src/**/*.{js,jsx,json,css,scss,less,md}'",
     "precommit": "lint-staged"
   },
   "devDependencies": {

@@ -9,18 +9,22 @@ import { InputAdornment } from 'material-ui/Input';
 type Props = {
   classes: Object,
   iconName: string,
+  position?: 'start' | 'end',
 };
 
-const InputIconAdornment = ({ classes, iconName }: Props): Node => (
-  <InputAdornment position="start" className={classes.adornment}>
+const InputIconAdornment = ({ position, classes, iconName }: Props): Node => (
+  <InputAdornment position={position} classes={{ root: classes.root }}>
     <Icon className={classes.icon}>{iconName}</Icon>
   </InputAdornment>
 );
 
-InputIconAdornment.defaultProps = {};
+InputIconAdornment.defaultProps = {
+  position: 'start',
+};
 
 const styles = {
-  adornment: {
+  root: {
+    height: [30, '!important'],
     alignSelf: 'flex-end',
   },
   icon: {

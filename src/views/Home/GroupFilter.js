@@ -7,7 +7,9 @@ import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 import Card, { CardContent, CardActions } from 'material-ui/Card';
 import Icon from 'material-ui/Icon';
+import TextField from 'material-ui/TextField';
 import { StationAutocomplete } from 'common/containers';
+import { InputIconAdornment } from 'common/components';
 
 type Props = {
   classes: Object,
@@ -20,37 +22,84 @@ class GroupFilter extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
     return (
-      <Card className={classes.card}>
+      <Card>
         <CardContent>
-          <Grid container className={classes.root}>
+          <Grid container>
             <Grid item xs={12}>
               <Typography type="title" component="h2">
                 Find your Journey Group
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <form className={classes.form} noValidate autoComplete="off">
-                <div className={classes.stationsContainer}>
-                  <StationAutocomplete
-                    id="departure"
-                    placeholder="Departure Station"
-                    iconName="train"
-                  />
-                  <Icon className={classes.stationArrowContainer}>
-                    arrow_forward
-                  </Icon>
-                  <StationAutocomplete
-                    id="arrival"
-                    placeholder="Arrival Station"
-                    iconName="train"
-                  />
-                </div>
-              </form>
+              <div className={classes.stationsContainer}>
+                <StationAutocomplete
+                  id="departure"
+                  placeholder="Departure Station"
+                  iconName="train"
+                />
+                <Icon className={classes.stationArrowContainer}>
+                  arrow_forward
+                </Icon>
+                <StationAutocomplete
+                  id="arrival"
+                  placeholder="Arrival Station"
+                  iconName="train"
+                />
+              </div>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            justify="space-between"
+            className={classes.dateTimeContainer}
+          >
+            <Grid item xs={12} sm={4}>
+              <TextField
+                id="date"
+                label="Date"
+                type="date"
+                defaultValue="2017-05-24"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  startAdornment: <InputIconAdornment iconName="date_range" />,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                id="start_time"
+                label="Leave from"
+                type="time"
+                defaultValue="07:30"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  startAdornment: <InputIconAdornment iconName="date_range" />,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                id="end_time"
+                label="Leave until"
+                type="time"
+                defaultValue="08:30"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  startAdornment: <InputIconAdornment iconName="access_time" />,
+                }}
+              />
             </Grid>
           </Grid>
         </CardContent>
-        <CardActions className={classes.cardActions}>
-          <Button dense>Search</Button>
+        <CardActions>
+          <Grid container className={classes.cardActions}>
+            <Grid item>
+              <Button dense>Search</Button>
+            </Grid>
+          </Grid>
         </CardActions>
       </Card>
     );
@@ -58,8 +107,6 @@ class GroupFilter extends React.Component<Props, State> {
 }
 
 const styles = {
-  card: {},
-  form: {},
   stationsContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -85,6 +132,9 @@ const styles = {
       display: 'block',
       flex: '0 0 auto',
     },
+  },
+  dateTimeContainer: {
+    marginTop: 20,
   },
   cardActions: {
     justifyContent: 'flex-end',
