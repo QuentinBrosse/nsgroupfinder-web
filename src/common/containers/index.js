@@ -1,2 +1,2 @@
-export { default as Snackbar } from './Snackbar';
+// eslint-disable-next-line import/prefer-default-export
 export { default as StationAutocomplete } from './StationAutocomplete';

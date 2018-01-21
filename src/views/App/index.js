@@ -7,7 +7,7 @@ import { withStyles } from 'material-ui/styles';
 import createStore from 'utils/createStore';
 import Reboot from 'material-ui/Reboot';
 import Home from 'views/Home';
-import { Snackbar } from 'common/containers';
+import Snackbar from './Snackbar';
 import NavBar from './NavBar';
 
 type Props = {
