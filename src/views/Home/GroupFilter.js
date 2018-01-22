@@ -3,9 +3,8 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
-import Card, { CardContent, CardActions } from 'material-ui/Card';
+import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
 import Icon from 'material-ui/Icon';
 import TextField from 'material-ui/TextField';
 import { StationAutocomplete } from 'common/containers';
@@ -24,14 +23,10 @@ class GroupFilter extends React.Component<Props, State> {
     const { classes, className } = this.props;
     return (
       <Card className={className}>
+        <CardHeader title="Find your Journey Group" />
         <CardContent>
           <Grid container>
-            <Grid item xs={12}>
-              <Typography type="title" component="h2">
-                Find your Journey Group
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} className={classes.firstGridItem}>
               <div className={classes.stationsContainer}>
                 <StationAutocomplete
                   id="departure"
@@ -129,6 +124,9 @@ const styles = {
       display: 'block',
       flex: '0 0 auto',
     },
+  },
+  firstGridItem: {
+    paddingTop: [0, '!important'],
   },
   dateTimeContainer: {
     marginTop: 20,
