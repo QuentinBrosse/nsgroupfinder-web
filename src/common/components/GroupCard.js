@@ -48,7 +48,7 @@ const GroupCard = ({
         subheader={`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
         action={
           <IconButton>
-            <Icon>add_circle</Icon>
+            <Icon>check_circle</Icon>
           </IconButton>
         }
       />

@@ -7,6 +7,8 @@ import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import { GroupCard, GroupCardContainer } from 'common/components';
 import GroupFilter from './GroupFilter';
+import EmptyGroupResults from './EmptyGroupResults';
+import GroupCardContainerFooter from './GroupCardContainerFooter';
 
 type Props = {
   classes: Object,
@@ -47,6 +49,23 @@ const cards = [
     },
     info: 'Adipisicing id laborum eiusmod ex est.',
   },
+  {
+    id: 3,
+    stations: {
+      departure: 'Amsterdam',
+      arrival: 'Paris',
+    },
+    date: moment('2018-01-21'),
+    time: {
+      start: moment('2018-01-21T19'),
+      end: moment('2018-01-21T19').add(1, 'h'),
+    },
+    members: {
+      current: 3,
+      target: 4,
+    },
+    info: 'Adipisicing id laborum eiusmod ex est.',
+  },
 ];
 
 const Home = ({ classes }: Props): Node => (
@@ -55,9 +74,16 @@ const Home = ({ classes }: Props): Node => (
     <Typography type="title" paragraph>
       Groups
     </Typography>
-    <GroupCardContainer>
-      {cards.map(c => <GroupCard key={c.id} {...c} />)}
-    </GroupCardContainer>
+    {cards.length > 0 ? (
+      <div>
+        <GroupCardContainer>
+          {cards.map(c => <GroupCard key={c.id} {...c} />)}
+        </GroupCardContainer>
+        <GroupCardContainerFooter />
+      </div>
+    ) : (
+      <EmptyGroupResults />
+    )}
   </div>
 );
 
