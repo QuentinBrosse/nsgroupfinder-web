@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
@@ -23,9 +23,16 @@ class NavBar extends React.Component<Props, State> {
     return (
       <AppBar position="static" color="default">
         <Toolbar>
-          <Typography type="title" color="inherit" className={classes.flex}>
+          <Typography
+            type="title"
+            color="inherit"
+            className={classes.appName}
+            component={Link}
+            to="/"
+          >
             NS Group Finder
           </Typography>
+
           <Button
             color="inherit"
             component={NavLink}
@@ -42,8 +49,9 @@ class NavBar extends React.Component<Props, State> {
 }
 
 const styles = theme => ({
-  flex: {
+  appName: {
     flex: 1,
+    textDecoration: 'none',
   },
   activeLink: {
     color: theme.palette.primary.light,
