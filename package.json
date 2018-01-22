@@ -5,8 +5,10 @@
   "dependencies": {
     "autosuggest-highlight": "^3.1.1",
     "firebase": "^4.8.2",
+    "lodash": "^4.17.4",
     "material-ui": "^1.0.0-beta.28",
     "material-ui-icons": "^1.0.0-beta.17",
+    "moment": "^2.20.1",
     "react": "^16.2.0",
     "react-autosuggest": "^9.3.2",
     "react-dom": "^16.2.0",
@@ -28,6 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "lint": "npx eslint .",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow",

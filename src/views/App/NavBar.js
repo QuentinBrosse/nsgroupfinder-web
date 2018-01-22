@@ -9,6 +9,7 @@ import { isConnected } from 'utils/user';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
 import LogInButton from './LogInButton';
 import UserMenu from './UserMenu';
 
@@ -31,6 +32,9 @@ class NavBar extends React.Component<Props, State> {
           <Typography type="title" color="inherit" className={classes.flex}>
             NS Group Finder
           </Typography>
+          <Button color="inherit" onClick={() => console.log('Create a Group')}>
+            Create a Group
+          </Button>
           {connected ? <UserMenu /> : <LogInButton />}
         </Toolbar>
       </AppBar>
@@ -44,10 +48,12 @@ const styles = {
   },
 };
 
+const mapStateToProps = ({ firebase: { auth } }) => ({
+  auth,
+});
+
 export default compose(
   firebaseConnect(),
   withStyles(styles),
-  connect(({ firebase: { auth } }) => ({
-    auth,
-  }))
+  connect(mapStateToProps)
 )(NavBar);

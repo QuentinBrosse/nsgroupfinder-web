@@ -13,6 +13,7 @@ You can find the most recent version of this guide [here](https://github.com/fac
 * [Available Scripts](#available-scripts)
   * [yarn start](#yarn-start)
   * [yarn test](#yarn-test)
+  * [yarn lint](#yarn-lint)
   * [yarn flow](#yarn-flow)
   * [yarn prettier](#yarn-prettier)
   * [yarn build](#yarn-build)
@@ -59,6 +60,10 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#running-tests) for more information.
+
+### `yarn lint`
+
+Runs [eslint](https://eslint.org/) to check the files for syntax errors.
 
 ### `yarn flow`
 
