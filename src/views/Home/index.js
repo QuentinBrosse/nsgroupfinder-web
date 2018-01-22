@@ -47,7 +47,8 @@ const cards = [
       current: 6,
       target: 7,
     },
-    info: 'Adipisicing id laborum eiusmod ex est.',
+    info:
+      'Ullamco nostrud ipsum est ad ea commodo. Et fugiat nulla in dolor cillum Lorem laboris ut proident. Enim cupidatat sunt sint ex veniam duis qui enim. Consectetur eu ut occaecat elit in eiusmod nostrud aute eiusmod deserunt proident occaecat cillum adipisicing. Occaecat adipisicing duis amet culpa.',
   },
   {
     id: 3,
@@ -64,7 +65,6 @@ const cards = [
       current: 3,
       target: 4,
     },
-    info: 'Adipisicing id laborum eiusmod ex est.',
   },
 ];
 
