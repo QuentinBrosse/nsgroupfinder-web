@@ -3,6 +3,7 @@
 import React from 'react';
 import type { Node } from 'react';
 import { withStyles } from 'material-ui/styles';
+import { Link } from 'react-router-dom';
 import Typography from 'material-ui/Typography';
 import Divider from 'material-ui/Divider';
 import { ButtonIcon } from 'common/components';
@@ -30,7 +31,7 @@ const GroupCardContainerFooter = ({ classes }: Props): Node => (
         💪
       </span>
     </Typography>
-    <ButtonIcon iconName="add" onClick={() => console.log('Create a Group')}>
+    <ButtonIcon iconName="add" component={Link} to="/create-group">
       Create a Group
     </ButtonIcon>
   </div>

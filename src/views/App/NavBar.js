@@ -1,21 +1,16 @@
 // @flow
 
 import React from 'react';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { firebaseConnect } from 'react-redux-firebase';
 import { withStyles } from 'material-ui/styles';
-import { isConnected } from 'utils/user';
+import { NavLink } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
-import LogInButton from './LogInButton';
 import UserMenu from './UserMenu';
 
 type Props = {
   classes: Object,
-  auth: Object,
 };
 
 type State = {};
@@ -24,36 +19,35 @@ class NavBar extends React.Component<Props, State> {
   static defaultProps = {};
 
   render() {
-    const { auth, classes } = this.props;
-    const connected = isConnected(auth);
+    const { classes } = this.props;
     return (
       <AppBar position="static" color="default">
         <Toolbar>
           <Typography type="title" color="inherit" className={classes.flex}>
             NS Group Finder
           </Typography>
-          <Button color="inherit" onClick={() => console.log('Create a Group')}>
+          <Button
+            color="inherit"
+            component={NavLink}
+            to="/create-group"
+            activeClassName={classes.activeLink}
+          >
             Create a Group
           </Button>
-          {connected ? <UserMenu /> : <LogInButton />}
+          <UserMenu />
         </Toolbar>
       </AppBar>
     );
   }
 }
 
-const styles = {
+const styles = theme => ({
   flex: {
     flex: 1,
   },
-};
-
-const mapStateToProps = ({ firebase: { auth } }) => ({
-  auth,
+  activeLink: {
+    color: theme.palette.primary.light,
+  },
 });
 
-export default compose(
-  firebaseConnect(),
-  withStyles(styles),
-  connect(mapStateToProps)
-)(NavBar);
+export default withStyles(styles)(NavBar);

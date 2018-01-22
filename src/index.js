@@ -2,12 +2,12 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from 'views/App';
+import Root from 'views/Root';
 import registerServiceWorker from './registerServiceWorker';
 
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
-  ReactDOM.render(<App />, rootElement);
+  ReactDOM.render(<Root />, rootElement);
   registerServiceWorker();
 }

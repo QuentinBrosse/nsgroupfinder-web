@@ -2,6 +2,7 @@
 
 import React from 'react';
 import type { Node } from 'react';
+import { Link } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import { ButtonIcon } from 'common/components';
@@ -28,7 +29,7 @@ const EmptyGroupResults = ({ classes }: Props): Node => (
         💪
       </span>
     </Typography>
-    <ButtonIcon iconName="add" onClick={() => console.log('Create a Group')}>
+    <ButtonIcon iconName="add" component={Link} to="/create-group">
       Create a Group
     </ButtonIcon>
   </div>
