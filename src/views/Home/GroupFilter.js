@@ -13,6 +13,7 @@ import { InputIconAdornment } from 'common/components';
 
 type Props = {
   classes: Object,
+  className: string,
 };
 
 type State = {};
@@ -20,9 +21,9 @@ type State = {};
 class GroupFilter extends React.Component<Props, State> {
   static defaultProps = {};
   render() {
-    const { classes } = this.props;
+    const { classes, className } = this.props;
     return (
-      <Card>
+      <Card className={className}>
         <CardContent>
           <Grid container>
             <Grid item xs={12}>
@@ -94,12 +95,8 @@ class GroupFilter extends React.Component<Props, State> {
             </Grid>
           </Grid>
         </CardContent>
-        <CardActions>
-          <Grid container className={classes.cardActions}>
-            <Grid item>
-              <Button dense>Search</Button>
-            </Grid>
-          </Grid>
+        <CardActions className={classes.cardActions}>
+          <Button dense>Search</Button>
         </CardActions>
       </Card>
     );
@@ -137,6 +134,7 @@ const styles = {
     marginTop: 20,
   },
   cardActions: {
+    display: 'flex',
     justifyContent: 'flex-end',
   },
 };
