@@ -48,13 +48,16 @@ class NavBar extends React.Component<Props, State> {
   }
 }
 
-const styles = theme => ({
+const styles = ({ palette, breakpoints, typography }) => ({
   appName: {
     flex: 1,
     textDecoration: 'none',
+    [breakpoints.down('xs')]: {
+      fontSize: typography.pxToRem(13),
+    },
   },
   activeLink: {
-    color: theme.palette.primary.light,
+    color: palette.primary.light,
   },
 });
 
