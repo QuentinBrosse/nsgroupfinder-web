@@ -131,10 +131,10 @@ class GroupCard extends React.Component<Props, State> {
   }
 }
 
-const styles = theme => ({
+const styles = ({ spacing, palette }) => ({
   cardContent: {
     '&:last-child': {
-      paddingBottom: theme.spacing.unit * 2,
+      paddingBottom: spacing.unit * 2,
     },
   },
   members: {
@@ -145,22 +145,22 @@ const styles = theme => ({
   membersText: {
     fontSize: '0.7rem',
     fontWeight: 500,
-    color: theme.palette.text.secondary,
+    color: palette.text.secondary,
     textTransform: 'uppercase',
   },
   infos: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: theme.spacing.unit * 2,
+    marginTop: spacing.unit * 2,
     '& :first-child': {
-      marginRight: theme.spacing.unit,
+      marginRight: spacing.unit,
     },
   },
   infoIcon: {
     fontSize: 20,
   },
   paper: {
-    padding: theme.spacing.unit,
+    padding: spacing.unit,
   },
   popover: {
     pointerEvents: 'none',

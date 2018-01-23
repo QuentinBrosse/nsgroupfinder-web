@@ -37,13 +37,13 @@ const EmptyGroupResults = ({ classes }: Props): Node => (
 
 EmptyGroupResults.defaultProps = {};
 
-const styles = theme => ({
+const styles = ({ spacing }) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: [[theme.spacing.unit * 5, 0]],
+    padding: [[spacing.unit * 5, 0]],
   },
 });
 

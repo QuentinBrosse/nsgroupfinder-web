@@ -34,12 +34,12 @@ const CreateGroupButton = ({
 
 CreateGroupButton.defaultProps = {};
 
-const styles = theme => ({
+const styles = ({ spacing }) => ({
   button: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: spacing.unit * 2,
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: spacing.unit,
   },
 });
 

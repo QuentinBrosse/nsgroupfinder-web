@@ -74,7 +74,7 @@ class LogIn extends React.Component<Props, State> {
   }
 }
 
-const styles = theme => ({
+const styles = ({ spacing }) => ({
   container: {
     display: 'flex',
     alignItems: 'center',
@@ -82,10 +82,10 @@ const styles = theme => ({
     height: '100vh',
   },
   paper: {
-    padding: [[theme.spacing.unit * 8, theme.spacing.unit * 6]],
+    padding: [[spacing.unit * 8, spacing.unit * 6]],
   },
   button: {
-    marginTop: theme.spacing.unit * 6,
+    marginTop: spacing.unit * 6,
   },
 });
 

@@ -89,9 +89,9 @@ const Home = ({ classes }: Props): Node => (
 
 Home.defaultProps = {};
 
-const styles = theme => ({
+const styles = ({ spacing }) => ({
   groupFilter: {
-    marginBottom: theme.spacing.unit * 4,
+    marginBottom: spacing.unit * 4,
   },
 });
 

@@ -39,18 +39,18 @@ const GroupCardContainerFooter = ({ classes }: Props): Node => (
 
 GroupCardContainerFooter.defaultProps = {};
 
-const styles = theme => ({
+const styles = ({ spacing }) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: [[theme.spacing.unit * 5, 0]],
+    padding: [[spacing.unit * 5, 0]],
   },
   divider: {
     width: '40%',
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit * 3,
+    marginTop: spacing.unit,
+    marginBottom: spacing.unit * 3,
   },
 });
 

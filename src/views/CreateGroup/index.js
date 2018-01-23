@@ -119,7 +119,7 @@ class CreateGroup extends React.Component<Props, State> {
   }
 }
 
-const styles = theme => ({
+const styles = ({ spacing, breakpoints }) => ({
   stationsContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -131,27 +131,27 @@ const styles = theme => ({
   },
   stationArrowContainer: {
     display: 'none',
-    padding: '0 20px',
+    padding: [[0, 20]],
     textAlign: 'center',
   },
-  '@media (min-width: 600px)': {
+  [breakpoints.up('sm')]: {
     stationsContainer: {
       flexDirection: 'row',
     },
     stationTextFieldContainer: {
-      flex: '1 1 auto',
+      flex: [1, 1, 'auto'],
     },
     stationArrowContainer: {
       display: 'block',
-      flex: '0 0 auto',
+      flex: [0, 0, 'auto'],
     },
   },
   divdier: {
-    marginTop: theme.spacing.unit * 4,
-    marginBottom: theme.spacing.unit * 4,
+    marginTop: spacing.unit * 4,
+    marginBottom: spacing.unit * 4,
   },
   dateTimeContainer: {
-    marginTop: 20,
+    marginTop: spacing.unit * 2,
   },
   cardActions: {
     display: 'flex',

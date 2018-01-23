@@ -98,7 +98,7 @@ class GroupFilter extends React.Component<Props, State> {
   }
 }
 
-const styles = {
+const styles = ({ spacing, breakpoints }) => ({
   stationsContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -110,31 +110,31 @@ const styles = {
   },
   stationArrowContainer: {
     display: 'none',
-    padding: '0 20px',
+    padding: [[0, 20]],
     textAlign: 'center',
   },
-  '@media (min-width: 600px)': {
+  [breakpoints.up('sm')]: {
     stationsContainer: {
       flexDirection: 'row',
     },
     stationTextFieldContainer: {
-      flex: '1 1 auto',
+      flex: [1, 1, 'auto'],
     },
     stationArrowContainer: {
       display: 'block',
-      flex: '0 0 auto',
+      flex: [0, 0, 'auto'],
     },
   },
   firstGridItem: {
     paddingTop: [0, '!important'],
   },
   dateTimeContainer: {
-    marginTop: 20,
+    marginTop: spacing.unit * 2,
   },
   cardActions: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
-};
+});
 
 export default withStyles(styles)(GroupFilter);
