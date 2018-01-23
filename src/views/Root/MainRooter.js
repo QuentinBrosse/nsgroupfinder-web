@@ -2,6 +2,7 @@
 
 import React from 'react';
 import type { Node } from 'react';
+import { withStyles } from 'material-ui/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { isLoaded, firebaseConnect } from 'react-redux-firebase';
@@ -14,14 +15,20 @@ import {
 import { PrivateRoute } from 'common/containers';
 import App from 'views/App';
 import LogIn from 'views/LogIn';
+import CircularProgress from 'material-ui/Progress/CircularProgress';
 
 type Props = {
+  classes: Object,
   auth: Object,
 };
 
-const MainRooter = ({ auth }: Props): Node => {
+const MainRooter = ({ classes, auth }: Props): Node => {
   if (!isLoaded(auth)) {
-    return 'Loading....';
+    return (
+      <div className={classes.globalProgress}>
+        <CircularProgress size={50} />
+      </div>
+    );
   }
   return (
     <Router>
@@ -36,8 +43,21 @@ const MainRooter = ({ auth }: Props): Node => {
 
 MainRooter.defaultProps = {};
 
+const styles = {
+  globalProgress: {
+    display: 'flex',
+    height: '100vh',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+};
+
 const mapStateToProps = ({ firebase: { auth } }) => ({
   auth,
 });
 
-export default compose(firebaseConnect(), connect(mapStateToProps))(MainRooter);
+export default compose(
+  withStyles(styles),
+  firebaseConnect(),
+  connect(mapStateToProps)
+)(MainRooter);

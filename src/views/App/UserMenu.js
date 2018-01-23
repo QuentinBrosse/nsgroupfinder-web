@@ -33,7 +33,7 @@ class UserMenu extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
     const { anchorEl } = this.state;
-    const menuIsOpen = Boolean(anchorEl);
+    const menuIsOpen = !!anchorEl;
     return (
       <div className={classes.container}>
         <IconButton

@@ -46,7 +46,6 @@ class LogIn extends React.Component<Props, State> {
   render() {
     const { classes, auth } = this.props;
     if (isConnected(auth)) {
-      console.log('LogIn redirect to /app');
       return <Redirect to="/app" />;
     }
     return (
