@@ -28,16 +28,15 @@ class CreateGroup extends React.Component<Props, State> {
         <CardHeader title="Create a Group" />
         <CardContent>
           <Typography type="body1">
-            <p>Some informations...</p>
-            <p>
-              Dolor dolor tempor ad aliquip do laborum mollit. Cupidatat est
-              esse eiusmod elit qui cupidatat in. Labore consectetur ex tempor
-              tempor fugiat minim cupidatat esse sunt do labore qui.
-              <br />
-              Velit excepteur est occaecat nisi in do ut in voluptate dolor.
-              Ipsum sint eiusmod officia anim Lorem. Laboris nostrud consequat
-              proident anim ex ut ullamco.
-            </p>
+            Some informations...
+            <br />
+            Dolor dolor tempor ad aliquip do laborum mollit. Cupidatat est esse
+            eiusmod elit qui cupidatat in. Labore consectetur ex tempor tempor
+            fugiat minim cupidatat esse sunt do labore qui.
+            <br />
+            Velit excepteur est occaecat nisi in do ut in voluptate dolor. Ipsum
+            sint eiusmod officia anim Lorem. Laboris nostrud consequat proident
+            anim ex ut ullamco.
           </Typography>
           <Divider className={classes.divdier} />
           <Grid container>
