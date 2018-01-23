@@ -10,11 +10,13 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
 import Icon from 'material-ui/Icon';
+import Typography from 'material-ui/Typography';
+import Divider from 'material-ui/Divider/Divider';
 import { StationAutocomplete } from 'common/containers';
 import { InputIconAdornment } from 'common/components';
 import { TextField } from 'redux-form-material-ui';
-import { validatorFactory } from 'utils/form';
 import { required, date, numericality } from 'redux-form-validators';
+import { validatorFactory } from 'utils/form';
 
 type Props = {
   classes: Object,
@@ -24,7 +26,7 @@ type Props = {
   change: Function,
 };
 
-const GroupFilter = ({
+const CreateGroupForm = ({
   classes,
   handleSubmit,
   pristine,
@@ -32,11 +34,23 @@ const GroupFilter = ({
   change,
 }: Props): Node => (
   <form onSubmit={handleSubmit}>
-    <Card className={classes.container}>
-      <CardHeader title="Find your Journey Group" />
+    <Card>
+      <CardHeader title="Create a Group" />
       <CardContent>
+        <Typography type="body1">
+          Some informations...
+          <br />
+          Dolor dolor tempor ad aliquip do laborum mollit. Cupidatat est esse
+          eiusmod elit qui cupidatat in. Labore consectetur ex tempor tempor
+          fugiat minim cupidatat esse sunt do labore qui.
+          <br />
+          Velit excepteur est occaecat nisi in do ut in voluptate dolor. Ipsum
+          sint eiusmod officia anim Lorem. Laboris nostrud consequat proident
+          anim ex ut ullamco.
+        </Typography>
+        <Divider className={classes.divdier} />
         <Grid container>
-          <Grid item xs={12} className={classes.firstGridItem}>
+          <Grid item xs={12}>
             <div className={classes.stationsContainer}>
               <Field
                 id="departure"
@@ -65,7 +79,7 @@ const GroupFilter = ({
           justify="space-between"
           className={classes.dateTimeContainer}
         >
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={6}>
             <Field
               id="date"
               name="date"
@@ -79,33 +93,16 @@ const GroupFilter = ({
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={6}>
             <Field
-              id="start_time"
-              name="start_time"
+              id="time"
+              name="time"
               component={TextField}
-              label="Leave from"
+              label="Time"
               type="number"
               fullWidth
               InputLabelProps={{ shrink: true }}
-              InputProps={{
-                startAdornment: <InputIconAdornment iconName="date_range" />,
-                inputProps: {
-                  min: '0',
-                  max: '23',
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Field
-              id="end_time"
-              name="end_time"
-              component={TextField}
-              label="Leave until"
-              type="number"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
+              helperText="A one-hour hourly range"
               InputProps={{
                 startAdornment: <InputIconAdornment iconName="date_range" />,
                 inputProps: {
@@ -116,20 +113,39 @@ const GroupFilter = ({
             />
           </Grid>
         </Grid>
+        <Grid
+          container
+          justify="space-between"
+          className={classes.dateTimeContainer}
+        >
+          <Grid item xs={12}>
+            <Field
+              id="infos"
+              name="infos"
+              label="Infos"
+              type="text"
+              placeholder="I like talking about my mother.."
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              helperText="Information you want to communicate to users. They will be visible to all users (even those who will not be members of the group)."
+              multiline
+              component={TextField}
+            />
+          </Grid>
+        </Grid>
       </CardContent>
       <CardActions className={classes.cardActions}>
         <Button dense type="submit" disabled={pristine || submitting}>
-          Search
+          Create
         </Button>
       </CardActions>
     </Card>
   </form>
 );
 
+CreateGroupForm.defaultProps = {};
+
 const styles = ({ spacing, breakpoints }) => ({
-  container: {
-    marginBottom: spacing.unit * 4,
-  },
   stationsContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -156,8 +172,9 @@ const styles = ({ spacing, breakpoints }) => ({
       flex: [0, 0, 'auto'],
     },
   },
-  firstGridItem: {
-    paddingTop: [0, '!important'],
+  divdier: {
+    marginTop: spacing.unit * 4,
+    marginBottom: spacing.unit * 4,
   },
   dateTimeContainer: {
     marginTop: spacing.unit * 2,
@@ -174,20 +191,16 @@ const formConfig = {
     date: moment()
       .add(2, 'day')
       .format('YYYY-MM-DD'),
-    start_time: String(moment().hour()),
-    end_time: String(
-      moment()
-        .add(1, 'hour')
-        .hour()
-    ),
+    time: String(moment().hour()),
   },
   validate: validatorFactory({
     departure: [required()],
     arrival: [required()],
     date: [required(), date({ format: 'yyyy-mm-dd' })],
-    start_time: [required(), numericality({ '>=': 0, '<=': 23 })],
-    end_time: [required(), numericality({ '>=': 0, '<=': 23 })],
+    time: [required(), numericality({ '>=': 0, '<=': 23 })],
   }),
 };
 
-export default compose(withStyles(styles), reduxForm(formConfig))(GroupFilter);
+export default compose(withStyles(styles), reduxForm(formConfig))(
+  CreateGroupForm
+);

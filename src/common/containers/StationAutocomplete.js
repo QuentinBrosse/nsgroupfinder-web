@@ -21,10 +21,12 @@ type Props = {
   iconName: string,
   id: string,
   placeholder: string,
+  input: Object,
+  meta: Object,
+  change: Function,
 };
 
 type State = {
-  value: string,
   loading: boolean,
   suggestions: Station[],
 };
@@ -33,7 +35,9 @@ class StationAutocomplete extends React.Component<Props, State> {
   static getSuggestionValue(suggestion: Station): string {
     return suggestion.name;
   }
-  static defaultProps = {};
+  static defaultProps = {
+    meta: {},
+  };
 
   static shouldRenderSuggestions(value: string): boolean {
     return value.trim().length > 2;
@@ -73,13 +77,14 @@ class StationAutocomplete extends React.Component<Props, State> {
     );
   }
 
-  static renderInput = (inputProps): Node => {
+  static renderInput(inputProps): Node {
     const {
-      value,
       classes,
       iconName,
       fetchingSuggestions,
       ref,
+      helperText,
+      error,
       ...other
     } = inputProps;
 
@@ -87,10 +92,10 @@ class StationAutocomplete extends React.Component<Props, State> {
       <TextField
         inputRef={ref}
         className={classes.textField}
-        value={value}
         fullWidth
         margin="normal"
-        helperText="Accents are mandatory"
+        helperText={helperText || 'Accents are mandatory'}
+        error={error}
         InputProps={{
           startAdornment: <InputIconAdornment iconName={iconName} />,
           endAdornment: fetchingSuggestions && <CircularProgress size={20} />,
@@ -98,13 +103,12 @@ class StationAutocomplete extends React.Component<Props, State> {
         }}
       />
     );
-  };
+  }
 
   constructor(props) {
     super(props);
     const firestore = firebase.firestore();
     this.firestoreStationRef = firestore.collection('stations');
-    this.onChange = this.onChange.bind(this);
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(
       this
     );
@@ -115,16 +119,9 @@ class StationAutocomplete extends React.Component<Props, State> {
   }
 
   state = {
-    value: '',
     loading: false,
     suggestions: [],
   };
-
-  onChange(event: SyntheticEvent<*>, { newValue }) {
-    this.setState({
-      value: newValue,
-    });
-  }
 
   onSuggestionsFetchRequested({ value, reason }) {
     if (reason === 'input-changed') {
@@ -140,7 +137,6 @@ class StationAutocomplete extends React.Component<Props, State> {
 
   fetchSuggestions: Function;
   firestoreStationRef: Object;
-  onChange: Function;
   onSuggestionsFetchRequested: Function;
   onSuggestionsClearRequested: Function;
 
@@ -161,17 +157,33 @@ class StationAutocomplete extends React.Component<Props, State> {
   }
 
   render() {
-    const { value, suggestions, loading } = this.state;
-    const { id, classes, placeholder, iconName } = this.props;
+    const { suggestions, loading } = this.state;
+    const {
+      id,
+      classes,
+      placeholder,
+      iconName,
+      input,
+      meta: { touched, error, warning },
+      change,
+    } = this.props;
+
+    const errorProps =
+      touched && (error || warning)
+        ? {
+            error: Boolean(error || warning),
+            helperText: error || warning,
+          }
+        : {};
 
     const inputProps = {
       classes,
-      value,
-      onChange: this.onChange,
       id,
       placeholder,
       iconName,
       fetchingSuggestions: loading,
+      ...input,
+      ...errorProps,
     };
 
     return (
@@ -188,6 +200,10 @@ class StationAutocomplete extends React.Component<Props, State> {
         shouldRenderSuggestions={StationAutocomplete.shouldRenderSuggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+        onSuggestionSelected={(event, { suggestion, suggestionValue }) => {
+          change(input.name, suggestionValue);
+          change(`${input.name}_obj`, suggestion);
+        }}
         getSuggestionValue={StationAutocomplete.getSuggestionValue}
         renderSuggestionsContainer={
           StationAutocomplete.renderSuggestionsContainer

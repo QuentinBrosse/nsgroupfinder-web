@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import type { Node } from 'react';
 import moment from 'moment';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
@@ -9,10 +8,6 @@ import { GroupCard, GroupCardContainer } from 'common/components';
 import GroupFilter from './GroupFilter';
 import EmptyGroupResults from './EmptyGroupResults';
 import GroupCardContainerFooter from './GroupCardContainerFooter';
-
-type Props = {
-  classes: Object,
-};
 
 const cards = [
   {
@@ -68,31 +63,50 @@ const cards = [
   },
 ];
 
-const Home = ({ classes }: Props): Node => (
-  <div>
-    <GroupFilter className={classes.groupFilter} />
-    <Typography type="title" paragraph>
-      Groups
-    </Typography>
-    {cards.length > 0 ? (
+type Props = {
+  classes?: Object,
+};
+
+type State = {};
+
+class Home extends React.Component<Props, State> {
+  static defaultProps = {
+    classes: {},
+  };
+
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit: Function;
+
+  handleSubmit(values) {
+    console.log(values);
+  }
+
+  render() {
+    return (
       <div>
-        <GroupCardContainer>
-          {cards.map(c => <GroupCard key={c.id} {...c} />)}
-        </GroupCardContainer>
-        <GroupCardContainerFooter />
+        <GroupFilter onSubmit={this.handleSubmit} />
+        <Typography type="title" paragraph>
+          Groups
+        </Typography>
+        {cards.length > 0 ? (
+          <div>
+            <GroupCardContainer>
+              {cards.map(c => <GroupCard key={c.id} {...c} />)}
+            </GroupCardContainer>
+            <GroupCardContainerFooter />
+          </div>
+        ) : (
+          <EmptyGroupResults />
+        )}
       </div>
-    ) : (
-      <EmptyGroupResults />
-    )}
-  </div>
-);
+    );
+  }
+}
 
-Home.defaultProps = {};
-
-const styles = ({ spacing }) => ({
-  groupFilter: {
-    marginBottom: spacing.unit * 4,
-  },
-});
+const styles = {};
 
 export default withStyles(styles)(Home);
