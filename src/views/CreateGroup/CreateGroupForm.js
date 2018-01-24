@@ -120,13 +120,11 @@ const CreateGroupForm = ({
         >
           <Grid item xs={12}>
             <Field
-              id="infos"
-              name="infos"
-              label="Infos"
+              id="info"
+              name="info"
+              label="Info"
               type="text"
-              placeholder="I like talking about my mother.."
               fullWidth
-              InputLabelProps={{ shrink: true }}
               helperText="Information you want to communicate to users. They will be visible to all users (even those who will not be members of the group)."
               multiline
               component={TextField}

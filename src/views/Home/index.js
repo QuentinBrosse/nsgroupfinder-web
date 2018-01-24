@@ -70,9 +70,7 @@ type Props = {
 type State = {};
 
 class Home extends React.Component<Props, State> {
-  static defaultProps = {
-    classes: {},
-  };
+  static defaultProps = {};
 
   constructor(props) {
     super(props);
