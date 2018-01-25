@@ -8,11 +8,11 @@ import moment from 'moment';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import {
-  GroupCard,
   GroupCardContainer,
   EmptyGroupResults,
   GroupCardContainerFooter,
 } from 'common/components';
+import { GroupCard } from 'common/containers';
 import { throwAccentSnackbar } from 'actions/snackbar';
 import { logErrorIfDevEnv } from 'utils/env';
 import GroupFilterForm from './GroupFilterForm';
@@ -42,7 +42,7 @@ class Home extends React.Component<Props, State> {
 
   handleSubmit: Function;
 
-  fakeCards = false;
+  fakeCards = true;
 
   async handleSubmit(values) {
     const { firestore, dThrowAccentSnackbar } = this.props;

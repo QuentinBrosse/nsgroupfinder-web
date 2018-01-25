@@ -11,7 +11,7 @@ import { LinearProgress } from 'material-ui/Progress';
 import Avatar from 'material-ui/Avatar';
 import Popover from 'material-ui/Popover';
 import { RequestState } from 'types/groups';
-import { GroupCardRequestButton } from 'common/components';
+import GroupCardRequestButton from './GroupCardRequestButton';
 
 type Props = {
   classes: Object,

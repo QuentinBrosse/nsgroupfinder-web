@@ -1,5 +1,6 @@
 import React from 'react';
-import { GroupCard, GroupCardContainer } from 'common/components';
+import { GroupCardContainer } from 'common/components';
+import { GroupCard } from 'common/containers';
 
 export default (
   <GroupCardContainer>

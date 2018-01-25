@@ -22,8 +22,8 @@ const GroupCardContainer = ({ classes, children }: Props): Node => (
 
 GroupCardContainer.defaultProps = {};
 
-const styles = theme => {
-  console.log(theme);
+const styles = {
+  container: {},
 };
 
 export default withStyles(styles)(GroupCardContainer);
