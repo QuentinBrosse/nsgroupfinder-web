@@ -7,6 +7,7 @@ import { firebaseConnect } from 'react-redux-firebase';
 import { withStyles } from 'material-ui/styles';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
+import { logErrorIfDevEnv } from 'utils/env';
 
 type Props = {
   classes: Object,
@@ -20,17 +21,27 @@ type State = {};
 class LogOutMenuItem extends React.Component<Props, State> {
   static defaultProps = {};
 
-  logOut = () => {
+  constructor(props) {
+    super(props);
+    this.logOut = this.logOut.bind(this);
+  }
+
+  logOut: Function;
+
+  async logOut() {
     const {
       firebase,
       dThrowDissmissSnackbar,
       dThrowAccentSnackbar,
     } = this.props;
-    firebase
-      .logout()
-      .then(() => dThrowDissmissSnackbar('See you soon !'))
-      .catch(() => dThrowAccentSnackbar('Ooops, try again later please :/'));
-  };
+    try {
+      await firebase.logout();
+      dThrowDissmissSnackbar('See you soon !');
+    } catch (err) {
+      logErrorIfDevEnv(err);
+      dThrowAccentSnackbar('Ooops, try again later please :/');
+    }
+  }
 
   render() {
     const { classes } = this.props;

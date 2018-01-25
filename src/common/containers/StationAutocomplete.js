@@ -15,6 +15,7 @@ import { CircularProgress } from 'material-ui/Progress';
 import { MenuItem } from 'material-ui/Menu';
 import { InputIconAdornment } from 'common/components';
 import type { Station } from 'types/station';
+import { logErrorIfDevEnv } from 'utils/env';
 
 type Props = {
   classes: Object,
@@ -140,20 +141,21 @@ class StationAutocomplete extends React.Component<Props, State> {
   onSuggestionsFetchRequested: Function;
   onSuggestionsClearRequested: Function;
 
-  fetchSuggestions(value: string): Promise<*> {
+  async fetchSuggestions(value: string) {
     this.setState({ loading: true });
 
-    return this.firestoreStationRef
-      .limit(4)
-      .orderBy('name_insensitive')
-      .startAt(value)
-      .endAt(`${value}\uf8ff`)
-      .get()
-      .then(snapshot => {
-        const stations = snapshot.docs.map(d => d.data());
-        this.setState({ loading: false, suggestions: stations });
-      })
-      .catch(console.error);
+    try {
+      const snapshot = await this.firestoreStationRef
+        .limit(4)
+        .orderBy('name_insensitive')
+        .startAt(value)
+        .endAt(`${value}\uf8ff`)
+        .get();
+      const stations = snapshot.docs.map(d => d.data());
+      this.setState({ loading: false, suggestions: stations });
+    } catch (err) {
+      logErrorIfDevEnv(err);
+    }
   }
 
   render() {

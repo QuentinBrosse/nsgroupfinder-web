@@ -11,6 +11,7 @@ import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { isConnected } from 'utils/user';
+import { logErrorIfDevEnv } from 'utils/env';
 
 type Props = {
   classes: Object,
@@ -46,6 +47,7 @@ class LogIn extends React.Component<Props, State> {
       const { first_name: firstName } = additionalUserInfo.profile;
       dThrowDissmissSnackbar(`Welcome ${firstName} !`);
     } catch (err) {
+      logErrorIfDevEnv(err);
       dThrowAccentSnackbar('Ooops, try again later please :/');
     }
   }

@@ -9,6 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import { GroupCard, GroupCardContainer } from 'common/components';
 import { throwAccentSnackbar } from 'actions/snackbar';
+import { logErrorIfDevEnv } from 'utils/env';
 import GroupFilterForm from './GroupFilterForm';
 import EmptyGroupResults from './EmptyGroupResults';
 import GroupCardContainerFooter from './GroupCardContainerFooter';
@@ -68,6 +69,7 @@ class Home extends React.Component<Props, State> {
       }));
       this.setState({ results });
     } catch (err) {
+      logErrorIfDevEnv(err);
       dThrowAccentSnackbar('Ooops, try again later please :/');
     }
   }
