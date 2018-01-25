@@ -10,6 +10,9 @@ import CheckIcon from 'material-ui-icons/Check';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import DoNotDisturbOnIcon from 'material-ui-icons/DoNotDisturbOn';
 import RequestDialogRequest from './RequestDialogRequest';
+import RequestDialogPending from './RequestDialogPending';
+import RequestDialogConfirmed from './RequestDialogConfirmed';
+import RequestDialogRejected from './RequestDialogRejected';
 
 type Props = {
   classes: Object,
@@ -51,7 +54,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       pending: {
         icon: <HourglassEmptyIcon className={classes.checkIconPending} />,
         dialog: (
-          <RequestDialogRequest
+          <RequestDialogPending
             opened={dialogOpen}
             onClose={this.handleClose}
           />
@@ -60,7 +63,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       confirmed: {
         icon: <CheckIcon className={classes.checkIconConfirmed} />,
         dialog: (
-          <RequestDialogRequest
+          <RequestDialogConfirmed
             opened={dialogOpen}
             onClose={this.handleClose}
           />
@@ -69,7 +72,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       refused: {
         icon: <DoNotDisturbOnIcon className={classes.checkIconRefused} />,
         dialog: (
-          <RequestDialogRequest
+          <RequestDialogRejected
             opened={dialogOpen}
             onClose={this.handleClose}
           />

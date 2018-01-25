@@ -85,12 +85,12 @@ class Home extends React.Component<Props, State> {
     return (
       <div>
         <GroupFilterForm onSubmit={this.handleSubmit} />
-        <Typography type="title" paragraph>
-          Groups
-        </Typography>
 
         {this.fakeCards && (
           <div>
+            <Typography type="title" paragraph>
+              Groups
+            </Typography>
             <pre>
               You see these cards because this.examples = true (in
               Views/Home/index)
@@ -101,6 +101,9 @@ class Home extends React.Component<Props, State> {
 
         {results.length > 0 ? (
           <div>
+            <Typography type="title" paragraph>
+              Groups
+            </Typography>
             <GroupCardContainer>
               {results.map(result => (
                 <GroupCard

@@ -25,7 +25,7 @@ const EmptyGroupResults = ({ classes }: Props): Node => (
       </span>
       <br />
       Create your own !{' '}
-      <span role="img" aria-label="Sad emojy">
+      <span role="img" aria-label="Strong emojy">
         💪
       </span>
     </Typography>
