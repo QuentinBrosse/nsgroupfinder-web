@@ -25,23 +25,30 @@ type State = {};
 class LogIn extends React.Component<Props, State> {
   static defaultProps = {};
 
-  logIn = () => {
+  constructor(props) {
+    super(props);
+    this.logIn = this.logIn.bind(this);
+  }
+
+  logIn: Function;
+
+  async logIn() {
     const {
       firebase,
       dThrowDissmissSnackbar,
       dThrowAccentSnackbar,
     } = this.props;
-    firebase
-      .login({
+    try {
+      const { additionalUserInfo } = await firebase.login({
         provider: 'facebook',
         type: 'popup',
-      })
-      .then(({ additionalUserInfo }) => {
-        const { first_name: firstName } = additionalUserInfo.profile;
-        dThrowDissmissSnackbar(`Welcome ${firstName} !`);
-      })
-      .catch(() => dThrowAccentSnackbar('Ooops, try again later please :/'));
-  };
+      });
+      const { first_name: firstName } = additionalUserInfo.profile;
+      dThrowDissmissSnackbar(`Welcome ${firstName} !`);
+    } catch (err) {
+      dThrowAccentSnackbar('Ooops, try again later please :/');
+    }
+  }
 
   render() {
     const { classes, auth } = this.props;
