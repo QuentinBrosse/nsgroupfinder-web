@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import moment from 'moment';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import Icon from 'material-ui/Icon';
@@ -14,15 +15,15 @@ import Popover from 'material-ui/Popover';
 
 type Props = {
   classes: Object,
+  admin: {
+    displayName: string,
+    avatarUrl: string,
+  },
   stations: {
     departure: string,
     arrival: string,
   },
-  date: Object,
-  time: {
-    start: Object,
-    end: Object,
-  },
+  dateTime: Object,
   members: {
     current: number,
     target: number,
@@ -31,7 +32,7 @@ type Props = {
 };
 
 type State = {
-  popoverAnchorEl: HTMLElement,
+  popoverAnchorEl: HTMLElement | null,
 };
 
 class GroupCard extends React.Component<Props, State> {
@@ -61,17 +62,24 @@ class GroupCard extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, stations, date, time, members, info } = this.props;
+    const { classes, stations, dateTime, members, info, admin } = this.props;
     const { popoverAnchorEl } = this.state;
-    const fDate = date.format('MMM Do');
-    const fTimeStart = time.start.format('ha');
-    const fTimeEnd = time.end.format('ha');
+    const mDateTime = moment(dateTime);
+    const fDate = mDateTime.format('MMM Do');
+    const fTimeStart = mDateTime.format('ha');
+    const fTimeEnd = mDateTime.add(1, 'h').format('ha');
     const groupCompletion = members.current / members.target * 100;
     const popoverOpened = !!popoverAnchorEl;
     return (
       <Card>
         <CardHeader
-          avatar={<Avatar aria-label="Profile">Q</Avatar>}
+          avatar={
+            <Avatar
+              aria-label="Profile"
+              src={admin.avatarUrl}
+              alt={admin.displayName}
+            />
+          }
           title={`${stations.departure} to ${stations.arrival}`}
           subheader={`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
           action={

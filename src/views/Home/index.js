@@ -1,73 +1,27 @@
 // @flow
 
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
 import moment from 'moment';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import { GroupCard, GroupCardContainer } from 'common/components';
-import GroupFilter from './GroupFilter';
+import { throwAccentSnackbar } from 'actions/snackbar';
+import GroupFilterForm from './GroupFilterForm';
 import EmptyGroupResults from './EmptyGroupResults';
 import GroupCardContainerFooter from './GroupCardContainerFooter';
 
-const cards = [
-  {
-    id: 1,
-    stations: {
-      departure: 'Groningen',
-      arrival: 'Amsterdam',
-    },
-    date: moment('2013-02-08'),
-    time: {
-      start: moment('2013-02-08T09'),
-      end: moment('2013-02-08T09').add(1, 'h'),
-    },
-    members: {
-      current: 4,
-      target: 7,
-    },
-    info: 'Voluptate Lorem fugiat non proident do non.',
-  },
-  {
-    id: 2,
-    stations: {
-      departure: 'Amsterdam',
-      arrival: 'Paris',
-    },
-    date: moment('2018-01-21'),
-    time: {
-      start: moment('2018-01-21T19'),
-      end: moment('2018-01-21T19').add(1, 'h'),
-    },
-    members: {
-      current: 6,
-      target: 7,
-    },
-    info:
-      'Ullamco nostrud ipsum est ad ea commodo. Et fugiat nulla in dolor cillum Lorem laboris ut proident. Enim cupidatat sunt sint ex veniam duis qui enim. Consectetur eu ut occaecat elit in eiusmod nostrud aute eiusmod deserunt proident occaecat cillum adipisicing. Occaecat adipisicing duis amet culpa.',
-  },
-  {
-    id: 3,
-    stations: {
-      departure: 'Amsterdam',
-      arrival: 'Paris',
-    },
-    date: moment('2018-01-21'),
-    time: {
-      start: moment('2018-01-21T19'),
-      end: moment('2018-01-21T19').add(1, 'h'),
-    },
-    members: {
-      current: 3,
-      target: 4,
-    },
-  },
-];
-
 type Props = {
   classes?: Object,
+  firestore: Object,
+  dThrowAccentSnackbar: Function,
 };
 
-type State = {};
+type State = {
+  results: Array<Object>,
+};
 
 class Home extends React.Component<Props, State> {
   static defaultProps = {};
@@ -77,23 +31,74 @@ class Home extends React.Component<Props, State> {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  state = {
+    results: [],
+  };
+
   handleSubmit: Function;
 
-  handleSubmit(values) {
-    console.log(values);
+  async handleSubmit(values) {
+    const { firestore, dThrowAccentSnackbar } = this.props;
+    const {
+      departure_obj: { code: departureStationId },
+      arrival_obj: { code: arrivalStationId },
+      date,
+      start_time: startTime,
+      end_time: endTime,
+    } = values;
+    const startDate = moment(date).hour(+startTime);
+    const endDate = moment(date).hour(+endTime);
+    if (endDate.isBefore(startDate)) {
+      endDate.add(1, 'day');
+    }
+    try {
+      const snapshot = await firestore.get({
+        collection: 'groups',
+        where: [
+          ['departureStation.id', '==', departureStationId],
+          ['arrivalStation.id', '==', arrivalStationId],
+          ['dateTime', '>=', startDate.toDate()],
+          ['dateTime', '<=', endDate.toDate()],
+        ],
+        // orderBy: ['dateTime', 'desc'], : cf #19
+      });
+      const results = snapshot.docs.map(result => ({
+        id: result.id,
+        ...result.data(),
+      }));
+      this.setState({ results });
+    } catch (err) {
+      dThrowAccentSnackbar('Ooops, try again later please :/');
+    }
   }
 
   render() {
+    const { results } = this.state;
     return (
       <div>
-        <GroupFilter onSubmit={this.handleSubmit} />
+        <GroupFilterForm onSubmit={this.handleSubmit} />
         <Typography type="title" paragraph>
           Groups
         </Typography>
-        {cards.length > 0 ? (
+        {results.length > 0 ? (
           <div>
             <GroupCardContainer>
-              {cards.map(c => <GroupCard key={c.id} {...c} />)}
+              {results.map(result => (
+                <GroupCard
+                  key={result.id}
+                  admin={result.admin}
+                  stations={{
+                    departure: result.departureStation.name,
+                    arrival: result.arrivalStation.name,
+                  }}
+                  dateTime={result.dateTime}
+                  members={{
+                    current: 1,
+                    target: 7,
+                  }}
+                  info={result.info}
+                />
+              ))}
             </GroupCardContainer>
             <GroupCardContainerFooter />
           </div>
@@ -107,4 +112,12 @@ class Home extends React.Component<Props, State> {
 
 const styles = {};
 
-export default withStyles(styles)(Home);
+const mapDispatchToProps = {
+  dThrowAccentSnackbar: throwAccentSnackbar,
+};
+
+export default compose(
+  withStyles(styles),
+  firestoreConnect(),
+  connect(null, mapDispatchToProps)
+)(Home);

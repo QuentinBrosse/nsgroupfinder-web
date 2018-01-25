@@ -76,13 +76,15 @@ class CreateGroup extends React.Component<Props, State> {
     const departureStation = {
       name: departure.name,
       ref: db.doc(`/stations/${departure.code}`),
+      id: departure.code,
     };
     const arrivalStation = {
       name: arrival.name,
       ref: db.doc(`/stations/${arrival.code}`),
+      id: arrival.code,
     };
     const dateTime = moment(date)
-      .add(+time, 'hour')
+      .hour(+time)
       .toDate();
     const createdAt = firestore.FieldValue.serverTimestamp();
     return {

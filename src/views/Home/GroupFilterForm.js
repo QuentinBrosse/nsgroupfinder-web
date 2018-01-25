@@ -14,7 +14,12 @@ import { StationAutocomplete } from 'common/containers';
 import { InputIconAdornment } from 'common/components';
 import { TextField } from 'redux-form-material-ui';
 import { validatorFactory } from 'utils/form';
-import { required, date, numericality } from 'redux-form-validators';
+import {
+  required,
+  date,
+  numericality,
+  addValidator,
+} from 'redux-form-validators';
 
 type Props = {
   classes: Object,
@@ -24,7 +29,22 @@ type Props = {
   change: Function,
 };
 
-const GroupFilter = ({
+const differentValidator = addValidator({
+  validator: (options, value, allValues) => {
+    const { field, fieldLabel } = options;
+    const otherValue = allValues[field];
+    if (value === otherValue) {
+      return {
+        id: 'form.errors.differentValidator',
+        defaultMessage: 'must be different from "{fieldLabel}" field',
+        values: { fieldLabel },
+      };
+    }
+    return undefined;
+  },
+});
+
+const GroupFilterForm = ({
   classes,
   handleSubmit,
   pristine,
@@ -169,7 +189,7 @@ const styles = ({ spacing, breakpoints }) => ({
 });
 
 const formConfig = {
-  form: 'createGroup',
+  form: 'groupFilter',
   initialValues: {
     date: moment()
       .add(2, 'day')
@@ -186,8 +206,14 @@ const formConfig = {
     arrival: [required()],
     date: [required(), date({ format: 'yyyy-mm-dd' })],
     start_time: [required(), numericality({ '>=': 0, '<=': 23 })],
-    end_time: [required(), numericality({ '>=': 0, '<=': 23 })],
+    end_time: [
+      required(),
+      numericality({ '>=': 0, '<=': 23 }),
+      differentValidator({ field: 'start_time', fieldLabel: 'Leave from' }),
+    ],
   }),
 };
 
-export default compose(withStyles(styles), reduxForm(formConfig))(GroupFilter);
+export default compose(withStyles(styles), reduxForm(formConfig))(
+  GroupFilterForm
+);
