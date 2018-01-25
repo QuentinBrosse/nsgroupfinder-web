@@ -7,12 +7,16 @@ import { firestoreConnect } from 'react-redux-firebase';
 import moment from 'moment';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
-import { GroupCard, GroupCardContainer } from 'common/components';
+import {
+  GroupCard,
+  GroupCardContainer,
+  EmptyGroupResults,
+  GroupCardContainerFooter,
+} from 'common/components';
 import { throwAccentSnackbar } from 'actions/snackbar';
 import { logErrorIfDevEnv } from 'utils/env';
 import GroupFilterForm from './GroupFilterForm';
-import EmptyGroupResults from './EmptyGroupResults';
-import GroupCardContainerFooter from './GroupCardContainerFooter';
+import fakeCards from './fakeCards';
 
 type Props = {
   classes?: Object,
@@ -37,6 +41,8 @@ class Home extends React.Component<Props, State> {
   };
 
   handleSubmit: Function;
+
+  fakeCards = false;
 
   async handleSubmit(values) {
     const { firestore, dThrowAccentSnackbar } = this.props;
@@ -82,6 +88,17 @@ class Home extends React.Component<Props, State> {
         <Typography type="title" paragraph>
           Groups
         </Typography>
+
+        {this.fakeCards && (
+          <div>
+            <pre>
+              You see these cards because this.examples = true (in
+              Views/Home/index)
+            </pre>
+            {fakeCards}
+          </div>
+        )}
+
         {results.length > 0 ? (
           <div>
             <GroupCardContainer>

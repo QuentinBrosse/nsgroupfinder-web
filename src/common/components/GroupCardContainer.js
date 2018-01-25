@@ -13,7 +13,7 @@ type Props = {
 const GroupCardContainer = ({ classes, children }: Props): Node => (
   <Grid container className={classes.container}>
     {React.Children.map(children, child => (
-      <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Grid item xs={12} sm={12} md={6} lg={4}>
         {child}
       </Grid>
     ))}
@@ -22,8 +22,8 @@ const GroupCardContainer = ({ classes, children }: Props): Node => (
 
 GroupCardContainer.defaultProps = {};
 
-const styles = {
-  container: {},
+const styles = theme => {
+  console.log(theme);
 };
 
 export default withStyles(styles)(GroupCardContainer);

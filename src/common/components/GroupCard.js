@@ -1,17 +1,17 @@
 // @flow
 
-// /* eslint-disable jsx-a11y/mouse-events-have-key-events */
-
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import moment from 'moment';
-import Card, { CardHeader, CardContent } from 'material-ui/Card';
-import Typography from 'material-ui/Typography';
-import Icon from 'material-ui/Icon';
+import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
+import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
+import Typography from 'material-ui/Typography';
 import { LinearProgress } from 'material-ui/Progress';
 import Avatar from 'material-ui/Avatar';
 import Popover from 'material-ui/Popover';
+import { RequestState } from 'types/groups';
+import { GroupCardRequestButton } from 'common/components';
 
 type Props = {
   classes: Object,
@@ -28,6 +28,7 @@ type Props = {
     current: number,
     target: number,
   },
+  requestState: RequestState,
   info?: string,
 };
 
@@ -42,27 +43,32 @@ class GroupCard extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
-    this.handlePopoverClose = this.handlePopoverClose.bind(this);
+    this.handlePopoverClick = this.handlePopoverClick.bind(this);
   }
 
   state = {
     popoverAnchorEl: null,
   };
 
-  handlePopoverOpen: Function;
-  handlePopoverClose: Function;
+  handlePopoverClick: Function;
 
-  handlePopoverOpen(event) {
-    this.setState({ popoverAnchorEl: event.target });
-  }
-
-  handlePopoverClose() {
-    this.setState({ popoverAnchorEl: null });
+  handlePopoverClick(event) {
+    event.persist();
+    this.setState(state => ({
+      popoverAnchorEl: state.popoverAnchorEl ? null : event.target,
+    }));
   }
 
   render() {
-    const { classes, stations, dateTime, members, info, admin } = this.props;
+    const {
+      classes,
+      stations,
+      dateTime,
+      members,
+      info,
+      admin,
+      requestState,
+    } = this.props;
     const { popoverAnchorEl } = this.state;
     const mDateTime = moment(dateTime);
     const fDate = mDateTime.format('MMM Do');
@@ -82,11 +88,7 @@ class GroupCard extends React.Component<Props, State> {
           }
           title={`${stations.departure} to ${stations.arrival}`}
           subheader={`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
-          action={
-            <IconButton>
-              <Icon>check_circle</Icon>
-            </IconButton>
-          }
+          action={<GroupCardRequestButton requestState={requestState} />}
         />
         <CardContent classes={{ root: classes.cardContent }}>
           <LinearProgress mode="determinate" value={groupCompletion} />
@@ -98,42 +100,45 @@ class GroupCard extends React.Component<Props, State> {
               {members.current}/{members.target}
             </Typography>
           </div>
-          <div className={classes.infos}>
-            <Icon
-              className={classes.infoIcon}
-              onMouseOver={this.handlePopoverOpen}
-              onFocus={this.handlePopoverOpen}
-              onMouseOut={this.handlePopoverClose}
-              onBlur={this.handlePopoverClose}
-            >
-              info_outline
-            </Icon>
-            <Typography type="body1" color="secondary" noWrap>
-              {info || 'Not yet...'}
-            </Typography>
-          </div>
         </CardContent>
-        {info && (
-          <Popover
-            className={classes.popover}
-            classes={{
-              paper: classes.paper,
-            }}
-            open={popoverOpened}
-            anchorEl={popoverAnchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            onClose={this.handlePopoverClose}
+        <CardActions className={classes.actions} disableActionSpacing>
+          {info && (
+            <div>
+              <IconButton
+                aria-label="Show information"
+                onClick={this.handlePopoverClick}
+              >
+                <InfoOutlineIcon />
+              </IconButton>
+              <Popover
+                className={classes.popover}
+                classes={{
+                  paper: classes.paper,
+                }}
+                open={popoverOpened}
+                anchorEl={popoverAnchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                onClose={this.handlePopoverClick}
+              >
+                <Typography type="body1">{info}</Typography>
+              </Popover>
+            </div>
+          )}
+          <Typography
+            type="body1"
+            color="secondary"
+            className={classes.createdBy}
           >
-            <Typography>{info}</Typography>
-          </Popover>
-        )}
+            Created by {admin.displayName}
+          </Typography>
+        </CardActions>
       </Card>
     );
   }
@@ -156,22 +161,19 @@ const styles = ({ spacing, palette }) => ({
     color: palette.text.secondary,
     textTransform: 'uppercase',
   },
-  infos: {
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: spacing.unit * 2,
-    '& :first-child': {
-      marginRight: spacing.unit,
-    },
-  },
-  infoIcon: {
-    fontSize: 20,
-  },
   paper: {
     padding: spacing.unit,
   },
   popover: {
     pointerEvents: 'none',
+  },
+  actions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  createdBy: {
+    paddingRight: spacing.unit * 2 - 4,
+    marginLeft: 'auto',
   },
 });
 
