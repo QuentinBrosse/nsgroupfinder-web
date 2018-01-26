@@ -3,12 +3,13 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firestoreConnect, getFirebase } from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import { withStyles } from 'material-ui/styles';
 import moment from 'moment';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { Redirect } from 'react-router-dom';
 import { logErrorIfDevEnv } from 'utils/env';
+import { getUserFromAuth } from 'utils/user';
 import CreateGroupForm from './CreateGroupForm';
 
 type Props = {
@@ -59,15 +60,8 @@ class CreateGroup extends React.Component<Props, State> {
 
   clearData(values: Object): Object {
     const { auth, firestore } = this.props;
-    const db = getFirebase().firestore();
 
-    const admin = {
-      avatarUrl: auth.photoURL,
-      displayName: auth.displayName,
-      email: auth.email,
-      uid: auth.uid,
-      ref: db.doc(`users/${auth.uid}`),
-    };
+    const admin = getUserFromAuth(auth);
     const {
       departure_obj: departure,
       arrival_obj: arrival,
@@ -77,12 +71,10 @@ class CreateGroup extends React.Component<Props, State> {
     } = values;
     const departureStation = {
       name: departure.name,
-      ref: db.doc(`/stations/${departure.code}`),
       id: departure.code,
     };
     const arrivalStation = {
       name: arrival.name,
-      ref: db.doc(`/stations/${arrival.code}`),
       id: arrival.code,
     };
     const dateTime = moment(date)
