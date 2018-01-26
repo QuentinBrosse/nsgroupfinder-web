@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import type { RequestState } from 'types/group';
 import moment from 'moment';
 import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
@@ -10,10 +11,10 @@ import Typography from 'material-ui/Typography';
 import { LinearProgress } from 'material-ui/Progress';
 import Avatar from 'material-ui/Avatar';
 import Popover from 'material-ui/Popover';
-import { RequestState } from 'types/groups';
 import GroupCardRequestButton from './GroupCardRequestButton';
 
 type Props = {
+  id: string,
   classes: Object,
   admin: {
     displayName: string,
@@ -61,6 +62,7 @@ class GroupCard extends React.Component<Props, State> {
 
   render() {
     const {
+      id,
       classes,
       stations,
       dateTime,
@@ -88,7 +90,9 @@ class GroupCard extends React.Component<Props, State> {
           }
           title={`${stations.departure} to ${stations.arrival}`}
           subheader={`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
-          action={<GroupCardRequestButton requestState={requestState} />}
+          action={
+            <GroupCardRequestButton groupId={id} requestState={requestState} />
+          }
         />
         <CardContent classes={{ root: classes.cardContent }}>
           <LinearProgress mode="determinate" value={groupCompletion} />

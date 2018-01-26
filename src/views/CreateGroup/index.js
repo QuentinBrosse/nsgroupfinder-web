@@ -8,6 +8,7 @@ import { withStyles } from 'material-ui/styles';
 import moment from 'moment';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { Redirect } from 'react-router-dom';
+import { logErrorIfDevEnv } from 'utils/env';
 import CreateGroupForm from './CreateGroupForm';
 
 type Props = {
@@ -51,6 +52,7 @@ class CreateGroup extends React.Component<Props, State> {
       dThrowDissmissSnackbar('Your group has been successfully created !');
       this.setState({ redirect: true });
     } catch (err) {
+      logErrorIfDevEnv(err);
       dThrowAccentSnackbar('Ooops, try again later please :/');
     }
   }
@@ -109,12 +111,9 @@ class CreateGroup extends React.Component<Props, State> {
 
 const styles = {};
 
-const mapPropsToState = state => {
-  const { firebase } = state;
-  return {
-    auth: firebase.auth,
-  };
-};
+const mapPropsToState = ({ firebase }) => ({
+  auth: firebase.auth,
+});
 
 const mapDispatchToProps = {
   dThrowDissmissSnackbar: throwDissmissSnackbar,

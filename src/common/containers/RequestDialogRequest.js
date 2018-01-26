@@ -1,12 +1,9 @@
 // @flow
 
 import React from 'react';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -18,30 +15,35 @@ type Props = {
   classes: Object,
   opened: boolean,
   onClose: Function,
-  dThrowDissmissSnackbar: Function,
-  dThrowAccentSnackbar: Function,
+  sendRequest: Function,
 };
 
-type State = {};
+type State = {
+  message: string,
+};
 
 class RequestDialogRequest extends React.Component<Props, State> {
   static defaultProps = {};
 
   constructor(props) {
     super(props);
-    this.sendRequest = this.sendRequest.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
   }
 
-  sendRequest: Function;
+  state = {
+    message: '',
+  };
 
-  sendRequest() {
-    const { onClose, dThrowAccentSnackbar } = this.props;
-    dThrowAccentSnackbar(`Your request has been sent to the group creator !`);
-    onClose();
+  handleMessageChange: Function;
+
+  handleMessageChange(event) {
+    this.setState({ message: event.target.value });
   }
 
   render() {
-    const { classes, opened, onClose } = this.props;
+    const { classes, opened, onClose, sendRequest } = this.props;
+    const { message } = this.state;
+
     return (
       <Dialog
         open={opened}
@@ -64,13 +66,15 @@ class RequestDialogRequest extends React.Component<Props, State> {
             helperText="A nice message for the creator of the group."
             type="text"
             fullWidth
+            onChange={this.handleMessageChange}
+            value={message}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.sendRequest} color="primary">
+          <Button onClick={() => sendRequest(message)} color="primary">
             Send
           </Button>
         </DialogActions>
@@ -85,11 +89,4 @@ const styles = ({ spacing }) => ({
   },
 });
 
-const mapDispatchToProps = {
-  dThrowDissmissSnackbar: throwDissmissSnackbar,
-  dThrowAccentSnackbar: throwAccentSnackbar,
-};
-
-export default compose(withStyles(styles), connect(null, mapDispatchToProps))(
-  RequestDialogRequest
-);
+export default withStyles(styles)(RequestDialogRequest);

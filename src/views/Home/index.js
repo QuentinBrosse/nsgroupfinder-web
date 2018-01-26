@@ -42,7 +42,7 @@ class Home extends React.Component<Props, State> {
 
   handleSubmit: Function;
 
-  fakeCards = true;
+  fakeCards = false;
 
   async handleSubmit(values) {
     const { firestore, dThrowAccentSnackbar } = this.props;
@@ -108,6 +108,7 @@ class Home extends React.Component<Props, State> {
               {results.map(result => (
                 <GroupCard
                   key={result.id}
+                  id={result.id}
                   admin={result.admin}
                   stations={{
                     departure: result.departureStation.name,

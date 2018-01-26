@@ -5,6 +5,7 @@ import { GroupCard } from 'common/containers';
 export default (
   <GroupCardContainer>
     <GroupCard
+      id="yo"
       key="yo"
       admin={{
         avatarUrl:
@@ -23,6 +24,7 @@ export default (
       info="Do labore sit dolore adipisicing nisi nostrud. Sint consectetur ut ipsum sit anim laborum consectetur ea in reprehenderit ad."
     />
     <GroupCard
+      id="yoo"
       key="yoo"
       admin={{
         avatarUrl:
@@ -42,6 +44,7 @@ export default (
       requestState="pending"
     />
     <GroupCard
+      id="yooo"
       key="yooo"
       admin={{
         avatarUrl:
@@ -61,6 +64,7 @@ export default (
       requestState="confirmed"
     />
     <GroupCard
+      id="yoooo"
       key="yoooo"
       admin={{
         avatarUrl:

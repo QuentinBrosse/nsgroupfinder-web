@@ -5,3 +5,5 @@ export type Profile = {
   +displayName: string,
   +email: string,
 };
+
+export type MemberStatus = 'pending' | 'confirmed' | 'refused';
