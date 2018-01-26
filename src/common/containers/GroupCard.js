@@ -17,6 +17,7 @@ type Props = {
   id: string,
   classes: Object,
   admin: {
+    uid: string,
     displayName: string,
     avatarUrl: string,
   },
@@ -91,7 +92,11 @@ class GroupCard extends React.Component<Props, State> {
           title={`${stations.departure} to ${stations.arrival}`}
           subheader={`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
           action={
-            <GroupCardRequestButton groupId={id} requestState={requestState} />
+            <GroupCardRequestButton
+              groupId={id}
+              adminUid={admin.uid}
+              requestState={requestState}
+            />
           }
         />
         <CardContent classes={{ root: classes.cardContent }}>

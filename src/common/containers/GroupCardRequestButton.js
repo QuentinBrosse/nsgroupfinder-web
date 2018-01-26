@@ -6,7 +6,7 @@ import type { Node } from 'react';
 import type { RequestState } from 'types/group';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firestoreConnect, getFirebase } from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { Redirect } from 'react-router-dom';
 import { logErrorIfDevEnv } from 'utils/env';
@@ -20,6 +20,7 @@ import HourglassEmptyIcon from 'material-ui-icons/HourglassEmpty';
 import CheckIcon from 'material-ui-icons/Check';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import DoNotDisturbOnIcon from 'material-ui-icons/DoNotDisturbOn';
+import { getUserFromAuth } from 'utils/user';
 import RequestDialogRequest from './RequestDialogRequest';
 
 type RequestComponents = {
@@ -31,6 +32,7 @@ type Props = {
   classes: Object,
   requestState?: RequestState,
   groupId: string,
+  adminUid: string,
   dThrowDissmissSnackbar: Function,
   dThrowAccentSnackbar: Function,
   firestore: Object,
@@ -133,22 +135,19 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       dThrowDissmissSnackbar,
       firestore,
       groupId,
+      adminUid,
       auth,
     } = this.props;
-    const db = getFirebase().firestore();
     const payload = {
-      ref: db.doc(`users/${auth.uid}`),
+      user: getUserFromAuth(auth),
+      groupId,
+      adminUid,
       status: 'pending',
       message,
       createdAt: firestore.FieldValue.serverTimestamp(),
     };
     try {
-      const collection = {
-        collection: 'groups',
-        doc: groupId,
-        subcollections: [{ collection: 'members' }],
-      };
-      await firestore.add(collection, payload);
+      await firestore.add('members', payload);
       dThrowDissmissSnackbar(
         'Your request has been sent to the group creator !'
       );
