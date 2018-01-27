@@ -4,7 +4,7 @@ import React from 'react';
 import type { Node } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firebaseConnect } from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import { withStyles } from 'material-ui/styles';
 import {
   BrowserRouter as Router,
@@ -14,6 +14,7 @@ import {
 } from 'react-router-dom';
 import Home from 'views/Home';
 import CreateGroup from 'views/CreateGroup';
+import MyGroups from 'views/MyGroups';
 import { isConnected } from 'utils/user';
 import NavBar from './NavBar';
 
@@ -34,6 +35,7 @@ const App = ({ classes, auth }: Props): Node => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/create-group" component={CreateGroup} />
+            <Route exact path="/my-groups" component={MyGroups} />
             <Redirect to="/" />
           </Switch>
         </div>
@@ -44,18 +46,25 @@ const App = ({ classes, auth }: Props): Node => {
 
 App.defaultProps = {};
 
-const styles = {
+const styles = ({ spacing }) => ({
   container: {
-    padding: 20,
+    padding: spacing.unit * 2,
+    paddingTop: spacing.unit * 4,
   },
-};
+});
 
 const mapStateToProps = ({ firebase: { auth } }) => ({
   auth,
 });
 
 export default compose(
-  firebaseConnect(),
   withStyles(styles),
-  connect(mapStateToProps)
+  connect(mapStateToProps),
+  firestoreConnect(props => [
+    {
+      collection: 'members',
+      storeAs: 'memberships',
+      where: [['user.uid', '==', props.auth.uid], ['obsolete', '==', false]],
+    },
+  ])
 )(App);

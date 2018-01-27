@@ -3,10 +3,10 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import type { Node } from 'react';
-import type { RequestState } from 'types/group';
+import type { RequestStatus } from 'types/group';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { Redirect } from 'react-router-dom';
 import { logErrorIfDevEnv } from 'utils/env';
@@ -30,7 +30,7 @@ type RequestComponents = {
 
 type Props = {
   classes: Object,
-  requestState?: RequestState,
+  requestStatus?: RequestStatus,
   groupId: string,
   adminUid: string,
   dThrowDissmissSnackbar: Function,
@@ -46,7 +46,7 @@ type State = {
 
 class GroupCardRequestButton extends React.Component<Props, State> {
   static defaultProps = {
-    requestState: 'default',
+    requestStatus: 'default',
   };
 
   constructor(props) {
@@ -63,9 +63,9 @@ class GroupCardRequestButton extends React.Component<Props, State> {
   };
 
   get requestComponents(): RequestComponents {
-    const { classes, groupId, requestState } = this.props;
+    const { classes, groupId, requestStatus } = this.props;
     const { dialogOpen } = this.state;
-    switch (requestState) {
+    switch (requestStatus) {
       case 'pending':
         return {
           icon: <HourglassEmptyIcon className={classes.checkIconPending} />,
@@ -138,6 +138,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       adminUid,
       auth,
     } = this.props;
+    const db = getFirebase().firestore();
     const payload = {
       user: getUserFromAuth(auth),
       groupId,
@@ -145,9 +146,21 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       status: 'pending',
       message,
       createdAt: firestore.FieldValue.serverTimestamp(),
+      obsolete: false,
     };
     try {
-      await firestore.add('members', payload);
+      const groupRef = db.collection('groups').doc(groupId);
+      const membersRef = db.collection('members').doc();
+      await db.runTransaction(async transaction => {
+        const group = await transaction.get(groupRef);
+        if (!group.exists) {
+          dThrowAccentSnackbar('Ooops, this group does not exist.');
+          throw new Error('Document does not exist!');
+        }
+        const { pendingRequests } = group.data();
+        transaction.update(groupRef, { pendingRequests: pendingRequests + 1 });
+        transaction.set(membersRef, payload);
+      });
       dThrowDissmissSnackbar(
         'Your request has been sent to the group creator !'
       );

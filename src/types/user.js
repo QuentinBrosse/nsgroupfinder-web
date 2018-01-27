@@ -14,3 +14,12 @@ export type FirebaseUserObject = {
 };
 
 export type MemberStatus = 'pending' | 'confirmed' | 'refused';
+
+export type Member = {
+  groupId: string,
+  adminUid: string,
+  message?: string | null,
+  status: MemberStatus,
+  user: FirebaseUserObject,
+  createdAd: Date,
+};

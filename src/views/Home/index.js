@@ -15,6 +15,8 @@ import {
 import { GroupCard } from 'common/containers';
 import { throwAccentSnackbar } from 'actions/snackbar';
 import { logErrorIfDevEnv } from 'utils/env';
+import type { Member } from 'types/user';
+import type { RequestStatus } from 'types/group';
 import GroupFilterForm from './GroupFilterForm';
 import fakeCards from './fakeCards';
 
@@ -22,6 +24,7 @@ type Props = {
   classes?: Object,
   firestore: Object,
   dThrowAccentSnackbar: Function,
+  memberships: Member[],
 };
 
 type State = {
@@ -34,13 +37,22 @@ class Home extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getRequestStatus = this.getRequestStatus.bind(this);
   }
 
   state = {
     results: [],
   };
 
+  getRequestStatus(currentGroupId: string): RequestStatus {
+    const { memberships } = this.props;
+    const isMemberToGroup = membership => membership.groupId === currentGroupId;
+    const matchedMembership = memberships.find(isMemberToGroup);
+    return matchedMembership ? matchedMembership.status : null;
+  }
+
   handleSubmit: Function;
+  getRequestStatus: Function;
 
   fakeCards = false;
 
@@ -81,20 +93,29 @@ class Home extends React.Component<Props, State> {
   }
 
   render() {
+    const { firestore } = this.props;
     const { results } = this.state;
+
     return (
       <div>
         <GroupFilterForm onSubmit={this.handleSubmit} />
+
+        <button
+          onClick={() => {
+            firestore.get('groups').then(s => {
+              const rs = s.docs.map(r => ({ id: r.id, ...r.data() }));
+              this.setState({ results: rs });
+            });
+          }}
+        >
+          Load all (debug)
+        </button>
 
         {this.fakeCards && (
           <div>
             <Typography type="title" paragraph>
               Groups
             </Typography>
-            <pre>
-              You see these cards because this.examples = true (in
-              Views/Home/index)
-            </pre>
             {fakeCards}
           </div>
         )}
@@ -120,6 +141,8 @@ class Home extends React.Component<Props, State> {
                     target: 7,
                   }}
                   info={result.info}
+                  pendingRequests={result.pendingRequests}
+                  requestStatus={this.getRequestStatus(result.id)}
                 />
               ))}
             </GroupCardContainer>
@@ -135,6 +158,10 @@ class Home extends React.Component<Props, State> {
 
 const styles = {};
 
+const mapStateToProps = ({ firestore: { ordered } }) => ({
+  memberships: ordered.memberships,
+});
+
 const mapDispatchToProps = {
   dThrowAccentSnackbar: throwAccentSnackbar,
 };
@@ -142,5 +169,5 @@ const mapDispatchToProps = {
 export default compose(
   withStyles(styles),
   firestoreConnect(),
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(Home);

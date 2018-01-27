@@ -45,17 +45,11 @@ class LogOutMenuItem extends React.Component<Props, State> {
 
   render() {
     const { classes } = this.props;
-    return (
-      <MenuItem className={classes.item} onClick={this.logOut}>
-        Log Out
-      </MenuItem>
-    );
+    return <MenuItem onClick={this.logOut}>Log Out</MenuItem>;
   }
 }
 
-const styles = {
-  item: {},
-};
+const styles = {};
 
 const mapDispatchToProps = {
   dThrowDissmissSnackbar: throwDissmissSnackbar,

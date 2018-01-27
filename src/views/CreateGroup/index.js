@@ -61,7 +61,6 @@ class CreateGroup extends React.Component<Props, State> {
   clearData(values: Object): Object {
     const { auth, firestore } = this.props;
 
-    const admin = getUserFromAuth(auth);
     const {
       departure_obj: departure,
       arrival_obj: arrival,
@@ -69,25 +68,22 @@ class CreateGroup extends React.Component<Props, State> {
       time,
       info = null,
     } = values;
-    const departureStation = {
-      name: departure.name,
-      id: departure.code,
-    };
-    const arrivalStation = {
-      name: arrival.name,
-      id: arrival.code,
-    };
-    const dateTime = moment(date)
-      .hour(+time)
-      .toDate();
-    const createdAt = firestore.FieldValue.serverTimestamp();
     return {
-      admin,
-      departureStation,
-      arrivalStation,
-      dateTime,
+      admin: getUserFromAuth(auth),
+      departureStation: {
+        name: departure.name,
+        id: departure.code,
+      },
+      arrivalStation: {
+        name: arrival.name,
+        id: arrival.code,
+      },
+      dateTime: moment(date)
+        .hour(+time)
+        .toDate(),
       info,
-      createdAt,
+      createdAt: firestore.FieldValue.serverTimestamp(),
+      pendingRequests: 0,
     };
   }
 

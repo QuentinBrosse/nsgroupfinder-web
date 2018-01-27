@@ -4,7 +4,8 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import IconButton from 'material-ui/IconButton';
 import AccountCircle from 'material-ui-icons/AccountCircle';
-import Menu from 'material-ui/Menu';
+import Menu, { MenuItem } from 'material-ui/Menu';
+import { Link } from 'react-router-dom';
 import LogOutMenuItem from './LogOutMenuItem';
 
 type Props = {
@@ -58,6 +59,9 @@ class UserMenu extends React.Component<Props, State> {
           open={menuIsOpen}
           onClose={this.handleClose}
         >
+          <MenuItem component={Link} onClick={this.handleClose} to="/my-groups">
+            My Groups
+          </MenuItem>
           <LogOutMenuItem />
         </Menu>
       </div>
