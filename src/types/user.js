@@ -13,7 +13,7 @@ export type FirebaseUserOpti = {
   email: string,
 };
 
-export type MemberStatus = 'pending' | 'confirmed' | 'refused';
+export type MemberStatus = 'pending' | 'confirmed' | 'refused' | 'admin';
 
 export type Member = {
   groupId: string,

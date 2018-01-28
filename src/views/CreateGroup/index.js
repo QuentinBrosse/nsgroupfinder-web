@@ -43,13 +43,24 @@ class CreateGroup extends React.Component<Props, State> {
   async handleSubmit(values: Object) {
     const {
       firestore,
+      auth,
       dThrowDissmissSnackbar,
       dThrowAccentSnackbar,
     } = this.props;
 
-    const cleanPayload = this.clearData(values);
+    const groupPayload = this.clearData(values);
     try {
-      await firestore.add('groups', cleanPayload);
+      const { id: groupId } = await firestore.add('groups', groupPayload);
+      const memberPayload = {
+        user: getUserFromAuth(auth),
+        groupId,
+        adminUid: auth.uid,
+        status: 'admin',
+        message: null,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        obsolete: false,
+      };
+      await firestore.add('members', memberPayload);
       dThrowDissmissSnackbar('Your group has been successfully created !');
       this.setState({ redirect: true });
     } catch (err) {
