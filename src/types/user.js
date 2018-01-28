@@ -6,7 +6,7 @@ export type Profile = {
   +email: string,
 };
 
-export type FirebaseUserObject = {
+export type FirebaseUserOpti = {
   uid: string,
   avatarUrl: string,
   displayName: string,
@@ -20,6 +20,6 @@ export type Member = {
   adminUid: string,
   message?: string | null,
   status: MemberStatus,
-  user: FirebaseUserObject,
+  user: FirebaseUserOpti,
   createdAd: Date,
 };

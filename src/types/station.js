@@ -6,3 +6,8 @@ export type Station = {
   +name: string,
   +name_insensitive: string,
 };
+
+export type FirebaseStationOpti = {
+  id: string,
+  name: string,
+};

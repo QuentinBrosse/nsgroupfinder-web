@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import type { Node } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -21,30 +20,53 @@ import NavBar from './NavBar';
 type Props = {
   classes: Object,
   auth: Object,
+  firestore: Object,
 };
 
-const App = ({ classes, auth }: Props): Node => {
-  if (!isConnected(auth)) {
-    return <Redirect to="/login" />;
+type State = {};
+
+class App extends React.Component<Props, State> {
+  static defaultProps = {};
+
+  componentWillMount() {
+    const { auth, firestore } = this.props;
+    this.listener = {
+      collection: 'members',
+      storeAs: 'memberships',
+      where: [['user.uid', '==', auth.uid], ['obsolete', '==', false]],
+    };
+    firestore.setListener(this.listener);
   }
-  return (
-    <Router basename="/app">
-      <div>
-        <NavBar />
-        <div className={classes.container}>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/create-group" component={CreateGroup} />
-            <Route exact path="/my-groups" component={MyGroups} />
-            <Redirect to="/" />
-          </Switch>
-        </div>
-      </div>
-    </Router>
-  );
-};
 
-App.defaultProps = {};
+  componentWillUnmount() {
+    const { firestore } = this.props;
+    firestore.unsetListener(this.listener);
+  }
+
+  listener = {};
+
+  render() {
+    const { classes, auth } = this.props;
+    if (!isConnected(auth)) {
+      return <Redirect to="/login" />;
+    }
+    return (
+      <Router basename="/app">
+        <div>
+          <NavBar />
+          <div className={classes.container}>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/create-group" component={CreateGroup} />
+              <Route exact path="/my-groups" component={MyGroups} />
+              <Redirect to="/" />
+            </Switch>
+          </div>
+        </div>
+      </Router>
+    );
+  }
+}
 
 const styles = ({ spacing }) => ({
   container: {
@@ -59,12 +81,6 @@ const mapStateToProps = ({ firebase: { auth } }) => ({
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps),
-  firestoreConnect(props => [
-    {
-      collection: 'members',
-      storeAs: 'memberships',
-      where: [['user.uid', '==', props.auth.uid], ['obsolete', '==', false]],
-    },
-  ])
+  firestoreConnect(),
+  connect(mapStateToProps)
 )(App);
