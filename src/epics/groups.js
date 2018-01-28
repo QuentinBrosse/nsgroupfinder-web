@@ -1,7 +1,7 @@
 // @flow
 
 import { fetchGroupsSuccess, fetchGroupsFailure } from 'actions/groups';
-import { FetchGroups } from 'types/group';
+import type { FetchGroups } from 'types/group';
 import { logErrorIfDevEnv } from 'utils/env';
 import { Observable } from 'rxjs';
 
