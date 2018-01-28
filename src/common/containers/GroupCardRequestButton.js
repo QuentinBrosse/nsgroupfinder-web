@@ -20,6 +20,7 @@ import HourglassEmptyIcon from 'material-ui-icons/HourglassEmpty';
 import CheckIcon from 'material-ui-icons/Check';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import DoNotDisturbOnIcon from 'material-ui-icons/DoNotDisturbOn';
+import ModeEditIcon from 'material-ui-icons/ModeEdit';
 import { getUserFromAuth } from 'utils/user';
 import RequestDialogRequest from './RequestDialogRequest';
 
@@ -51,8 +52,8 @@ class GroupCardRequestButton extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
   }
@@ -68,34 +69,39 @@ class GroupCardRequestButton extends React.Component<Props, State> {
     switch (requestStatus) {
       case 'pending':
         return {
-          icon: <HourglassEmptyIcon className={classes.checkIconPending} />,
+          icon: <HourglassEmptyIcon className={classes.iconPending} />,
           dialog: (
             <RequestDialogPending
               opened={dialogOpen}
-              onClose={this.handleClose}
+              onClose={this.handleCloseDialog}
             />
           ),
         };
       case 'confirmed':
         return {
-          icon: <CheckIcon className={classes.checkIconConfirmed} />,
+          icon: <CheckIcon className={classes.iconConfirmed} />,
           dialog: (
             <RequestDialogConfirmed
               opened={dialogOpen}
-              onClose={this.handleClose}
+              onClose={this.handleCloseDialog}
               viewGroup={() => this.redirectTo('/create-group')}
             />
           ),
         };
       case 'refused':
         return {
-          icon: <DoNotDisturbOnIcon className={classes.checkIconRefused} />,
+          icon: <DoNotDisturbOnIcon className={classes.iconRefused} />,
           dialog: (
             <RequestDialogRejected
               opened={dialogOpen}
-              onClose={this.handleClose}
+              onClose={this.handleCloseDialog}
             />
           ),
+        };
+      case 'admin':
+        return {
+          icon: <ModeEditIcon />,
+          dialog: null,
         };
       default:
         return {
@@ -104,7 +110,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
             <RequestDialogRequest
               groupId={groupId}
               opened={dialogOpen}
-              onClose={this.handleClose}
+              onClose={this.handleCloseDialog}
               sendRequest={this.sendRequest}
             />
           ),
@@ -112,16 +118,21 @@ class GroupCardRequestButton extends React.Component<Props, State> {
     }
   }
 
-  handleOpen: Function;
-  handleClose: Function;
+  handleClick: Function;
+  handleCloseDialog: Function;
   redirectTo: Function;
   sendRequest: Function;
 
-  handleOpen() {
-    this.setState({ dialogOpen: true });
+  handleClick() {
+    const { requestStatus, groupId } = this.props;
+    if (requestStatus !== 'admin') {
+      this.setState({ dialogOpen: true });
+    } else {
+      this.redirectTo(`/my-groups/${groupId}`);
+    }
   }
 
-  handleClose() {
+  handleCloseDialog() {
     this.setState({ dialogOpen: false });
   }
 
@@ -175,11 +186,11 @@ class GroupCardRequestButton extends React.Component<Props, State> {
     const { icon, dialog } = this.requestComponents;
     const { redirectTo } = this.state;
     if (redirectTo) {
-      return <Redirect to={redirectTo} />;
+      return <Redirect to={redirectTo} push />;
     }
     return (
       <div>
-        <IconButton onClick={this.handleOpen}>{icon}</IconButton>
+        <IconButton onClick={this.handleClick}>{icon}</IconButton>
         {dialog}
       </div>
     );
@@ -187,13 +198,13 @@ class GroupCardRequestButton extends React.Component<Props, State> {
 }
 
 const styles = ({ palette }) => ({
-  checkIconPending: {
+  iconPending: {
     color: palette.warning.main,
   },
-  checkIconConfirmed: {
+  iconConfirmed: {
     color: palette.success.main,
   },
-  checkIconRefused: {
+  iconRefused: {
     color: palette.error.main,
   },
 });
