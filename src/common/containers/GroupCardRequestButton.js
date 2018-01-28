@@ -128,7 +128,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
     if (requestStatus !== 'admin') {
       this.setState({ dialogOpen: true });
     } else {
-      this.redirectTo(`/my-groups/${groupId}`);
+      this.redirectTo(`/group/${groupId}`);
     }
   }
 
