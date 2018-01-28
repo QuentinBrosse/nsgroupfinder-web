@@ -8,20 +8,20 @@ import _ from 'lodash';
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import Typography from 'material-ui/Typography';
 import type { Member } from 'types/user';
-import type { Group, RequestStatus } from 'types/group';
+import type { GroupsState, RequestStatus } from 'types/group';
 import { GroupCardContainer } from 'common/components';
 import { GroupCard } from 'common/containers';
-import { logErrorIfDevEnv } from 'utils/env';
+import { fetchGroups } from 'actions/groups';
 
 type Props = {
   classes: Object,
   firestore: Object,
   memberships: Member[],
+  dFetchGroups: Function,
+  groups: GroupsState,
 };
 
-type State = {
-  groups: Group[],
-};
+type State = {};
 
 class MyGroups extends React.Component<Props, State> {
   static defaultProps = {};
@@ -35,13 +35,13 @@ class MyGroups extends React.Component<Props, State> {
     this.fetchGroups = this.fetchGroups.bind(this);
   }
 
-  state = {
-    groups: [],
-  };
+  state = {};
 
   componentWillMount() {
-    const { memberships = [] } = this.props;
-    this.fetchGroups(memberships);
+    const { memberships = [], groups: { groups } } = this.props;
+    if (groups.length < memberships.length) {
+      this.fetchGroups(memberships);
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -70,27 +70,21 @@ class MyGroups extends React.Component<Props, State> {
   fetchGroups: Function;
 
   fetchGroups(newMemberships: Member[]) {
+    const { dFetchGroups } = this.props;
+
     newMemberships.forEach(async membership => {
-      const snapshot = await this.groupRef.doc(membership.groupId).get();
-      try {
-        if (snapshot.exists) {
-          const group = { id: snapshot.id, ...snapshot.data() };
-          this.setState(state => ({
-            groups: [...state.groups, group],
-          }));
-        }
-      } catch (err) {
-        logErrorIfDevEnv(err);
-      }
+      dFetchGroups(membership.groupId);
     });
   }
 
   render() {
-    const { classes } = this.props;
-    const { groups } = this.state;
+    const { classes, groups: { groups, isLoading } } = this.props;
 
-    if (groups.length === 0) {
+    if (isLoading) {
       return 'Loading...';
+    }
+    if (_.isEmpty(groups)) {
+      return 'Empty';
     }
     return (
       <div>
@@ -125,13 +119,18 @@ class MyGroups extends React.Component<Props, State> {
 
 const styles = () => {};
 
-const mapStateToProps = ({ firebase: { auth }, firestore }) => ({
+const mapStateToProps = ({ firebase: { auth }, firestore, groups }) => ({
   auth,
   memberships: firestore.ordered.memberships,
+  groups,
 });
+
+const mapDispatchToProps = {
+  dFetchGroups: fetchGroups,
+};
 
 export default compose(
   firestoreConnect(),
   withStyles(styles),
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(MyGroups);
