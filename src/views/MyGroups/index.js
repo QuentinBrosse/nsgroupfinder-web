@@ -10,12 +10,12 @@ import type { Member } from 'types/user';
 import type { GroupsState, RequestStatus } from 'types/group';
 import { GroupCardContainer } from 'common/components';
 import { GroupCard } from 'common/containers';
-import { fetchGroups } from 'actions/groups';
+import { fetchGroup } from 'actions/groups';
 
 type Props = {
   classes: Object,
   memberships: Member[],
-  dFetchGroups: Function,
+  dFetchGroup: Function,
   groups: GroupsState,
 };
 
@@ -64,10 +64,10 @@ class MyGroups extends React.Component<Props, State> {
   fetchGroups: Function;
 
   fetchGroups(newMemberships: Member[]) {
-    const { dFetchGroups } = this.props;
+    const { dFetchGroup } = this.props;
 
     newMemberships.forEach(async membership => {
-      dFetchGroups(membership.groupId);
+      dFetchGroup(membership.groupId);
     });
   }
 
@@ -120,7 +120,7 @@ const mapStateToProps = ({ firebase: { auth }, firestore, groups }) => ({
 });
 
 const mapDispatchToProps = {
-  dFetchGroups: fetchGroups,
+  dFetchGroup: fetchGroup,
 };
 
 export default compose(

@@ -7,21 +7,21 @@ import type {
   FetchGroupsFailure,
 } from 'types/group';
 
-export const fetchGroups = (groupId: string): FetchGroups => ({
+export const fetchGroup = (groupId: string): FetchGroups => ({
   type: 'GROUPS_FETCH',
   payload: {
     groupId,
   },
 });
 
-export const fetchGroupsSuccess = (group: Group): FetchGroupsSuccess => ({
+export const fetchGroupSuccess = (group: Group): FetchGroupsSuccess => ({
   type: 'GROUPS_FETCH_SUCCESS',
   payload: {
     group,
   },
 });
 
-export const fetchGroupsFailure = (groupId: string): FetchGroupsFailure => ({
+export const fetchGroupFailure = (groupId: string): FetchGroupsFailure => ({
   type: 'GROUPS_FETCH_FAILURE',
   payload: {
     groupId,
