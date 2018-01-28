@@ -20,10 +20,10 @@ export default (action$, store, { getFirebase }) =>
           return fetchGroupsSuccess(group);
         }
         logErrorIfDevEnv(`Unable to fetch ${groupId} group.`);
-        return fetchGroupsFailure();
+        return fetchGroupsFailure(groupId);
       })
       .catch(err => {
         logErrorIfDevEnv(err);
-        return Observable.of(fetchGroupsFailure());
+        return Observable.of(fetchGroupsFailure(groupId));
       });
   });

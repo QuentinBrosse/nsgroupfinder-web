@@ -21,6 +21,9 @@ export const fetchGroupsSuccess = (group: Group): FetchGroupsSuccess => ({
   },
 });
 
-export const fetchGroupsFailure = (): FetchGroupsFailure => ({
+export const fetchGroupsFailure = (groupId: string): FetchGroupsFailure => ({
   type: 'GROUPS_FETCH_FAILURE',
+  payload: {
+    groupId,
+  },
 });

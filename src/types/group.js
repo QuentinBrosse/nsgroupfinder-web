@@ -20,6 +20,7 @@ export type Group = {
 export type GroupsState = {
   +isLoading: boolean,
   +groups: Group[],
+  +errors: string[],
 };
 
 // Actions Creators

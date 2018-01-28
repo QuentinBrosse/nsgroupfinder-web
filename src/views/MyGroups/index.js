@@ -5,7 +5,6 @@ import { withStyles } from 'material-ui/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import Typography from 'material-ui/Typography';
 import type { Member } from 'types/user';
 import type { GroupsState, RequestStatus } from 'types/group';
@@ -15,7 +14,6 @@ import { fetchGroups } from 'actions/groups';
 
 type Props = {
   classes: Object,
-  firestore: Object,
   memberships: Member[],
   dFetchGroups: Function,
   groups: GroupsState,
@@ -28,9 +26,6 @@ class MyGroups extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    const db = getFirebase().firestore();
-    this.groupRef = db.collection('groups');
-
     this.getRequestStatus = this.getRequestStatus.bind(this);
     this.fetchGroups = this.fetchGroups.bind(this);
   }
@@ -65,7 +60,6 @@ class MyGroups extends React.Component<Props, State> {
     return matchedMembership ? matchedMembership.status : null;
   }
 
-  groupRef: Object;
   getRequestStatus: Function;
   fetchGroups: Function;
 
@@ -130,7 +124,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-  firestoreConnect(),
   withStyles(styles),
   connect(mapStateToProps, mapDispatchToProps)
 )(MyGroups);

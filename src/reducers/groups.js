@@ -5,6 +5,7 @@ import type { GroupsState, GroupsActions } from 'types/group';
 const initialState: GroupsState = {
   isLoading: true,
   groups: [],
+  errors: [],
 };
 
 export default (
@@ -19,6 +20,7 @@ export default (
       };
     case 'GROUPS_FETCH_SUCCESS':
       return {
+        ...state,
         isLoading: false,
         groups: [...state.groups, action.payload.group],
       };
@@ -26,6 +28,7 @@ export default (
       return {
         ...state,
         isLoading: false,
+        errors: [...state.errors, action.payload.groupId],
       };
     default:
       return state;
