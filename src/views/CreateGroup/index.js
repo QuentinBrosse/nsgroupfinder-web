@@ -59,7 +59,7 @@ class CreateGroup extends React.Component<Props, State> {
         message: null,
         createdAt: firestore.FieldValue.serverTimestamp(),
         obsolete: false,
-        confirmedAt: null,
+        confirmedAt: firestore.FieldValue.serverTimestamp(),
         paid: false,
       };
       await firestore.add('members', memberPayload);
