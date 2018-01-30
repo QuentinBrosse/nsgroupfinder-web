@@ -158,6 +158,8 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       message,
       createdAt: firestore.FieldValue.serverTimestamp(),
       obsolete: false,
+      confirmedAt: null,
+      paid: false,
     };
     try {
       const groupRef = db.collection('groups').doc(groupId);

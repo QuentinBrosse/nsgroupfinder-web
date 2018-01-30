@@ -16,10 +16,14 @@ export type FirebaseUserOpti = {
 export type MemberStatus = 'pending' | 'confirmed' | 'refused' | 'admin';
 
 export type Member = {
+  id: string,
   groupId: string,
   adminUid: string,
   message?: string | null,
   status: MemberStatus,
   user: FirebaseUserOpti,
-  createdAd: Date,
+  createdAt: Date,
+  obsolete: boolean,
+  confirmedAt: null | Date,
+  paid: boolean,
 };

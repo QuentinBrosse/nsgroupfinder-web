@@ -43,14 +43,12 @@ class MyGroups extends React.Component<Props, State> {
     const { memberships: currentMemberships = [] } = this.props;
     const { memberships: nextMemberships = [] } = nextProps;
 
-    if (currentMemberships.length < nextMemberships.length) {
-      const newMemberships = _.differenceWith(
-        nextMemberships,
-        currentMemberships,
-        _.isEqual
-      );
-      this.fetchGroups(newMemberships);
-    }
+    const newMemberships = _.differenceWith(
+      nextMemberships,
+      currentMemberships,
+      _.isEqual
+    );
+    this.fetchGroups(newMemberships);
   }
 
   getRequestStatus(currentGroupId: string): RequestStatus {
@@ -81,7 +79,7 @@ class MyGroups extends React.Component<Props, State> {
       return 'Empty';
     }
     return (
-      <div>
+      <div className={classes.container}>
         <Typography type="title" paragraph>
           My Groups
         </Typography>
@@ -111,7 +109,9 @@ class MyGroups extends React.Component<Props, State> {
   }
 }
 
-const styles = () => {};
+const styles = {
+  container: {},
+};
 
 const mapStateToProps = ({ firebase: { auth }, firestore, groups }) => ({
   auth,

@@ -127,6 +127,7 @@ const CreateGroupForm = ({
               fullWidth
               helperText="Information you want to communicate to users. They will be visible to all users (even those who will not be members of the group)."
               multiline
+              rows="4"
               component={TextField}
             />
           </Grid>

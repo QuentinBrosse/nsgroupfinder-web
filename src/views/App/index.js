@@ -16,6 +16,8 @@ import CreateGroup from 'views/CreateGroup';
 import MyGroups from 'views/MyGroups';
 import ManageGroup from 'views/ManageGroup';
 import { isConnected } from 'utils/user';
+import { logErrorIfDevEnv } from 'utils/env';
+import _ from 'lodash';
 import NavBar from './NavBar';
 
 type Props = {
@@ -31,6 +33,9 @@ class App extends React.Component<Props, State> {
 
   componentWillMount() {
     const { auth, firestore } = this.props;
+    if (!auth.uid) {
+      return;
+    }
     this.listener = {
       collection: 'members',
       storeAs: 'memberships',
@@ -40,8 +45,10 @@ class App extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    const { firestore } = this.props;
-    firestore.unsetListener(this.listener);
+    if (!_.isEmpty(this.listener)) {
+      const { firestore } = this.props;
+      firestore.unsetListener(this.listener);
+    }
   }
 
   listener = {};
