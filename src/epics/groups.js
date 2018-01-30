@@ -1,33 +1,75 @@
 // @flow
 
-import { fetchGroupSuccess, fetchGroupFailure } from 'actions/groups';
-import type { FetchGroups, GroupsActions } from 'types/group';
+import { combineEpics } from 'redux-observable';
+import {
+  fetchGroupsSuccess,
+  fetchGroupsFailure,
+  fetchCurrentGroupMembersSuccess,
+  fetchCurrentGroupMembersFailure,
+} from 'actions/groups';
+import type {
+  Group,
+  FetchGroups,
+  FetchCurrentGroupMembers,
+  GroupsActions,
+} from 'types/group';
+import type { Member } from 'types/user';
 import type { Store } from 'types/store';
 import { logErrorIfDevEnv } from 'utils/env';
 import { Observable } from 'rxjs';
 
-export default (
+const fetchGroup = (
   action$: Observable<GroupsActions>,
   store: Store,
   { getFirebase }: { getFirebase: Function }
 ): Observable<GroupsActions> =>
-  action$.ofType('GROUPS_FETCH').mergeMap((action: FetchGroups) => {
-    const { groupId } = action.payload;
+  action$.ofType('FETCH_GROUPS').mergeMap((action: FetchGroups) => {
+    const { groupIds } = action.payload;
     const db = getFirebase().firestore();
     const groupRef = db.collection('groups');
-    const groupPromise = groupRef.doc(groupId).get();
+    const snapshots$ = groupIds.map(groupId => groupRef.doc(groupId).get());
 
-    return Observable.fromPromise(groupPromise)
+    return Observable.forkJoin(snapshots$)
       .map(snapshot => {
-        if (snapshot.exists) {
-          const group = { id: snapshot.id, ...snapshot.data() };
-          return fetchGroupSuccess(group);
+        const nonexistent = snapshot.findIndex(g => !g.exists) !== -1;
+        if (nonexistent) {
+          logErrorIfDevEnv(`Groups (${groupIds.join(', ')}) are nonexistent.`);
+          return fetchGroupsFailure();
         }
-        logErrorIfDevEnv(`Unable to fetch ${groupId} group.`);
-        return fetchGroupFailure(groupId);
+        const groups: Group[] = snapshot.map(s => ({ id: s.id, ...s.data() }));
+        return fetchGroupsSuccess(groups);
       })
       .catch(err => {
         logErrorIfDevEnv(err);
-        return Observable.of(fetchGroupFailure(groupId));
+        return Observable.of(fetchGroupsFailure());
       });
   });
+
+const fetchGroupMembers = (
+  action$: Observable<GroupsActions>,
+  store: Store,
+  { getFirebase }: { getFirebase: Function }
+): Observable<GroupsActions> =>
+  action$
+    .ofType('FETCH_CURRENT_GROUP_MEMBERS')
+    .mergeMap((action: FetchCurrentGroupMembers) => {
+      const { groupId } = action.payload;
+      const db = getFirebase().firestore();
+      const membersRef = db.collection('members');
+      const snapshot$ = membersRef.where('groupId', '==', groupId).get();
+
+      return Observable.fromPromise(snapshot$)
+        .map(snapshot => {
+          const members: Member[] = snapshot.docs.map(m => ({
+            id: m.id,
+            ...m.data(),
+          }));
+          return fetchCurrentGroupMembersSuccess(members);
+        })
+        .catch(err => {
+          logErrorIfDevEnv(err);
+          return Observable.of(fetchCurrentGroupMembersFailure());
+        });
+    });
+
+export default combineEpics(fetchGroup, fetchGroupMembers);

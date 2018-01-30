@@ -33,7 +33,7 @@ class AdminTabs extends React.Component<Props, State> {
   }
 
   state = {
-    tabIdx: 1,
+    tabIdx: 0,
   };
 
   get newcommersIcon() {

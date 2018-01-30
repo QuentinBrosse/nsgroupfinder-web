@@ -16,7 +16,7 @@ export type FirebaseUserOpti = {
 export type MemberStatus = 'pending' | 'confirmed' | 'refused' | 'admin';
 
 export type Member = {
-  id: string,
+  id?: string,
   groupId: string,
   adminUid: string,
   message?: string | null,

@@ -1,6 +1,6 @@
 // @flow
 
-import type { MemberStatus, FirebaseUserOpti } from './user';
+import type { Member, MemberStatus, FirebaseUserOpti } from './user';
 import type { FirebaseStationOpti } from './station';
 
 export type RequestStatus = null | MemberStatus;
@@ -16,33 +16,65 @@ export type Group = {
   +pendingRequests: number,
 };
 
+export type CurrentGroup = {
+  +isLoading: boolean,
+  +groupIdx: null | number,
+  +members: Member[],
+  +error: boolean,
+};
+
 // State
 export type GroupsState = {
   +isLoading: boolean,
   +groups: Group[],
-  +errors: string[],
+  +error: boolean,
+  +currentGroup: CurrentGroup,
 };
 
 // Actions Creators
 export type FetchGroups = {
-  +type: 'GROUPS_FETCH',
+  +type: 'FETCH_GROUPS',
   +payload: {
-    +groupId: string,
+    +groupIds: string[],
   },
 };
 
 export type FetchGroupsSuccess = {
-  +type: 'GROUPS_FETCH_SUCCESS',
+  +type: 'FETCH_GROUPS_SUCCESS',
   +payload: {
-    +group: Group,
+    +groups: Group[],
   },
 };
 
 export type FetchGroupsFailure = {
-  +type: 'GROUPS_FETCH_FAILURE',
+  +type: 'FETCH_GROUPS_FAILURE',
+  +payload: {},
+};
+
+export type FetchCurrentGroupMembers = {
+  +type: 'FETCH_CURRENT_GROUP_MEMBERS',
+  +payload: {
+    +groupId: string,
+    +groupIdx: number,
+  },
+};
+
+export type FetchCurrentGroupMembersSuccess = {
+  +type: 'FETCH_CURRENT_GROUP_MEMBERS_SUCCESS',
+  +payload: {
+    +members: Member[],
+  },
+};
+
+export type FetchCurrentGroupMembersFailure = {
+  +type: 'FETCH_CURRENT_GROUP_MEMBERS_FAILURE',
+  +payload: {},
 };
 
 export type GroupsActions =
   | FetchGroups
   | FetchGroupsSuccess
-  | FetchGroupsFailure;
+  | FetchGroupsFailure
+  | FetchCurrentGroupMembers
+  | FetchCurrentGroupMembersSuccess
+  | FetchCurrentGroupMembersFailure;

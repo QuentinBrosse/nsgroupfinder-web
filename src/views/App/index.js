@@ -16,7 +16,6 @@ import CreateGroup from 'views/CreateGroup';
 import MyGroups from 'views/MyGroups';
 import ManageGroup from 'views/ManageGroup';
 import { isConnected } from 'utils/user';
-import { logErrorIfDevEnv } from 'utils/env';
 import _ from 'lodash';
 import NavBar from './NavBar';
 
@@ -67,7 +66,7 @@ class App extends React.Component<Props, State> {
               <Route exact path="/" component={Home} />
               <Route exact path="/create-group" component={CreateGroup} />
               <Route exact path="/my-groups" component={MyGroups} />
-              <Route exact path="/group/:id" component={ManageGroup} />
+              <Route exact path="/group/:groupId" component={ManageGroup} />
               <Redirect to="/" />
             </Switch>
           </div>

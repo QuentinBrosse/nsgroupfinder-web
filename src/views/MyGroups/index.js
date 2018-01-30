@@ -10,16 +10,21 @@ import type { Member } from 'types/user';
 import type { GroupsState, RequestStatus } from 'types/group';
 import { GroupCardContainer } from 'common/components';
 import { GroupCard } from 'common/containers';
-import { fetchGroup } from 'actions/groups';
+import { fetchGroups } from 'actions/groups';
+import { throwAccentSnackbar } from 'actions/snackbar';
+import { Redirect } from 'react-router-dom';
 
 type Props = {
   classes: Object,
   memberships: Member[],
-  dFetchGroup: Function,
+  dFetchGroups: Function,
+  dThrowAccentSnackbar: Function,
   groups: GroupsState,
 };
 
-type State = {};
+type State = {
+  redirectTo: null | string,
+};
 
 class MyGroups extends React.Component<Props, State> {
   static defaultProps = {};
@@ -30,25 +35,42 @@ class MyGroups extends React.Component<Props, State> {
     this.fetchGroups = this.fetchGroups.bind(this);
   }
 
-  state = {};
+  state = {
+    redirectTo: null,
+  };
 
   componentWillMount() {
-    const { memberships = [], groups: { groups } } = this.props;
-    if (groups.length < memberships.length) {
+    const { memberships = [], groups } = this.props;
+
+    if (
+      !groups.isLoading &&
+      !groups.error &&
+      memberships.length > groups.groups.length
+    ) {
       this.fetchGroups(memberships);
     }
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { memberships: currentMemberships = [] } = this.props;
-    const { memberships: nextMemberships = [] } = nextProps;
+    const {
+      groups: nextGroups,
+      memberships: nextMemberships = [],
+      dThrowAccentSnackbar,
+    } = nextProps;
 
-    const newMemberships = _.differenceWith(
-      nextMemberships,
-      currentMemberships,
-      _.isEqual
-    );
-    this.fetchGroups(newMemberships);
+    if (
+      !nextGroups.isLoading &&
+      !nextGroups.error &&
+      nextMemberships.length > nextGroups.groups.length
+    ) {
+      this.fetchGroups(nextMemberships);
+      return;
+    }
+
+    if (nextGroups.error) {
+      dThrowAccentSnackbar('Unable to fetch groups..');
+      this.setState({ redirectTo: '/' });
+    }
   }
 
   getRequestStatus(currentGroupId: string): RequestStatus {
@@ -61,23 +83,27 @@ class MyGroups extends React.Component<Props, State> {
   getRequestStatus: Function;
   fetchGroups: Function;
 
-  fetchGroups(newMemberships: Member[]) {
-    const { dFetchGroup } = this.props;
-
-    newMemberships.forEach(async membership => {
-      dFetchGroup(membership.groupId);
-    });
+  fetchGroups(memberships: Member[] = []) {
+    const groupIds = memberships.map(m => m.groupId);
+    this.props.dFetchGroups(groupIds);
   }
 
   render() {
     const { classes, groups: { groups, isLoading } } = this.props;
+    const { redirectTo } = this.state;
+
+    if (redirectTo) {
+      return <Redirect to={redirectTo} />;
+    }
 
     if (isLoading) {
       return 'Loading...';
     }
+
     if (_.isEmpty(groups)) {
       return 'Empty';
     }
+
     return (
       <div className={classes.container}>
         <Typography type="title" paragraph>
@@ -120,7 +146,8 @@ const mapStateToProps = ({ firebase: { auth }, firestore, groups }) => ({
 });
 
 const mapDispatchToProps = {
-  dFetchGroup: fetchGroup,
+  dFetchGroups: fetchGroups,
+  dThrowAccentSnackbar: throwAccentSnackbar,
 };
 
 export default compose(

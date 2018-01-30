@@ -86,14 +86,13 @@ class NewcommersTable extends React.Component<Props, State> {
   handleCheckboxChange(memberUid: string): Function {
     return () => {
       this.setState(({ checkboxes }) => ({
-        checkboxes: { [memberUid]: !checkboxes[memberUid] },
+        checkboxes: { ...checkboxes, [memberUid]: !checkboxes[memberUid] },
       }));
     };
   }
 
   render() {
     const { classes, pendingMembers } = this.props;
-    console.log(this.state.checkboxes);
 
     return (
       <div className={classes.container}>

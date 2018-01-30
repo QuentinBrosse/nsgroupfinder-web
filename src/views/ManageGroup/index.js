@@ -5,10 +5,10 @@ import { withStyles } from 'material-ui/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { getFirebase } from 'react-redux-firebase';
-import type { Group, GroupsState } from 'types/group';
+import type { GroupsState } from 'types/group';
 import type { Member } from 'types/user';
-import { logErrorIfDevEnv } from 'utils/env';
 import { throwAccentSnackbar } from 'actions/snackbar';
+import { fetchGroups, fetchCurrentGroupMembers } from 'actions/groups';
 import { Redirect } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
 import MembersTable from './MembersTable';
@@ -19,18 +19,18 @@ type Props = {
   classes: Object,
   match: {
     params: {
-      id: string,
+      groupId: string,
     },
   },
   groups: GroupsState,
+  dFetchGroups: Function,
+  dFetchCurrentGroupMembers: Function,
   dThrowAccentSnackbar: Function,
   auth: Object,
 };
 
 type State = {
-  isLoading: boolean,
-  redirectToGroups: boolean,
-  group: null | Group,
+  redirectTo: null | string,
   pendingMembers: Member[],
   confirmedMembers: Member[],
 };
@@ -46,22 +46,56 @@ class ManageGroup extends React.Component<Props, State> {
   }
 
   state = {
-    isLoading: true,
-    redirectToGroups: false,
-    group: null,
+    redirectTo: null,
     pendingMembers: [],
     confirmedMembers: [],
   };
 
   componentWillMount() {
     const { groups: { groups }, match: { params } } = this.props;
-    const group = groups.find(g => g.id === params.id);
+    const groupIdx = groups.findIndex(g => g.id === params.groupId);
 
-    if (group) {
-      this.setState({ group });
-      this.fetchMembers(group);
+    if (groupIdx !== -1) {
+      this.fetchMembers(params.groupId, groupIdx);
     } else {
-      this.fetchGroup();
+      this.fetchGroup(params.groupId);
+    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { match: { params }, dThrowAccentSnackbar } = this.props;
+    const { groups } = this.props.groups;
+    const { groups: nextGroups } = nextProps.groups;
+    const { members } = this.props.groups.currentGroup;
+    const nextMembers = nextProps.groups.currentGroup.members;
+
+    // If new group
+    const nonexistentInGroups =
+      groups.findIndex(g => g.id === params.groupId) === -1;
+    if (nonexistentInGroups) {
+      const nextGroupIdx = nextGroups.findIndex(g => g.id === params.groupId);
+      const existantInNextGroups = nextGroupIdx > -1;
+      if (existantInNextGroups) {
+        this.fetchMembers(params.groupId, nextGroupIdx);
+        return;
+      }
+    }
+
+    // If new members
+    if (nextMembers.length > members.length) {
+      const pendingMembers = nextMembers.filter(
+        member => member.status === 'pending'
+      );
+      const confirmedMembers = nextMembers.filter(
+        member => member.status === 'admin' || member.status === 'confirmed'
+      );
+      this.setState({ pendingMembers, confirmedMembers });
+      return;
+    }
+
+    if (nextGroups.error || nextProps.groups.error) {
+      dThrowAccentSnackbar('Unable to fetch group..');
+      this.setState({ redirectTo: '/' });
     }
   }
 
@@ -69,71 +103,41 @@ class ManageGroup extends React.Component<Props, State> {
   fetchGroup: Function;
   fetchMembers: Function;
 
-  async fetchGroup() {
-    const { match: { params }, dThrowAccentSnackbar } = this.props;
-    const groupsRef = this.db.collection('groups');
-
-    try {
-      const snapshot = await groupsRef.doc(params.id).get();
-      const fetchedGroup = { id: snapshot.id, ...snapshot.data() };
-      this.setState({ group: fetchedGroup });
-      this.fetchMembers(fetchedGroup);
-    } catch (err) {
-      logErrorIfDevEnv(err);
-      dThrowAccentSnackbar('Ooops, this group does not exist.');
-      this.setState({ isLoading: false, redirectToGroups: true });
-    }
+  fetchGroup(groupId: string) {
+    this.props.dFetchGroups([groupId]);
   }
 
-  async fetchMembers(fetchedGroup: Group) {
-    const { dThrowAccentSnackbar } = this.props;
-    const membersRef = this.db.collection('members');
-    const { id } = fetchedGroup;
-    try {
-      const snapshot = await membersRef.where('groupId', '==', id).get();
-      const members: Member[] = snapshot.docs.map(m => ({
-        id: m.id,
-        ...m.data(),
-      }));
-      const pendingMembers = members.filter(
-        member => member.status === 'pending'
-      );
-      const confirmedMembers = members.filter(
-        member => member.status === 'admin' || member.status === 'confirmed'
-      );
-      this.setState({ isLoading: false, pendingMembers, confirmedMembers });
-    } catch (err) {
-      logErrorIfDevEnv(err);
-      dThrowAccentSnackbar('Ooops, unable to get the members.');
-      this.setState({ isLoading: false, redirectToGroups: true });
-    }
+  async fetchMembers(groupId: string, groupIdx) {
+    this.props.dFetchCurrentGroupMembers(groupId, groupIdx);
   }
 
   render() {
-    const { classes, auth } = this.props;
-    const {
-      isLoading,
-      group,
-      redirectToGroups,
-      pendingMembers,
-      confirmedMembers,
-    } = this.state;
-    if (isLoading) {
+    const { classes, auth, groups } = this.props;
+    const { redirectTo, pendingMembers, confirmedMembers } = this.state;
+    if (groups.isLoading || groups.currentGroup.isLoading) {
       return 'Loading..';
     }
 
-    if (redirectToGroups || !group) {
-      return <Redirect to="/my-groups" />;
+    if (groups.currentGroup.groupIdx === null) {
+      return 'Empty...';
     }
 
-    const isAdmin = group.admin.uid === auth.uid;
+    const currentGroup = groups.groups[groups.currentGroup.groupIdx];
+
+    if (redirectTo) {
+      return <Redirect to={redirectTo} />;
+    }
+
+    const isAdmin = currentGroup.admin.uid === auth.uid;
     const memberCompletionTarget = 7;
     const memberCount = pendingMembers.length + confirmedMembers.length;
+
+    console.log(currentGroup, pendingMembers, confirmedMembers);
 
     return (
       <div className={classes.container}>
         <Header
-          group={group}
+          group={currentGroup}
           memberCompletionTarget={memberCompletionTarget}
           memberCount={memberCount}
         />
@@ -142,7 +146,7 @@ class ManageGroup extends React.Component<Props, State> {
             <AdminTabs
               pendingMembers={pendingMembers}
               confirmedMembers={confirmedMembers}
-              group={group}
+              group={currentGroup}
             />
           ) : (
             <MembersTable isAdmin={false} confirmedMembers={confirmedMembers} />
@@ -161,6 +165,8 @@ const mapStateToProps = ({ groups, firebase: { auth } }) => ({
 });
 
 const mapDispatchToProps = {
+  dFetchGroups: fetchGroups,
+  dFetchCurrentGroupMembers: fetchCurrentGroupMembers,
   dThrowAccentSnackbar: throwAccentSnackbar,
 };
 
