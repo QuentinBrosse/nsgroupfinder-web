@@ -2,13 +2,17 @@
 
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import type { Group } from 'types/group';
+import { updateGroup } from 'actions/groups';
 
 type Props = {
   classes: Object,
   group: Group,
+  dUpdateGroup: Function,
 };
 
 type State = {
@@ -21,6 +25,7 @@ class GroupPreferences extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleInfoChange = this.handleInfoChange.bind(this);
+    this.handleSend = this.handleSend.bind(this);
   }
 
   state = {
@@ -29,13 +34,20 @@ class GroupPreferences extends React.Component<Props, State> {
 
   componentWillMount() {
     const { info } = this.props.group;
-    this.setState({ info });
+    this.setState({ info: info || '' });
   }
 
   handleInfoChange: Function;
+  handleSend: Function;
 
   handleInfoChange(event) {
-    this.setState({ info: event.target.value });
+    this.setState({ info: event.target.value || '' });
+  }
+
+  handleSend() {
+    const { group, dUpdateGroup } = this.props;
+    const { info } = this.state;
+    dUpdateGroup(group.id, { info });
   }
 
   render() {
@@ -57,7 +69,9 @@ class GroupPreferences extends React.Component<Props, State> {
             onChange={this.handleInfoChange}
           />
         </div>
-        <Button className={classes.button}>Send</Button>
+        <Button className={classes.button} onClick={this.handleSend}>
+          Send
+        </Button>
       </div>
     );
   }
@@ -77,4 +91,10 @@ const styles = ({ spacing }) => ({
   },
 });
 
-export default withStyles(styles)(GroupPreferences);
+const mapDispatchToProps = {
+  dUpdateGroup: updateGroup,
+};
+
+export default compose(withStyles(styles), connect(null, mapDispatchToProps))(
+  GroupPreferences
+);

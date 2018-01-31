@@ -13,7 +13,7 @@ const changeMemberStatus = (
     m => (m.id === memberId ? { ...m, status, confirmedAt: new Date() } : m)
   );
 
-const updateGroup = (
+const updateGroupLocally = (
   groups: Group[],
   groupId: string,
   changes: Group
@@ -57,11 +57,11 @@ export default (
         isLoading: false,
         error: true,
       };
-    case 'UPDATE_GROUP': {
+    case 'UPDATE_GROUP_LOCALLY': {
       const { groupId, changes } = action.payload;
       return {
         ...state,
-        groups: updateGroup(state.groups, groupId, changes),
+        groups: updateGroupLocally(state.groups, groupId, changes),
       };
     }
     case 'FETCH_CURRENT_GROUP_MEMBERS':

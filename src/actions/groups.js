@@ -6,6 +6,7 @@ import type {
   FetchGroupsSuccess,
   FetchGroupsFailure,
   UpdateGroup,
+  UpdateGroupLocally,
   FetchCurrentGroupMembers,
   FetchCurrentGroupMembersSuccess,
   FetchCurrentGroupMembersFailure,
@@ -35,6 +36,17 @@ export const fetchGroupsFailure = (): FetchGroupsFailure => ({
 
 export const updateGroup = (groupId: string, changes: Object): UpdateGroup => ({
   type: 'UPDATE_GROUP',
+  payload: {
+    groupId,
+    changes,
+  },
+});
+
+export const updateGroupLocally = (
+  groupId: string,
+  changes: Object
+): UpdateGroupLocally => ({
+  type: 'UPDATE_GROUP_LOCALLY',
   payload: {
     groupId,
     changes,

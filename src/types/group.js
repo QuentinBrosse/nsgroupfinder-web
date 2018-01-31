@@ -59,6 +59,14 @@ export type UpdateGroup = {
   },
 };
 
+export type UpdateGroupLocally = {
+  +type: 'UPDATE_GROUP_LOCALLY',
+  +payload: {
+    groupId: string,
+    changes: Object,
+  },
+};
+
 export type FetchCurrentGroupMembers = {
   +type: 'FETCH_CURRENT_GROUP_MEMBERS',
   +payload: {
@@ -100,6 +108,7 @@ export type GroupsActions =
   | FetchGroupsSuccess
   | FetchGroupsFailure
   | UpdateGroup
+  | UpdateGroupLocally
   | FetchCurrentGroupMembers
   | FetchCurrentGroupMembersSuccess
   | FetchCurrentGroupMembersFailure

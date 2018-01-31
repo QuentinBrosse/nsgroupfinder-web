@@ -7,14 +7,15 @@ import {
   fetchCurrentGroupMembersSuccess,
   fetchCurrentGroupMembersFailure,
   updateMemberStatusSuccess,
-  updateGroup,
+  updateGroupLocally,
 } from 'actions/groups';
-import { throwAccentSnackbar } from 'actions/snackbar';
+import { throwDefaultSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import type {
   Group,
   FetchGroups,
   FetchCurrentGroupMembers,
   UpdateMemberStatus,
+  UpdateGroup,
   GroupsActions,
 } from 'types/group';
 import type { Member } from 'types/user';
@@ -77,7 +78,7 @@ const fetchGroupMembers = (
         });
     });
 
-const changeMemberStatus = (
+const updateMemberStatus = (
   action$: Observable<GroupsActions>,
   store: Store,
   { getFirebase }: { getFirebase: Function }
@@ -120,7 +121,9 @@ const changeMemberStatus = (
           Observable.concat(
             Observable.of(updateMemberStatusSuccess(memberId, status)),
             Observable.of(
-              updateGroup(groupId, { pendingRequests: updatedPendingRequests })
+              updateGroupLocally(groupId, {
+                pendingRequests: updatedPendingRequests,
+              })
             )
           )
         )
@@ -130,4 +133,41 @@ const changeMemberStatus = (
         });
     });
 
-export default combineEpics(fetchGroup, fetchGroupMembers, changeMemberStatus);
+const updateGroup = (
+  action$: Observable<GroupsActions>,
+  store: Store,
+  { getFirebase }: { getFirebase: Function }
+): Observable<GroupsActions> =>
+  action$.ofType('UPDATE_GROUP').mergeMap((action: UpdateGroup) => {
+    const { groupId, changes } = action.payload;
+    const db = getFirebase().firestore();
+    const snapshot$ = db
+      .collection('groups')
+      .doc(groupId)
+      .update(changes);
+
+    return Observable.fromPromise(snapshot$)
+      .flatMap(() =>
+        Observable.concat(
+          Observable.of(updateGroupLocally(groupId, changes)),
+          Observable.of(
+            throwDefaultSnackbar('You group preferences have been updated.')
+          )
+        )
+      )
+      .catch(err => {
+        logErrorIfDevEnv(err);
+        return Observable.of(
+          throwAccentSnackbar(
+            'Ooops, Unable to update your group preferences..'
+          )
+        );
+      });
+  });
+
+export default combineEpics(
+  fetchGroup,
+  fetchGroupMembers,
+  updateMemberStatus,
+  updateGroup
+);
