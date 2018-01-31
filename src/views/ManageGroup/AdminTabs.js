@@ -29,12 +29,18 @@ class AdminTabs extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeTab = this.handleChangeTab.bind(this);
   }
 
   state = {
     tabIdx: 0,
   };
+
+  componentWillMount() {
+    if (this.props.pendingMembers.length > 0) {
+      this.handleChangeTab(1);
+    }
+  }
 
   get newcommersIcon() {
     const { classes, pendingMembers } = this.props;
@@ -52,9 +58,9 @@ class AdminTabs extends React.Component<Props, State> {
     return <NewcomersIcon />;
   }
 
-  handleChange: Function;
+  handleChangeTab: Function;
 
-  handleChange(event: Event, tabIdx: number) {
+  handleChangeTab(tabIdx: number) {
     this.setState({ tabIdx });
   }
 
@@ -65,7 +71,7 @@ class AdminTabs extends React.Component<Props, State> {
       <div>
         <Tabs
           value={tabIdx}
-          onChange={this.handleChange}
+          onChange={(e, idx) => this.handleChangeTab(idx)}
           centered
           fullWidth
           indicatorColor="primary"
@@ -91,7 +97,12 @@ class AdminTabs extends React.Component<Props, State> {
         {tabIdx === 0 && (
           <MembersTable isAdmin confirmedMembers={confirmedMembers} />
         )}
-        {tabIdx === 1 && <NewcommersTable pendingMembers={pendingMembers} />}
+        {tabIdx === 1 && (
+          <NewcommersTable
+            pendingMembers={pendingMembers}
+            changeTab={this.handleChangeTab}
+          />
+        )}
         {tabIdx === 2 && <GroupPreferences group={group} />}
       </div>
     );

@@ -1,6 +1,8 @@
 // @flow
 
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { withStyles } from 'material-ui/styles';
 import type { Node } from 'react';
 import type { Member } from 'types/user';
@@ -11,20 +13,21 @@ import Table, {
   TableRow,
 } from 'material-ui/Table';
 import Avatar from 'material-ui/Avatar';
-import Checkbox from 'material-ui/Checkbox';
-import Button from 'material-ui/Button';
-import Divider from 'material-ui/Divider';
 import { TextPopover } from 'common/containers';
+import ConfirmIcon from 'material-ui-icons/Check';
+import RejectIcon from 'material-ui-icons/Close';
+import { updateMemberStatus } from 'actions/groups';
+import ConfirmationButton from './ConfirmationButton';
 import FacebookLink from './FacebookLink';
 
 type Props = {
   classes: Object,
   pendingMembers: Member[],
+  changeTab: Function,
+  dUpdateMemberStatus: Function,
 };
 
-type State = {
-  checkboxes: Object,
-};
+type State = {};
 
 class NewcommersTable extends React.Component<Props, State> {
   static defaultProps = {};
@@ -32,25 +35,18 @@ class NewcommersTable extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.getRow = this.getRow.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
-  state = {
-    checkboxes: {},
-  };
+  state = {};
 
-  componentWillMount() {
-    const { pendingMembers } = this.props;
-    const checkboxes = {};
-    pendingMembers.forEach(member => {
-      checkboxes[member.id] = false;
-    });
-    this.setState({ checkboxes });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.pendingMembers.length === 0) {
+      this.props.changeTab(0);
+    }
   }
 
   getRow(member: Member): Node {
-    const { classes } = this.props;
-    const checkboxValue = this.state.checkboxes[member.id];
+    const { classes, dUpdateMemberStatus } = this.props;
     return (
       <TableRow key={member.id} className={classes.row}>
         <TableCell>
@@ -69,27 +65,27 @@ class NewcommersTable extends React.Component<Props, State> {
         <TableCell>
           <TextPopover>{member.message}</TextPopover>
         </TableCell>
-        <TableCell>
-          <Checkbox
-            checked={checkboxValue}
-            onChange={this.handleCheckboxChange(member.id)}
-            value={member.id}
-          />
+        <TableCell className={classes.actionCell}>
+          <ConfirmationButton
+            tooltipTitle="Confirm"
+            memberId={member.id}
+            onClick={() => dUpdateMemberStatus(member.id, 'confirmed')}
+          >
+            <ConfirmIcon />
+          </ConfirmationButton>
+          <ConfirmationButton
+            tooltipTitle="Refuse"
+            memberId={member.id}
+            onClick={() => dUpdateMemberStatus(member.id, 'refused')}
+          >
+            <RejectIcon />
+          </ConfirmationButton>
         </TableCell>
       </TableRow>
     );
   }
 
   getRow: Function;
-  handleCheckboxChange: Function;
-
-  handleCheckboxChange(memberUid: string): Function {
-    return () => {
-      this.setState(({ checkboxes }) => ({
-        checkboxes: { ...checkboxes, [memberUid]: !checkboxes[memberUid] },
-      }));
-    };
-  }
 
   render() {
     const { classes, pendingMembers } = this.props;
@@ -101,13 +97,11 @@ class NewcommersTable extends React.Component<Props, State> {
             <TableRow>
               <TableCell>Facebook</TableCell>
               <TableCell>Message</TableCell>
-              <TableCell>Confirme</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>{pendingMembers.map(this.getRow)}</TableBody>
         </Table>
-        <Divider />
-        <Button className={classes.button}>Send</Button>
       </div>
     );
   }
@@ -135,10 +129,16 @@ const styles = ({ spacing }) => ({
   messageContainer: {
     maxWidth: '50%',
   },
-  button: {
-    margin: spacing.unit * 2,
-    alignSelf: 'flex-end',
+  actionCell: {
+    textAlign: 'center',
+    whiteSpace: 'nowrap',
   },
 });
 
-export default withStyles(styles)(NewcommersTable);
+const mapDispatchToProps = {
+  dUpdateMemberStatus: updateMemberStatus,
+};
+
+export default compose(withStyles(styles), connect(null, mapDispatchToProps))(
+  NewcommersTable
+);

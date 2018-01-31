@@ -51,6 +51,14 @@ export type FetchGroupsFailure = {
   +payload: {},
 };
 
+export type UpdateGroup = {
+  +type: 'UPDATE_GROUP',
+  +payload: {
+    groupId: string,
+    changes: Object,
+  },
+};
+
 export type FetchCurrentGroupMembers = {
   +type: 'FETCH_CURRENT_GROUP_MEMBERS',
   +payload: {
@@ -71,10 +79,29 @@ export type FetchCurrentGroupMembersFailure = {
   +payload: {},
 };
 
+export type UpdateMemberStatus = {
+  +type: 'UPDATE_MEMBER_STATUS',
+  +payload: {
+    memberId: string,
+    status: MemberStatus,
+  },
+};
+
+export type UpdateMemberStatusSuccess = {
+  +type: 'UPDATE_MEMBER_STATUS_SUCCESS',
+  +payload: {
+    memberId: string,
+    status: MemberStatus,
+  },
+};
+
 export type GroupsActions =
   | FetchGroups
   | FetchGroupsSuccess
   | FetchGroupsFailure
+  | UpdateGroup
   | FetchCurrentGroupMembers
   | FetchCurrentGroupMembersSuccess
-  | FetchCurrentGroupMembersFailure;
+  | FetchCurrentGroupMembersFailure
+  | UpdateMemberStatus
+  | UpdateMemberStatusSuccess;

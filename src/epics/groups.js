@@ -6,17 +6,22 @@ import {
   fetchGroupsFailure,
   fetchCurrentGroupMembersSuccess,
   fetchCurrentGroupMembersFailure,
+  updateMemberStatusSuccess,
+  updateGroup,
 } from 'actions/groups';
+import { throwAccentSnackbar } from 'actions/snackbar';
 import type {
   Group,
   FetchGroups,
   FetchCurrentGroupMembers,
+  UpdateMemberStatus,
   GroupsActions,
 } from 'types/group';
 import type { Member } from 'types/user';
 import type { Store } from 'types/store';
 import { logErrorIfDevEnv } from 'utils/env';
 import { Observable } from 'rxjs';
+import firebase from 'firebase';
 
 const fetchGroup = (
   action$: Observable<GroupsActions>,
@@ -72,4 +77,57 @@ const fetchGroupMembers = (
         });
     });
 
-export default combineEpics(fetchGroup, fetchGroupMembers);
+const changeMemberStatus = (
+  action$: Observable<GroupsActions>,
+  store: Store,
+  { getFirebase }: { getFirebase: Function }
+): Observable<GroupsActions> =>
+  action$
+    .ofType('UPDATE_MEMBER_STATUS')
+    .mergeMap((action: UpdateMemberStatus) => {
+      const { memberId, status } = action.payload;
+      const db = getFirebase().firestore();
+      const memberRef = db.collection('members').doc(memberId);
+
+      const snapshot$ = db.runTransaction(async transaction => {
+        const member = await transaction.get(memberRef);
+        if (!member.exists) {
+          throw new Error('Ooops, this member does not exist.');
+        }
+        const { groupId } = member.data();
+        const groupRef = db.collection('groups').doc(groupId);
+        const group = await transaction.get(groupRef);
+        if (!group.exists) {
+          throw new Error('Ooops, this group does not exist.');
+        }
+        const { pendingRequests } = group.data();
+        const updatedPendingRequests = pendingRequests - 1;
+        transaction.update(memberRef, {
+          status,
+          confirmedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        transaction.update(groupRef, {
+          pendingRequests: updatedPendingRequests,
+        });
+        return {
+          groupId,
+          updatedPendingRequests,
+        };
+      });
+
+      return Observable.fromPromise(snapshot$)
+        .flatMap(({ groupId, updatedPendingRequests }) =>
+          Observable.concat(
+            Observable.of(updateMemberStatusSuccess(memberId, status)),
+            Observable.of(
+              updateGroup(groupId, { pendingRequests: updatedPendingRequests })
+            )
+          )
+        )
+        .catch(err => {
+          logErrorIfDevEnv(err);
+          return Observable.of(throwAccentSnackbar(err.message));
+        });
+    });
+
+export default combineEpics(fetchGroup, fetchGroupMembers, changeMemberStatus);

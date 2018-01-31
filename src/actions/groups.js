@@ -5,11 +5,14 @@ import type {
   FetchGroups,
   FetchGroupsSuccess,
   FetchGroupsFailure,
+  UpdateGroup,
   FetchCurrentGroupMembers,
   FetchCurrentGroupMembersSuccess,
   FetchCurrentGroupMembersFailure,
+  UpdateMemberStatus,
+  UpdateMemberStatusSuccess,
 } from 'types/group';
-import type { Member } from 'types/user';
+import type { Member, MemberStatus } from 'types/user';
 
 export const fetchGroups = (groupIds: string[]): FetchGroups => ({
   type: 'FETCH_GROUPS',
@@ -28,6 +31,14 @@ export const fetchGroupsSuccess = (groups: Group[]): FetchGroupsSuccess => ({
 export const fetchGroupsFailure = (): FetchGroupsFailure => ({
   type: 'FETCH_GROUPS_FAILURE',
   payload: {},
+});
+
+export const updateGroup = (groupId: string, changes: Object): UpdateGroup => ({
+  type: 'UPDATE_GROUP',
+  payload: {
+    groupId,
+    changes,
+  },
 });
 
 export const fetchCurrentGroupMembers = (
@@ -53,4 +64,26 @@ export const fetchCurrentGroupMembersSuccess = (
 export const fetchCurrentGroupMembersFailure = (): FetchCurrentGroupMembersFailure => ({
   type: 'FETCH_CURRENT_GROUP_MEMBERS_FAILURE',
   payload: {},
+});
+
+export const updateMemberStatus = (
+  memberId: string,
+  status: MemberStatus
+): UpdateMemberStatus => ({
+  type: 'UPDATE_MEMBER_STATUS',
+  payload: {
+    memberId,
+    status,
+  },
+});
+
+export const updateMemberStatusSuccess = (
+  memberId: string,
+  status: MemberStatus
+): UpdateMemberStatusSuccess => ({
+  type: 'UPDATE_MEMBER_STATUS_SUCCESS',
+  payload: {
+    memberId,
+    status,
+  },
 });

@@ -1,6 +1,24 @@
 // @flow
 
-import type { GroupsState, GroupsActions } from 'types/group';
+import type { Group, GroupsState, GroupsActions } from 'types/group';
+import type { Member, MemberStatus } from 'types/user';
+import _ from 'lodash';
+
+const changeMemberStatus = (
+  members: Member[],
+  memberId: string,
+  status: MemberStatus
+): Member[] =>
+  members.map(
+    m => (m.id === memberId ? { ...m, status, confirmedAt: new Date() } : m)
+  );
+
+const updateGroup = (
+  groups: Group[],
+  groupId: string,
+  changes: Group
+): Group[] =>
+  groups.map(oldG => (oldG.id === groupId ? _.merge(oldG, changes) : oldG));
 
 const initialState: GroupsState = {
   isLoading: false,
@@ -39,6 +57,13 @@ export default (
         isLoading: false,
         error: true,
       };
+    case 'UPDATE_GROUP': {
+      const { groupId, changes } = action.payload;
+      return {
+        ...state,
+        groups: updateGroup(state.groups, groupId, changes),
+      };
+    }
     case 'FETCH_CURRENT_GROUP_MEMBERS':
       return {
         ...state,
@@ -67,6 +92,17 @@ export default (
           error: true,
         },
       };
+    case 'UPDATE_MEMBER_STATUS_SUCCESS': {
+      const { memberId, status } = action.payload;
+      const { members } = state.currentGroup;
+      return {
+        ...state,
+        currentGroup: {
+          ...state.currentGroup,
+          members: changeMemberStatus(members, memberId, status),
+        },
+      };
+    }
     default:
       return state;
   }

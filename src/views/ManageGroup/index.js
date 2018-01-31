@@ -11,6 +11,7 @@ import { throwAccentSnackbar } from 'actions/snackbar';
 import { fetchGroups, fetchCurrentGroupMembers } from 'actions/groups';
 import { Redirect } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
+import _ from 'lodash';
 import MembersTable from './MembersTable';
 import AdminTabs from './AdminTabs';
 import Header from './Header';
@@ -82,7 +83,8 @@ class ManageGroup extends React.Component<Props, State> {
     }
 
     // If new members
-    if (nextMembers.length > members.length) {
+    const membersDiff = _.differenceWith(nextMembers, members);
+    if (membersDiff.length > 0) {
       const pendingMembers = nextMembers.filter(
         member => member.status === 'pending'
       );
@@ -93,6 +95,7 @@ class ManageGroup extends React.Component<Props, State> {
       return;
     }
 
+    // If errors
     if (nextGroups.error || nextProps.groups.error) {
       dThrowAccentSnackbar('Unable to fetch group..');
       this.setState({ redirectTo: '/' });
@@ -131,8 +134,6 @@ class ManageGroup extends React.Component<Props, State> {
     const isAdmin = currentGroup.admin.uid === auth.uid;
     const memberCompletionTarget = 7;
     const memberCount = pendingMembers.length + confirmedMembers.length;
-
-    console.log(currentGroup, pendingMembers, confirmedMembers);
 
     return (
       <div className={classes.container}>
