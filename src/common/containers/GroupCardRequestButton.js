@@ -177,7 +177,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       dThrowDissmissSnackbar(
         'Your request has been sent to the group creator !'
       );
-      this.redirectTo('/create-group');
+      this.setState({ dialogOpen: false });
     } catch (err) {
       logErrorIfDevEnv(err);
       dThrowAccentSnackbar('Ooops, try again later please :/');
