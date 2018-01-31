@@ -21,7 +21,7 @@ type Props = {
 };
 
 type State = {
-  redirect: boolean,
+  redirectTo: null | string,
 };
 
 class CreateGroup extends React.Component<Props, State> {
@@ -34,7 +34,7 @@ class CreateGroup extends React.Component<Props, State> {
   }
 
   state = {
-    redirect: false,
+    redirectTo: null,
   };
 
   handleSubmit: Function;
@@ -64,7 +64,7 @@ class CreateGroup extends React.Component<Props, State> {
       };
       await firestore.add('members', memberPayload);
       dThrowDissmissSnackbar('Your group has been successfully created !');
-      this.setState({ redirect: true });
+      this.setState({ redirectTo: `group/${groupId}` });
     } catch (err) {
       logErrorIfDevEnv(err);
       dThrowAccentSnackbar('Ooops, try again later please :/');
@@ -101,10 +101,10 @@ class CreateGroup extends React.Component<Props, State> {
   }
 
   render() {
-    const { redirect } = this.state;
+    const { redirectTo } = this.state;
 
-    if (redirect) {
-      return <Redirect to="/" />;
+    if (redirectTo) {
+      return <Redirect to={redirectTo} />;
     }
     return <CreateGroupForm onSubmit={this.handleSubmit} />;
   }
