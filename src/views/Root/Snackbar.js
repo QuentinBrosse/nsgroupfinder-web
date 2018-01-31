@@ -19,14 +19,21 @@ type State = {};
 class Snackbar extends React.Component<Props, State> {
   static defaultProps = {};
 
-  handleClose = () => {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick: Function;
+
+  handleClick() {
     const { snackbar, dDismissSnackbar, dispatch } = this.props;
     const { actionOnClickButton } = snackbar.button;
     dDismissSnackbar();
     if (actionOnClickButton) {
       dispatch(actionOnClickButton);
     }
-  };
+  }
 
   render() {
     const { snackbar, dDismissSnackbar } = this.props;
@@ -46,7 +53,7 @@ class Snackbar extends React.Component<Props, State> {
         }}
         message={<span id="snackbar-message">{message}</span>}
         action={[
-          <Button key={1} color={buttonColor} dense onClick={this.handleClose}>
+          <Button key={1} color={buttonColor} dense onClick={this.handleClick}>
             {button.label || 'Dismiss'}
           </Button>,
         ]}

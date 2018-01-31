@@ -10,7 +10,7 @@ import {
   updateGroupLocally,
   updateMemberLocally,
 } from 'actions/groups';
-import { throwDefaultSnackbar, throwAccentSnackbar } from 'actions/snackbar';
+import { throwAccentSnackbar, throwDissmissSnackbar } from 'actions/snackbar';
 import type {
   Group,
   FetchGroups,
@@ -153,7 +153,7 @@ const updateGroup = (
         Observable.concat(
           Observable.of(updateGroupLocally(groupId, changes)),
           Observable.of(
-            throwDefaultSnackbar('You group preferences have been updated.')
+            throwDissmissSnackbar('You group preferences have been updated.')
           )
         )
       )
@@ -184,7 +184,7 @@ const updateMember = (
       .flatMap(() =>
         Observable.concat(
           Observable.of(updateMemberLocally(memberId, changes)),
-          Observable.of(throwDefaultSnackbar('Paiement registere.'))
+          Observable.of(throwDissmissSnackbar('Paiement registere.'))
         )
       )
       .catch(err => {
