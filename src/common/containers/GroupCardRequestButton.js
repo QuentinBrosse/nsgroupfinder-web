@@ -84,7 +84,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
             <RequestDialogConfirmed
               opened={dialogOpen}
               onClose={this.handleCloseDialog}
-              viewGroup={() => this.redirectTo('/create-group')}
+              viewGroup={() => this.redirectTo(`/group/${groupId}`)}
             />
           ),
         };
