@@ -18,7 +18,6 @@ import ConfirmIcon from 'material-ui-icons/Check';
 import RejectIcon from 'material-ui-icons/Close';
 import { updateMemberStatus } from 'actions/groups';
 import ConfirmationButton from './ConfirmationButton';
-import FacebookLink from './FacebookLink';
 
 type Props = {
   classes: Object,
@@ -56,10 +55,7 @@ class NewcommersTable extends React.Component<Props, State> {
               src={member.user.avatarUrl}
               alt={member.user.displayName}
             />
-            <FacebookLink
-              link="https://www.facebook.com/QuentinBross"
-              name={member.user.displayName}
-            />
+            {member.user.displayName}
           </div>
         </TableCell>
         <TableCell>

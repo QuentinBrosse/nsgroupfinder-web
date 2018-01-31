@@ -15,7 +15,6 @@ import Table, {
 import { updateMember } from 'actions/groups';
 import AdminActionsMenu from './AdminActionsMenu';
 import PaymentIndicator from './PaymentIndicator';
-import FacebookLink from './FacebookLink';
 import DateFromNow from './DateFromNow';
 
 type Props = {
@@ -47,12 +46,7 @@ class MembersTable extends React.Component<Props, State> {
             onClick={() => this.handlePaymentClick(member)}
           />
         </TableCell>
-        <TableCell>
-          <FacebookLink
-            link="https://www.facebook.com/QuentinBross"
-            name={member.user.displayName}
-          />
-        </TableCell>
+        <TableCell>{member.user.displayName}</TableCell>
         <TableCell>
           <DateFromNow dateTime={member.confirmedAt} />
         </TableCell>
