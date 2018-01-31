@@ -4,8 +4,8 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Badge from 'material-ui/Badge';
-import MembersIcon from 'material-ui-icons/GroupWork';
-import NewcomersIcon from 'material-ui-icons/Star';
+import MembersIcon from 'material-ui-icons/Group';
+import NewcomersIcon from 'material-ui-icons/GroupAdd';
 import SettingsIcon from 'material-ui-icons/Settings';
 import type { Member } from 'types/user';
 import type { Group } from 'types/group';
@@ -74,7 +74,7 @@ class AdminTabs extends React.Component<Props, State> {
           onChange={(e, idx) => this.handleChangeTab(idx)}
           centered
           fullWidth
-          indicatorColor="primary"
+          indicatorColor="secondary"
           textColor="primary"
         >
           <Tab

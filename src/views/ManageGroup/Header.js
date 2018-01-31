@@ -6,7 +6,7 @@ import type { Group } from 'types/group';
 import { withStyles } from 'material-ui/styles';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import { LinearProgress } from 'material-ui/Progress';
-import IconButton from 'material-ui/IconButton';
+import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import ShareIcon from 'material-ui-icons/Share';
 import moment from 'moment';
@@ -33,9 +33,14 @@ const Header = ({
     <Card className={classes.card}>
       <CardHeader
         action={
-          <IconButton>
-            <ShareIcon />
-          </IconButton>
+          <div>
+            <Button className={classes.button} raised color="secondary">
+              <Typography type="button" color="primary">
+                Share
+              </Typography>
+              <ShareIcon color="primary" className={classes.rightIcon} />
+            </Button>
+          </div>
         }
         title={`${group.departureStation.name} to ${group.arrivalStation.name}`}
         subheader={`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
@@ -77,6 +82,13 @@ const styles = ({ spacing, palette }) => ({
     fontWeight: 500,
     color: palette.text.secondary,
     textTransform: 'uppercase',
+  },
+  button: {
+    margin: spacing.unit,
+    marginRight: spacing.unit * 2,
+  },
+  rightIcon: {
+    marginLeft: spacing.unit,
   },
 });
 

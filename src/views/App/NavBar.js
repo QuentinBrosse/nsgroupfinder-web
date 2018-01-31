@@ -21,7 +21,7 @@ class NavBar extends React.Component<Props, State> {
   render() {
     const { classes } = this.props;
     return (
-      <AppBar position="static" color="default">
+      <AppBar position="static">
         <Toolbar>
           <Typography
             type="title"
@@ -33,12 +33,7 @@ class NavBar extends React.Component<Props, State> {
             NS Group Finder
           </Typography>
 
-          <Button
-            color="inherit"
-            component={NavLink}
-            to="/create-group"
-            activeClassName={classes.activeLink}
-          >
+          <Button color="inherit" component={NavLink} to="/create-group">
             Create a Group
           </Button>
           <UserMenu />
@@ -55,9 +50,6 @@ const styles = ({ palette, breakpoints, typography }) => ({
     [breakpoints.down('xs')]: {
       fontSize: typography.pxToRem(13),
     },
-  },
-  activeLink: {
-    color: palette.primary.light,
   },
 });
 

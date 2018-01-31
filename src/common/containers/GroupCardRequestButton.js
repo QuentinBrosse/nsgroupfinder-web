@@ -18,8 +18,8 @@ import {
 import IconButton from 'material-ui/IconButton';
 import HourglassEmptyIcon from 'material-ui-icons/HourglassEmpty';
 import CheckIcon from 'material-ui-icons/Check';
-import FavoriteIcon from 'material-ui-icons/Favorite';
 import DoNotDisturbOnIcon from 'material-ui-icons/DoNotDisturbOn';
+import GroupAddIcon from 'material-ui-icons/GroupAdd';
 import ModeEditIcon from 'material-ui-icons/ModeEdit';
 import { getUserFromAuth } from 'utils/user';
 import RequestDialogRequest from './RequestDialogRequest';
@@ -105,7 +105,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
         };
       default:
         return {
-          icon: <FavoriteIcon />,
+          icon: <GroupAddIcon />,
           dialog: (
             <RequestDialogRequest
               groupId={groupId}

@@ -104,7 +104,7 @@ const CreateGroupForm = ({
               InputLabelProps={{ shrink: true }}
               helperText="A one-hour hourly range"
               InputProps={{
-                startAdornment: <InputIconAdornment iconName="date_range" />,
+                startAdornment: <InputIconAdornment iconName="schedule" />,
                 inputProps: {
                   min: '0',
                   max: '23',

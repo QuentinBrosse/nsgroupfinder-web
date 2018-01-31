@@ -59,6 +59,7 @@ const GroupFilterForm = ({
           <Grid item xs={12} className={classes.firstGridItem}>
             <div className={classes.stationsContainer}>
               <Field
+                focused="true"
                 id="departure"
                 name="departure"
                 component={StationAutocomplete}
@@ -95,7 +96,9 @@ const GroupFilterForm = ({
               fullWidth
               InputLabelProps={{ shrink: true }}
               InputProps={{
-                startAdornment: <InputIconAdornment iconName="date_range" />,
+                startAdornment: (
+                  <InputIconAdornment color="secondary" iconName="date_range" />
+                ),
               }}
             />
           </Grid>
@@ -127,7 +130,7 @@ const GroupFilterForm = ({
               fullWidth
               InputLabelProps={{ shrink: true }}
               InputProps={{
-                startAdornment: <InputIconAdornment iconName="date_range" />,
+                startAdornment: <InputIconAdornment iconName="schedule" />,
                 inputProps: {
                   min: '0',
                   max: '23',

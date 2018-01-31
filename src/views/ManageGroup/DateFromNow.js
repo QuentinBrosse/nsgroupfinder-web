@@ -12,7 +12,7 @@ type Props = {
 };
 
 const DateFromNow = ({ classes, dateTime }: Props): Node => (
-  <Typography color="secondary">{moment(dateTime).fromNow()}</Typography>
+  <Typography color="textSecondary">{moment(dateTime).fromNow()}</Typography>
 );
 
 DateFromNow.defaultProps = {};

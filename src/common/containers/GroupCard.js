@@ -6,7 +6,9 @@ import type { RequestStatus } from 'types/group';
 import moment from 'moment';
 import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
+import Icon from 'material-ui/Icon';
 import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
+import Badge from 'material-ui/Badge';
 import Typography from 'material-ui/Typography';
 import { LinearProgress } from 'material-ui/Progress';
 import Avatar from 'material-ui/Avatar';
@@ -150,9 +152,13 @@ class GroupCard extends React.Component<Props, State> {
           aria-label="Show pending requests"
           onClick={e => this.handlePopoverClick(e, 'pendingRequests')}
         >
-          <div className={classes.pendingRequestsContainer}>
-            {pendingRequests}
-          </div>
+          <Badge
+            className={classes.badge}
+            badgeContent={pendingRequests}
+            color="secondary"
+          >
+            <Icon>face</Icon>
+          </Badge>
         </IconButton>
         {this.getPopover('pendingRequests', popoverMessage)}
       </div>
@@ -162,7 +168,11 @@ class GroupCard extends React.Component<Props, State> {
   get createdBy() {
     const { classes, admin } = this.props;
     return (
-      <Typography type="body1" color="secondary" className={classes.createdBy}>
+      <Typography
+        type="body1"
+        color="textSecondary"
+        className={classes.createdBy}
+      >
         Created by {admin.displayName}
       </Typography>
     );
