@@ -141,7 +141,7 @@ const GroupFilterForm = ({
         </Grid>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button dense type="submit" disabled={pristine || submitting}>
+        <Button size="small" type="submit" disabled={pristine || submitting}>
           Search
         </Button>
       </CardActions>
