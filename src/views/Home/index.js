@@ -79,7 +79,7 @@ class Home extends React.Component<Props, State> {
           ['dateTime', '>=', startDate.toDate()],
           ['dateTime', '<=', endDate.toDate()],
         ],
-        // orderBy: ['dateTime', 'desc'], : cf #19
+        orderBy: ['dateTime', 'desc'], // : cf #19
       });
       const results = snapshot.docs.map(result => ({
         id: result.id,
