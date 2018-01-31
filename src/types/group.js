@@ -103,6 +103,22 @@ export type UpdateMemberStatusSuccess = {
   },
 };
 
+export type UpdateMember = {
+  +type: 'UPDATE_MEMBER',
+  +payload: {
+    memberId: string,
+    changes: Object,
+  },
+};
+
+export type UpdateMemberLocally = {
+  +type: 'UPDATE_MEMBER_LOCALLY',
+  +payload: {
+    memberId: string,
+    changes: Object,
+  },
+};
+
 export type GroupsActions =
   | FetchGroups
   | FetchGroupsSuccess
@@ -113,4 +129,6 @@ export type GroupsActions =
   | FetchCurrentGroupMembersSuccess
   | FetchCurrentGroupMembersFailure
   | UpdateMemberStatus
-  | UpdateMemberStatusSuccess;
+  | UpdateMemberStatusSuccess
+  | UpdateMember
+  | UpdateMemberLocally;

@@ -13,12 +13,8 @@ const changeMemberStatus = (
     m => (m.id === memberId ? { ...m, status, confirmedAt: new Date() } : m)
   );
 
-const updateGroupLocally = (
-  groups: Group[],
-  groupId: string,
-  changes: Group
-): Group[] =>
-  groups.map(oldG => (oldG.id === groupId ? _.merge(oldG, changes) : oldG));
+const merge = (array: Object[], matchId: string, changes: Object): Group[] =>
+  array.map(oldG => (oldG.id === matchId ? _.merge(oldG, changes) : oldG));
 
 const initialState: GroupsState = {
   isLoading: false,
@@ -61,7 +57,7 @@ export default (
       const { groupId, changes } = action.payload;
       return {
         ...state,
-        groups: updateGroupLocally(state.groups, groupId, changes),
+        groups: merge(state.groups, groupId, changes),
       };
     }
     case 'FETCH_CURRENT_GROUP_MEMBERS':
@@ -100,6 +96,16 @@ export default (
         currentGroup: {
           ...state.currentGroup,
           members: changeMemberStatus(members, memberId, status),
+        },
+      };
+    }
+    case 'UPDATE_MEMBER_LOCALLY': {
+      const { memberId, changes } = action.payload;
+      return {
+        ...state,
+        currentGroup: {
+          ...state.currentGroup,
+          groups: merge(state.currentGroup.members, memberId, changes),
         },
       };
     }

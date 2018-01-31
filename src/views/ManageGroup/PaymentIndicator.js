@@ -10,6 +10,7 @@ type Props = {
   classes: Object,
   paid: boolean,
   isAdmin: boolean,
+  onClick: Function,
 };
 
 type State = {
@@ -41,12 +42,17 @@ class PaymentIndicator extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, isAdmin } = this.props;
+    const { classes, isAdmin, onClick } = this.props;
     const { paid } = this.state;
 
     if (isAdmin) {
       return (
-        <Switch checked={paid} onChange={this.handleChange} aria-label="Paid" />
+        <Switch
+          checked={paid}
+          onChange={this.handleChange}
+          onClick={onClick}
+          aria-label="Paid"
+        />
       );
     }
 

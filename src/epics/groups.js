@@ -8,6 +8,7 @@ import {
   fetchCurrentGroupMembersFailure,
   updateMemberStatusSuccess,
   updateGroupLocally,
+  updateMemberLocally,
 } from 'actions/groups';
 import { throwDefaultSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import type {
@@ -17,6 +18,7 @@ import type {
   UpdateMemberStatus,
   UpdateGroup,
   GroupsActions,
+  UpdateMember,
 } from 'types/group';
 import type { Member } from 'types/user';
 import type { Store } from 'types/store';
@@ -165,9 +167,38 @@ const updateGroup = (
       });
   });
 
+const updateMember = (
+  action$: Observable<GroupsActions>,
+  store: Store,
+  { getFirebase }: { getFirebase: Function }
+): Observable<GroupsActions> =>
+  action$.ofType('UPDATE_MEMBER').mergeMap((action: UpdateMember) => {
+    const { memberId, changes } = action.payload;
+    const db = getFirebase().firestore();
+    const snapshot$ = db
+      .collection('members')
+      .doc(memberId)
+      .update(changes);
+
+    return Observable.fromPromise(snapshot$)
+      .flatMap(() =>
+        Observable.concat(
+          Observable.of(updateMemberLocally(memberId, changes)),
+          Observable.of(throwDefaultSnackbar('Paiement registere.'))
+        )
+      )
+      .catch(err => {
+        logErrorIfDevEnv(err);
+        return Observable.of(
+          throwAccentSnackbar('Ooops, Unable to register the paiement..')
+        );
+      });
+  });
+
 export default combineEpics(
   fetchGroup,
   fetchGroupMembers,
   updateMemberStatus,
-  updateGroup
+  updateGroup,
+  updateMember
 );

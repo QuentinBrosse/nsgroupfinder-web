@@ -12,6 +12,8 @@ import type {
   FetchCurrentGroupMembersFailure,
   UpdateMemberStatus,
   UpdateMemberStatusSuccess,
+  UpdateMember,
+  UpdateMemberLocally,
 } from 'types/group';
 import type { Member, MemberStatus } from 'types/user';
 
@@ -97,5 +99,27 @@ export const updateMemberStatusSuccess = (
   payload: {
     memberId,
     status,
+  },
+});
+
+export const updateMember = (
+  memberId: string,
+  changes: Object
+): UpdateMember => ({
+  type: 'UPDATE_MEMBER',
+  payload: {
+    memberId,
+    changes,
+  },
+});
+
+export const updateMemberLocally = (
+  memberId: string,
+  changes: Object
+): UpdateMemberLocally => ({
+  type: 'UPDATE_MEMBER_LOCALLY',
+  payload: {
+    memberId,
+    changes,
   },
 });
