@@ -112,7 +112,7 @@ const GroupFilterForm = ({
               fullWidth
               InputLabelProps={{ shrink: true }}
               InputProps={{
-                startAdornment: <InputIconAdornment iconName="date_range" />,
+                startAdornment: <InputIconAdornment iconName="schedule" />,
                 inputProps: {
                   min: '0',
                   max: '23',
