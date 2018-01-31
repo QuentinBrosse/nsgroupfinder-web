@@ -134,7 +134,7 @@ const CreateGroupForm = ({
         </Grid>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button dense type="submit" disabled={pristine || submitting}>
+        <Button raised type="submit" disabled={pristine || submitting}>
           Create
         </Button>
       </CardActions>

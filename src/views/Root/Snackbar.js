@@ -38,7 +38,7 @@ class Snackbar extends React.Component<Props, State> {
   render() {
     const { snackbar, dDismissSnackbar } = this.props;
     const { opened, message, button } = snackbar;
-    const buttonColor = button.type === 'default' ? 'contrast' : button.type;
+    const buttonColor = button.type === 'default' ? 'secondary' : button.type;
     return (
       <DefaultSnackbar
         anchorOrigin={{
@@ -53,7 +53,12 @@ class Snackbar extends React.Component<Props, State> {
         }}
         message={<span id="snackbar-message">{message}</span>}
         action={[
-          <Button key={1} color={buttonColor} dense onClick={this.handleClick}>
+          <Button
+            key={1}
+            color={buttonColor}
+            size="small"
+            onClick={this.handleClick}
+          >
             {button.label || 'Dismiss'}
           </Button>,
         ]}
