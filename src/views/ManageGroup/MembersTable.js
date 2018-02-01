@@ -13,7 +13,7 @@ import Table, {
   TableRow,
 } from 'material-ui/Table';
 import { updateMember } from 'actions/groups';
-import AdminActionsMenu from './AdminActionsMenu';
+// import AdminActionsMenu from './AdminActionsMenu';
 import PaymentIndicator from './PaymentIndicator';
 import DateFromNow from './DateFromNow';
 
@@ -50,11 +50,12 @@ class MembersTable extends React.Component<Props, State> {
         <TableCell>
           <DateFromNow dateTime={member.confirmedAt} />
         </TableCell>
-        {isAdmin && (
+        <TableCell numeric>{member.ticketUnits}</TableCell>
+        {/* {isAdmin && (
           <TableCell>
             <AdminActionsMenu />
           </TableCell>
-        )}
+        )} */}
       </TableRow>
     );
   }
@@ -69,7 +70,7 @@ class MembersTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, confirmedMembers, isAdmin } = this.props;
+    const { classes, confirmedMembers } = this.props; // isAdmin
     return (
       <div className={classes.container}>
         <Table className={classes.table}>
@@ -78,7 +79,8 @@ class MembersTable extends React.Component<Props, State> {
               <TableCell>Paid</TableCell>
               <TableCell>Facebook</TableCell>
               <TableCell>Confirmed</TableCell>
-              {isAdmin && <TableCell>Actions</TableCell>}
+              <TableCell numeric>Tickets</TableCell>
+              {/* {isAdmin && <TableCell>Actions</TableCell>} */}
             </TableRow>
           </TableHead>
           <TableBody>{confirmedMembers.map(this.getRow)}</TableBody>

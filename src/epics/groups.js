@@ -97,34 +97,38 @@ const updateMemberStatus = (
         if (!member.exists) {
           throw new Error('Ooops, this member does not exist.');
         }
-        const { groupId } = member.data();
+        const { groupId, ticketUnits: memberTicketUnits } = member.data();
         const groupRef = db.collection('groups').doc(groupId);
         const group = await transaction.get(groupRef);
         if (!group.exists) {
           throw new Error('Ooops, this group does not exist.');
         }
-        const { pendingRequests } = group.data();
+        const { pendingRequests, ticketUnits: groupTicketUnits } = group.data();
         const updatedPendingRequests = pendingRequests - 1;
+        const updatedTicketUnits = +groupTicketUnits + +memberTicketUnits;
         transaction.update(memberRef, {
           status,
           confirmedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
         transaction.update(groupRef, {
           pendingRequests: updatedPendingRequests,
+          ticketUnits: updatedTicketUnits,
         });
         return {
           groupId,
           updatedPendingRequests,
+          updatedTicketUnits,
         };
       });
 
       return Observable.fromPromise(snapshot$)
-        .flatMap(({ groupId, updatedPendingRequests }) =>
+        .flatMap(({ groupId, updatedPendingRequests, updatedTicketUnits }) =>
           Observable.concat(
             Observable.of(updateMemberStatusSuccess(memberId, status)),
             Observable.of(
               updateGroupLocally(groupId, {
                 pendingRequests: updatedPendingRequests,
+                ticketUnits: updatedTicketUnits,
               })
             )
           )

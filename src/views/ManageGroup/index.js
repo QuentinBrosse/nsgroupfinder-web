@@ -132,16 +132,10 @@ class ManageGroup extends React.Component<Props, State> {
     }
 
     const isAdmin = currentGroup.admin.uid === auth.uid;
-    const memberCompletionTarget = 7;
-    const memberCount = pendingMembers.length + confirmedMembers.length;
 
     return (
       <div className={classes.container}>
-        <Header
-          group={currentGroup}
-          memberCompletionTarget={memberCompletionTarget}
-          memberCount={memberCount}
-        />
+        <Header group={currentGroup} />
         <Paper>
           {isAdmin ? (
             <AdminTabs

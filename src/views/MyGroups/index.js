@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import Typography from 'material-ui/Typography';
 import type { Member } from 'types/user';
-import type { GroupsState, RequestStatus } from 'types/group';
+import type { Group, GroupsState, RequestStatus } from 'types/group';
 import { GroupCardContainer } from 'common/components';
 import { GroupCard } from 'common/containers';
 import { fetchGroups } from 'actions/groups';
@@ -110,7 +110,7 @@ class MyGroups extends React.Component<Props, State> {
           My Groups
         </Typography>
         <GroupCardContainer>
-          {groups.map(result => (
+          {groups.map((result: Group) => (
             <GroupCard
               key={result.id}
               id={result.id}
@@ -121,7 +121,7 @@ class MyGroups extends React.Component<Props, State> {
               }}
               dateTime={result.dateTime}
               members={{
-                current: 1,
+                current: result.ticketUnits,
                 target: 7,
               }}
               info={result.info}

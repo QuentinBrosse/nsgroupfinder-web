@@ -13,18 +13,12 @@ import moment from 'moment';
 
 type Props = {
   classes: Object,
-  memberCompletionTarget: number,
-  memberCount: number,
   group: Group,
 };
 
-const Header = ({
-  classes,
-  memberCompletionTarget,
-  memberCount,
-  group,
-}: Props): Node => {
-  const groupCompletion = memberCount / memberCompletionTarget * 100;
+const Header = ({ classes, group }: Props): Node => {
+  const memberCompletionTarget = 7;
+  const groupCompletion = group.ticketUnits / memberCompletionTarget * 100;
   const mDateTime = moment(group.dateTime);
   const fDate = mDateTime.format('MMM Do');
   const fTimeStart = mDateTime.format('ha');
@@ -54,7 +48,7 @@ const Header = ({
               Members
             </Typography>
             <Typography type="body1" classes={{ body1: classes.membersText }}>
-              {memberCount}/{memberCompletionTarget}
+              {group.ticketUnits}/{memberCompletionTarget}
             </Typography>
           </div>
         </div>

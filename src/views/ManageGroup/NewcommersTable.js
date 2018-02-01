@@ -61,6 +61,7 @@ class NewcommersTable extends React.Component<Props, State> {
         <TableCell>
           <TextPopover>{member.message}</TextPopover>
         </TableCell>
+        <TableCell numeric>{member.ticketUnits}</TableCell>
         <TableCell className={classes.actionCell}>
           <ConfirmationButton
             tooltipTitle="Confirm"
@@ -93,7 +94,8 @@ class NewcommersTable extends React.Component<Props, State> {
             <TableRow>
               <TableCell>Facebook</TableCell>
               <TableCell>Message</TableCell>
-              <TableCell />
+              <TableCell numeric>Tickets</TableCell>
+              <TableCell className={classes.actionCell}>Confirmation</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>{pendingMembers.map(this.getRow)}</TableBody>

@@ -14,6 +14,7 @@ export type Group = {
   +dateTime: Date,
   +info: string,
   +pendingRequests: number,
+  +ticketUnits: number,
 };
 
 export type CurrentGroup = {

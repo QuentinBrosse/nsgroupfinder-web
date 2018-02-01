@@ -140,7 +140,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
     this.setState({ redirectTo: route });
   }
 
-  async sendRequest(message: string) {
+  async sendRequest(message: string, ticketUnits: number) {
     const {
       dThrowAccentSnackbar,
       dThrowDissmissSnackbar,
@@ -157,9 +157,10 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       status: 'pending',
       message,
       createdAt: firestore.FieldValue.serverTimestamp(),
-      obsolete: false,
       confirmedAt: null,
+      obsolete: false,
       paid: false,
+      ticketUnits: ticketUnits || 1,
     };
     try {
       const groupRef = db.collection('groups').doc(groupId);

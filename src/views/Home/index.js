@@ -16,7 +16,7 @@ import { GroupCard } from 'common/containers';
 import { throwAccentSnackbar } from 'actions/snackbar';
 import { logErrorIfDevEnv } from 'utils/env';
 import type { Member } from 'types/user';
-import type { RequestStatus } from 'types/group';
+import type { Group, RequestStatus } from 'types/group';
 import GroupFilterForm from './GroupFilterForm';
 import fakeCards from './fakeCards';
 
@@ -126,7 +126,7 @@ class Home extends React.Component<Props, State> {
               Groups
             </Typography>
             <GroupCardContainer>
-              {results.map(result => (
+              {results.map((result: Group) => (
                 <GroupCard
                   key={result.id}
                   id={result.id}
@@ -137,7 +137,7 @@ class Home extends React.Component<Props, State> {
                   }}
                   dateTime={result.dateTime}
                   members={{
-                    current: 1,
+                    current: result.ticketUnits,
                     target: 7,
                   }}
                   info={result.info}

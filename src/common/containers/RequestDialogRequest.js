@@ -20,6 +20,7 @@ type Props = {
 
 type State = {
   message: string,
+  ticketUnits: number,
 };
 
 class RequestDialogRequest extends React.Component<Props, State> {
@@ -27,22 +28,23 @@ class RequestDialogRequest extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.handleChanges = this.handleChanges.bind(this);
   }
 
   state = {
     message: '',
+    ticketUnits: 1,
   };
 
-  handleMessageChange: Function;
+  handleChanges: Function;
 
-  handleMessageChange(event) {
-    this.setState({ message: event.target.value });
+  handleChanges(field: string) {
+    return event => this.setState({ [field]: event.target.value });
   }
 
   render() {
     const { classes, opened, onClose, sendRequest } = this.props;
-    const { message } = this.state;
+    const { message, ticketUnits } = this.state;
 
     return (
       <Dialog
@@ -66,15 +68,33 @@ class RequestDialogRequest extends React.Component<Props, State> {
             helperText="A nice message for the creator of the group."
             type="text"
             fullWidth
-            onChange={this.handleMessageChange}
+            onChange={this.handleChanges('message')}
             value={message}
+          />
+          <TextField
+            margin="dense"
+            id="ticketUnits"
+            label="Number of Tickets"
+            type="number"
+            InputProps={{
+              inputProps: {
+                min: '1',
+                max: '6',
+              },
+            }}
+            fullWidth
+            onChange={this.handleChanges('ticketUnits')}
+            value={ticketUnits}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => sendRequest(message)} color="primary">
+          <Button
+            onClick={() => sendRequest(message, ticketUnits)}
+            color="primary"
+          >
             Send
           </Button>
         </DialogActions>

@@ -23,7 +23,8 @@ export type Member = {
   status: MemberStatus,
   user: FirebaseUserOpti,
   createdAt: Date,
-  obsolete: boolean,
   confirmedAt: null | Date,
+  obsolete: boolean,
   paid: boolean,
+  +ticketUnits: number,
 };

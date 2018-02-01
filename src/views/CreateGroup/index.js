@@ -61,6 +61,7 @@ class CreateGroup extends React.Component<Props, State> {
         obsolete: false,
         confirmedAt: firestore.FieldValue.serverTimestamp(),
         paid: false,
+        ticketUnits: 1,
       };
       await firestore.add('members', memberPayload);
       dThrowDissmissSnackbar('Your group has been successfully created !');
@@ -97,6 +98,7 @@ class CreateGroup extends React.Component<Props, State> {
       info,
       createdAt: firestore.FieldValue.serverTimestamp(),
       pendingRequests: 0,
+      ticketUnits: 1,
     };
   }
 
