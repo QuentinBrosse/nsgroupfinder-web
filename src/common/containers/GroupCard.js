@@ -16,6 +16,7 @@ import Popover from 'material-ui/Popover';
 import AdminIcon from 'material-ui-icons/Star';
 import amber from 'material-ui/colors/amber';
 import red from 'material-ui/colors/red';
+import { Link } from 'react-router-dom';
 import GroupCardRequestButton from './GroupCardRequestButton';
 
 type Props = {
@@ -178,6 +179,15 @@ class GroupCard extends React.Component<Props, State> {
     );
   }
 
+  get title() {
+    const { requestStatus, id, stations } = this.props;
+    const title = `${stations.departure} to ${stations.arrival}`;
+    if (requestStatus === 'confirmed' || requestStatus === 'admin') {
+      return <Link to={`/group/${id}`}>{title}</Link>;
+    }
+    return title;
+  }
+
   getPopover(type: string, content: string) {
     const { classes } = this.props;
     const { popover } = this.state;
@@ -218,7 +228,7 @@ class GroupCard extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, stations, dateTime } = this.props;
+    const { classes, dateTime } = this.props;
     const mDateTime = moment(dateTime);
     const fDate = mDateTime.format('MMM Do');
     const fTimeStart = mDateTime.format('ha');
@@ -227,9 +237,10 @@ class GroupCard extends React.Component<Props, State> {
       <Card>
         <CardHeader
           avatar={this.avatar}
-          title={`${stations.departure} to ${stations.arrival}`}
+          title={this.title}
           subheader={`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
           action={this.requestButton}
+          classes={{ title: classes.title }}
         />
         <CardContent classes={{ root: classes.cardContent }}>
           {this.members}
@@ -244,11 +255,15 @@ class GroupCard extends React.Component<Props, State> {
   }
 }
 
-const styles = ({ spacing, palette }) => ({
+const styles = ({ typography, spacing, palette }) => ({
   cardContent: {
     '&:last-child': {
       paddingBottom: spacing.unit * 2,
     },
+  },
+  title: {
+    '& a': typography.body2,
+    '& a:visited': typography.body2,
   },
   members: {
     display: 'flex',
