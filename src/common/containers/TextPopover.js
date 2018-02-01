@@ -49,7 +49,7 @@ class TextPopover extends React.Component<Props, State> {
     const popoverOpened = !!popover;
     return (
       <div>
-        <IconButton onClick={this.handleClick}>
+        <IconButton disabled={!children} onClick={this.handleClick}>
           <ViewMessageIcon />
         </IconButton>
         <Popover
