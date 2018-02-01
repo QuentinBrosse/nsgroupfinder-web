@@ -18,7 +18,6 @@ import { logErrorIfDevEnv } from 'utils/env';
 import type { Member } from 'types/user';
 import type { Group, RequestStatus } from 'types/group';
 import GroupFilterForm from './GroupFilterForm';
-import fakeCards from './fakeCards';
 
 type Props = {
   classes?: Object,
@@ -53,8 +52,6 @@ class Home extends React.Component<Props, State> {
 
   handleSubmit: Function;
   getRequestStatus: Function;
-
-  fakeCards = false;
 
   async handleSubmit(values) {
     const { firestore, dThrowAccentSnackbar } = this.props;
@@ -110,15 +107,6 @@ class Home extends React.Component<Props, State> {
         >
           Load all (debug)
         </button>
-
-        {this.fakeCards && (
-          <div>
-            <Typography type="title" paragraph>
-              Groups
-            </Typography>
-            {fakeCards}
-          </div>
-        )}
 
         {results.length > 0 ? (
           <div>
