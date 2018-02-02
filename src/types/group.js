@@ -12,7 +12,8 @@ export type Group = {
   +departureStation: FirebaseStationOpti,
   +createdAt: Date,
   +dateTime: Date,
-  +info: string,
+  +publicInfo: string,
+  +privateInfo: string,
   +pendingRequests: number,
   +ticketUnits: number,
 };

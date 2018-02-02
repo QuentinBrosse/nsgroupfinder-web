@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Badge from 'material-ui/Badge';
 import MembersIcon from 'material-ui-icons/Group';
@@ -9,6 +11,7 @@ import NewcomersIcon from 'material-ui-icons/GroupAdd';
 import SettingsIcon from 'material-ui-icons/Settings';
 import type { Member } from 'types/user';
 import type { Group } from 'types/group';
+import { updateGroup } from 'actions/groups';
 import MembersTable from './MembersTable';
 import NewcommersTable from './NewcommersTable';
 import GroupPreferences from './GroupPreferences';
@@ -18,6 +21,7 @@ type Props = {
   pendingMembers: Member[],
   confirmedMembers: Member[],
   group: Group,
+  dUpdateGroup: Function,
 };
 
 type State = {
@@ -30,6 +34,7 @@ class AdminTabs extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleChangeTab = this.handleChangeTab.bind(this);
+    this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
   }
 
   state = {
@@ -59,9 +64,16 @@ class AdminTabs extends React.Component<Props, State> {
   }
 
   handleChangeTab: Function;
+  handleSubmitPreferences: Function;
 
   handleChangeTab(tabIdx: number) {
     this.setState({ tabIdx });
+  }
+
+  handleSubmitPreferences(values: Object) {
+    const { group, dUpdateGroup } = this.props;
+    const { public_info: publicInfo, private_info: privateInfo } = values;
+    dUpdateGroup(group.id, { publicInfo, privateInfo });
   }
 
   render() {
@@ -103,7 +115,16 @@ class AdminTabs extends React.Component<Props, State> {
             changeTab={this.handleChangeTab}
           />
         )}
-        {tabIdx === 2 && <GroupPreferences group={group} />}
+        {tabIdx === 2 &&
+          group && (
+            <GroupPreferences
+              initialValues={{
+                public_info: group.publicInfo,
+                private_info: group.privateInfo,
+              }}
+              onSubmit={this.handleSubmitPreferences}
+            />
+          )}
       </div>
     );
   }
@@ -120,4 +141,10 @@ const styles = ({ breakpoints, palette }) => ({
   },
 });
 
-export default withStyles(styles)(AdminTabs);
+const mapDispatchToProps = {
+  dUpdateGroup: updateGroup,
+};
+
+export default compose(withStyles(styles), connect(null, mapDispatchToProps))(
+  AdminTabs
+);

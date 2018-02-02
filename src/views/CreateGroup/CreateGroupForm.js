@@ -15,7 +15,7 @@ import Divider from 'material-ui/Divider/Divider';
 import { StationAutocomplete } from 'common/containers';
 import { InputIconAdornment } from 'common/components';
 import { TextField } from 'redux-form-material-ui';
-import { required, date, numericality } from 'redux-form-validators';
+import { required, date, numericality, length } from 'redux-form-validators';
 import { validatorFactory } from 'utils/form';
 
 type Props = {
@@ -120,14 +120,23 @@ const CreateGroupForm = ({
         >
           <Grid item xs={12}>
             <Field
-              id="info"
-              name="info"
-              label="Info"
+              id="public_info"
+              name="public_info"
+              label="Public Info"
               type="text"
               fullWidth
               helperText="Information you want to communicate to users. They will be visible to all users (even those who will not be members of the group)."
-              multiline
-              rows="4"
+              component={TextField}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Field
+              id="private_info"
+              name="private_info"
+              label="Private Info"
+              type="text"
+              fullWidth
+              helperText="Information you want to communicate to your members. They will be visible only to confirmed members of your group."
               component={TextField}
             />
           </Grid>
@@ -197,6 +206,8 @@ const formConfig = {
     arrival: [required()],
     date: [required(), date({ format: 'yyyy-mm-dd' })],
     time: [required(), numericality({ '>=': 0, '<=': 23 })],
+    public_info: [length({ max: 500 })],
+    private_info: [length({ max: 500 })],
   }),
 };
 

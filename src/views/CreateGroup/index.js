@@ -30,7 +30,7 @@ class CreateGroup extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.clearData = this.clearData.bind(this);
+    this.prepareData = this.prepareData.bind(this);
   }
 
   state = {
@@ -38,7 +38,7 @@ class CreateGroup extends React.Component<Props, State> {
   };
 
   handleSubmit: Function;
-  clearData: Function;
+  prepareData: Function;
 
   async handleSubmit(values: Object) {
     const {
@@ -48,7 +48,7 @@ class CreateGroup extends React.Component<Props, State> {
       dThrowAccentSnackbar,
     } = this.props;
 
-    const groupPayload = this.clearData(values);
+    const groupPayload = this.prepareData(values);
     try {
       const { id: groupId } = await firestore.add('groups', groupPayload);
       const memberPayload = {
@@ -72,7 +72,7 @@ class CreateGroup extends React.Component<Props, State> {
     }
   }
 
-  clearData(values: Object): Object {
+  prepareData(values: Object): Object {
     const { auth, firestore } = this.props;
 
     const {
@@ -80,7 +80,8 @@ class CreateGroup extends React.Component<Props, State> {
       arrival_obj: arrival,
       date,
       time,
-      info = null,
+      public_info: publicInfo = null,
+      private_info: privateInfo = null,
     } = values;
     return {
       admin: getUserFromAuth(auth),
@@ -95,7 +96,8 @@ class CreateGroup extends React.Component<Props, State> {
       dateTime: moment(date)
         .hour(+time)
         .toDate(),
-      info,
+      publicInfo,
+      privateInfo,
       createdAt: firestore.FieldValue.serverTimestamp(),
       pendingRequests: 0,
       ticketUnits: 1,

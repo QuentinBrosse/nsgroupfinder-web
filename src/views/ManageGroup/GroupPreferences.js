@@ -1,100 +1,86 @@
 // @flow
 
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
+import type { Node } from 'react';
 import { compose } from 'redux';
-import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
+import { withStyles } from 'material-ui/styles';
+import { Field, reduxForm } from 'redux-form';
 import Button from 'material-ui/Button';
-import type { Group } from 'types/group';
-import { updateGroup } from 'actions/groups';
+import Grid from 'material-ui/Grid';
+import { TextField } from 'redux-form-material-ui';
+import { length } from 'redux-form-validators';
+import { validatorFactory } from 'utils/form';
 
 type Props = {
   classes: Object,
-  group: Group,
-  dUpdateGroup: Function,
+  handleSubmit: Function,
+  pristine: boolean,
+  submitting: boolean,
 };
+const GroupPreferences = ({
+  classes,
+  handleSubmit,
+  pristine,
+  submitting,
+}: Props): Node => (
+  <form onSubmit={handleSubmit} className={classes.form}>
+    <Grid container>
+      <Grid item xs={12}>
+        <Field
+          id="public_info"
+          name="public_info"
+          label="Public Info"
+          type="text"
+          fullWidth
+          helperText="Information you want to communicate to users. They will be visible to all users (even those who will not be members of the group)."
+          component={TextField}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <Field
+          id="private_info"
+          name="private_info"
+          label="Private Info"
+          type="text"
+          fullWidth
+          helperText="Information you want to communicate to your members. They will be visible only to confirmed members of your group."
+          component={TextField}
+        />
+      </Grid>
+    </Grid>
+    <Button
+      raised
+      type="submit"
+      disabled={pristine || submitting}
+      className={classes.button}
+    >
+      Send
+    </Button>
+  </form>
+);
 
-type State = {
-  info: string,
-};
-
-class GroupPreferences extends React.Component<Props, State> {
-  static defaultProps = {};
-
-  constructor(props) {
-    super(props);
-    this.handleInfoChange = this.handleInfoChange.bind(this);
-    this.handleSend = this.handleSend.bind(this);
-  }
-
-  state = {
-    info: '',
-  };
-
-  componentWillMount() {
-    const { info } = this.props.group;
-    this.setState({ info: info || '' });
-  }
-
-  handleInfoChange: Function;
-  handleSend: Function;
-
-  handleInfoChange(event) {
-    this.setState({ info: event.target.value || '' });
-  }
-
-  handleSend() {
-    const { group, dUpdateGroup } = this.props;
-    const { info } = this.state;
-    dUpdateGroup(group.id, { info });
-  }
-
-  render() {
-    const { classes } = this.props;
-    const { info } = this.state;
-    return (
-      <div className={classes.container}>
-        <div className={classes.form}>
-          <TextField
-            id="info"
-            name="info"
-            label="Info"
-            type="text"
-            fullWidth
-            helperText="Information you want to communicate to users. They will be visible to all users (even those who will not be members of the group)."
-            multiline
-            rows="4"
-            value={info}
-            onChange={this.handleInfoChange}
-          />
-        </div>
-        <Button className={classes.button} onClick={this.handleSend}>
-          Send
-        </Button>
-      </div>
-    );
-  }
-}
+GroupPreferences.defaultProps = {};
 
 const styles = ({ spacing }) => ({
-  container: {
+  form: {
     display: 'flex',
     flexDirection: 'column',
     padding: spacing.unit * 3,
   },
-  form: {
-    paddingBottom: spacing.unit * 3,
-  },
   button: {
+    marginTop: spacing.unit * 3,
     alignSelf: 'flex-end',
   },
 });
 
-const mapDispatchToProps = {
-  dUpdateGroup: updateGroup,
+const formConfig = {
+  form: 'modifyGroupPreferences',
+  validate: validatorFactory({
+    public_info: [length({ max: 500 })],
+    private_info: [length({ max: 500 })],
+  }),
 };
 
-export default compose(withStyles(styles), connect(null, mapDispatchToProps))(
+export default compose(withStyles(styles), reduxForm(formConfig))(
   GroupPreferences
 );

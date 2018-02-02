@@ -40,7 +40,14 @@ const Header = ({ classes, group }: Props): Node => {
         subheader={`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
       />
       <CardContent>
-        <Typography component="p">{group.info}</Typography>
+        <Typography type="subheading">Public Info</Typography>
+        <Typography component="p" paragraph>
+          {group.publicInfo}
+        </Typography>
+        <Typography type="subheading">Private Info</Typography>
+        <Typography component="p" paragraph>
+          {group.privateInfo}
+        </Typography>
         <div className={classes.progressContaier}>
           <LinearProgress mode="determinate" value={groupCompletion} />
           <div className={classes.members}>
