@@ -7,6 +7,7 @@ import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 
 type Props = {
+  classes: Object,
   departureStation: string,
   arrivalStation: string,
   startDate: Moment,
@@ -28,9 +29,7 @@ const ResultsDescription = ({
   </Typography>
 );
 
-ResultsDescription.defaultProps = {
-  classes: {},
-};
+ResultsDescription.defaultProps = {};
 
 const styles = ({ palette, typography }) => ({
   text: {
