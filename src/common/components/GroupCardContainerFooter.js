@@ -19,7 +19,7 @@ const GroupCardContainerFooter = ({ classes }: Props): Node => (
       type="subheading"
       align="center"
       headlineMapping={{ subheading: 'p' }}
-      color="secondary"
+      color="textSecondary"
     >
       You are not satisfied with the results?{' '}
       <span role="img" aria-label="Sad emojy">

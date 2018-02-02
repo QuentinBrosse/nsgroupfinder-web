@@ -1,7 +1,7 @@
 import { combineEpics } from 'redux-observable';
 import 'rxjs';
-import test from './test';
+import groups from './groups';
 
-const makeRootEpic = () => combineEpics(test);
+const makeRootEpic = () => combineEpics(groups);
 
 export default makeRootEpic;

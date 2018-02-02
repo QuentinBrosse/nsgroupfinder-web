@@ -59,6 +59,7 @@ const GroupFilterForm = ({
           <Grid item xs={12} className={classes.firstGridItem}>
             <div className={classes.stationsContainer}>
               <Field
+                focused="true"
                 id="departure"
                 name="departure"
                 component={StationAutocomplete}
@@ -95,7 +96,9 @@ const GroupFilterForm = ({
               fullWidth
               InputLabelProps={{ shrink: true }}
               InputProps={{
-                startAdornment: <InputIconAdornment iconName="date_range" />,
+                startAdornment: (
+                  <InputIconAdornment color="secondary" iconName="date_range" />
+                ),
               }}
             />
           </Grid>
@@ -109,7 +112,7 @@ const GroupFilterForm = ({
               fullWidth
               InputLabelProps={{ shrink: true }}
               InputProps={{
-                startAdornment: <InputIconAdornment iconName="date_range" />,
+                startAdornment: <InputIconAdornment iconName="schedule" />,
                 inputProps: {
                   min: '0',
                   max: '23',
@@ -127,7 +130,7 @@ const GroupFilterForm = ({
               fullWidth
               InputLabelProps={{ shrink: true }}
               InputProps={{
-                startAdornment: <InputIconAdornment iconName="date_range" />,
+                startAdornment: <InputIconAdornment iconName="schedule" />,
                 inputProps: {
                   min: '0',
                   max: '23',
@@ -138,7 +141,7 @@ const GroupFilterForm = ({
         </Grid>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button dense type="submit" disabled={pristine || submitting}>
+        <Button size="small" type="submit" disabled={pristine || submitting}>
           Search
         </Button>
       </CardActions>

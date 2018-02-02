@@ -21,7 +21,7 @@ type Props = {
 };
 
 type State = {
-  redirect: boolean,
+  redirectTo: null | string,
 };
 
 class CreateGroup extends React.Component<Props, State> {
@@ -30,72 +30,85 @@ class CreateGroup extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.clearData = this.clearData.bind(this);
+    this.prepareData = this.prepareData.bind(this);
   }
 
   state = {
-    redirect: false,
+    redirectTo: null,
   };
 
   handleSubmit: Function;
-  clearData: Function;
+  prepareData: Function;
 
   async handleSubmit(values: Object) {
     const {
       firestore,
+      auth,
       dThrowDissmissSnackbar,
       dThrowAccentSnackbar,
     } = this.props;
 
-    const cleanPayload = this.clearData(values);
+    const groupPayload = this.prepareData(values);
     try {
-      await firestore.add('groups', cleanPayload);
+      const { id: groupId } = await firestore.add('groups', groupPayload);
+      const memberPayload = {
+        user: getUserFromAuth(auth),
+        groupId,
+        adminUid: auth.uid,
+        status: 'admin',
+        message: null,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        obsolete: false,
+        confirmedAt: firestore.FieldValue.serverTimestamp(),
+        paid: false,
+        ticketUnits: 1,
+      };
+      await firestore.add('members', memberPayload);
       dThrowDissmissSnackbar('Your group has been successfully created !');
-      this.setState({ redirect: true });
+      this.setState({ redirectTo: `group/${groupId}` });
     } catch (err) {
       logErrorIfDevEnv(err);
       dThrowAccentSnackbar('Ooops, try again later please :/');
     }
   }
 
-  clearData(values: Object): Object {
+  prepareData(values: Object): Object {
     const { auth, firestore } = this.props;
 
-    const admin = getUserFromAuth(auth);
     const {
       departure_obj: departure,
       arrival_obj: arrival,
       date,
       time,
-      info = null,
+      public_info: publicInfo = null,
+      private_info: privateInfo = null,
     } = values;
-    const departureStation = {
-      name: departure.name,
-      id: departure.code,
-    };
-    const arrivalStation = {
-      name: arrival.name,
-      id: arrival.code,
-    };
-    const dateTime = moment(date)
-      .hour(+time)
-      .toDate();
-    const createdAt = firestore.FieldValue.serverTimestamp();
     return {
-      admin,
-      departureStation,
-      arrivalStation,
-      dateTime,
-      info,
-      createdAt,
+      admin: getUserFromAuth(auth),
+      departureStation: {
+        name: departure.name,
+        id: departure.code,
+      },
+      arrivalStation: {
+        name: arrival.name,
+        id: arrival.code,
+      },
+      dateTime: moment(date)
+        .hour(+time)
+        .toDate(),
+      publicInfo,
+      privateInfo,
+      createdAt: firestore.FieldValue.serverTimestamp(),
+      pendingRequests: 0,
+      ticketUnits: 1,
     };
   }
 
   render() {
-    const { redirect } = this.state;
+    const { redirectTo } = this.state;
 
-    if (redirect) {
-      return <Redirect to="/" />;
+    if (redirectTo) {
+      return <Redirect to={redirectTo} />;
     }
     return <CreateGroupForm onSubmit={this.handleSubmit} />;
   }

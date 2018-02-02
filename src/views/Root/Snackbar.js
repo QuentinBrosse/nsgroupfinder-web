@@ -19,19 +19,26 @@ type State = {};
 class Snackbar extends React.Component<Props, State> {
   static defaultProps = {};
 
-  handleClose = () => {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick: Function;
+
+  handleClick() {
     const { snackbar, dDismissSnackbar, dispatch } = this.props;
     const { actionOnClickButton } = snackbar.button;
     dDismissSnackbar();
     if (actionOnClickButton) {
       dispatch(actionOnClickButton);
     }
-  };
+  }
 
   render() {
     const { snackbar, dDismissSnackbar } = this.props;
     const { opened, message, button } = snackbar;
-    const buttonColor = button.type === 'default' ? 'contrast' : button.type;
+    const buttonColor = button.type === 'default' ? 'secondary' : button.type;
     return (
       <DefaultSnackbar
         anchorOrigin={{
@@ -46,7 +53,12 @@ class Snackbar extends React.Component<Props, State> {
         }}
         message={<span id="snackbar-message">{message}</span>}
         action={[
-          <Button key={1} color={buttonColor} dense onClick={this.handleClose}>
+          <Button
+            key={1}
+            color={buttonColor}
+            size="small"
+            onClick={this.handleClick}
+          >
             {button.label || 'Dismiss'}
           </Button>,
         ]}

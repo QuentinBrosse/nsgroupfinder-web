@@ -3,10 +3,10 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import type { Node } from 'react';
-import type { RequestState } from 'types/group';
+import type { RequestStatus } from 'types/group';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { Redirect } from 'react-router-dom';
 import { logErrorIfDevEnv } from 'utils/env';
@@ -18,8 +18,9 @@ import {
 import IconButton from 'material-ui/IconButton';
 import HourglassEmptyIcon from 'material-ui-icons/HourglassEmpty';
 import CheckIcon from 'material-ui-icons/Check';
-import FavoriteIcon from 'material-ui-icons/Favorite';
 import DoNotDisturbOnIcon from 'material-ui-icons/DoNotDisturbOn';
+import GroupAddIcon from 'material-ui-icons/GroupAdd';
+import ModeEditIcon from 'material-ui-icons/ModeEdit';
 import { getUserFromAuth } from 'utils/user';
 import RequestDialogRequest from './RequestDialogRequest';
 
@@ -30,7 +31,7 @@ type RequestComponents = {
 
 type Props = {
   classes: Object,
-  requestState?: RequestState,
+  requestStatus?: RequestStatus,
   groupId: string,
   adminUid: string,
   dThrowDissmissSnackbar: Function,
@@ -46,13 +47,13 @@ type State = {
 
 class GroupCardRequestButton extends React.Component<Props, State> {
   static defaultProps = {
-    requestState: 'default',
+    requestStatus: 'default',
   };
 
   constructor(props) {
     super(props);
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
     this.sendRequest = this.sendRequest.bind(this);
   }
@@ -63,48 +64,53 @@ class GroupCardRequestButton extends React.Component<Props, State> {
   };
 
   get requestComponents(): RequestComponents {
-    const { classes, groupId, requestState } = this.props;
+    const { classes, groupId, requestStatus } = this.props;
     const { dialogOpen } = this.state;
-    switch (requestState) {
+    switch (requestStatus) {
       case 'pending':
         return {
-          icon: <HourglassEmptyIcon className={classes.checkIconPending} />,
+          icon: <HourglassEmptyIcon className={classes.iconPending} />,
           dialog: (
             <RequestDialogPending
               opened={dialogOpen}
-              onClose={this.handleClose}
+              onClose={this.handleCloseDialog}
             />
           ),
         };
       case 'confirmed':
         return {
-          icon: <CheckIcon className={classes.checkIconConfirmed} />,
+          icon: <CheckIcon className={classes.iconConfirmed} />,
           dialog: (
             <RequestDialogConfirmed
               opened={dialogOpen}
-              onClose={this.handleClose}
-              viewGroup={() => this.redirectTo('/create-group')}
+              onClose={this.handleCloseDialog}
+              viewGroup={() => this.redirectTo(`/group/${groupId}`)}
             />
           ),
         };
       case 'refused':
         return {
-          icon: <DoNotDisturbOnIcon className={classes.checkIconRefused} />,
+          icon: <DoNotDisturbOnIcon className={classes.iconRefused} />,
           dialog: (
             <RequestDialogRejected
               opened={dialogOpen}
-              onClose={this.handleClose}
+              onClose={this.handleCloseDialog}
             />
           ),
         };
+      case 'admin':
+        return {
+          icon: <ModeEditIcon />,
+          dialog: null,
+        };
       default:
         return {
-          icon: <FavoriteIcon />,
+          icon: <GroupAddIcon />,
           dialog: (
             <RequestDialogRequest
               groupId={groupId}
               opened={dialogOpen}
-              onClose={this.handleClose}
+              onClose={this.handleCloseDialog}
               sendRequest={this.sendRequest}
             />
           ),
@@ -112,16 +118,21 @@ class GroupCardRequestButton extends React.Component<Props, State> {
     }
   }
 
-  handleOpen: Function;
-  handleClose: Function;
+  handleClick: Function;
+  handleCloseDialog: Function;
   redirectTo: Function;
   sendRequest: Function;
 
-  handleOpen() {
-    this.setState({ dialogOpen: true });
+  handleClick() {
+    const { requestStatus, groupId } = this.props;
+    if (requestStatus !== 'admin') {
+      this.setState({ dialogOpen: true });
+    } else {
+      this.redirectTo(`/group/${groupId}`);
+    }
   }
 
-  handleClose() {
+  handleCloseDialog() {
     this.setState({ dialogOpen: false });
   }
 
@@ -129,7 +140,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
     this.setState({ redirectTo: route });
   }
 
-  async sendRequest(message: string) {
+  async sendRequest(message: string, ticketUnits: number) {
     const {
       dThrowAccentSnackbar,
       dThrowDissmissSnackbar,
@@ -138,6 +149,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       adminUid,
       auth,
     } = this.props;
+    const db = getFirebase().firestore();
     const payload = {
       user: getUserFromAuth(auth),
       groupId,
@@ -145,13 +157,28 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       status: 'pending',
       message,
       createdAt: firestore.FieldValue.serverTimestamp(),
+      confirmedAt: null,
+      obsolete: false,
+      paid: false,
+      ticketUnits: ticketUnits || 1,
     };
     try {
-      await firestore.add('members', payload);
+      const groupRef = db.collection('groups').doc(groupId);
+      const membersRef = db.collection('members').doc();
+      await db.runTransaction(async transaction => {
+        const group = await transaction.get(groupRef);
+        if (!group.exists) {
+          dThrowAccentSnackbar('Ooops, this group does not exist.');
+          throw new Error('Document does not exist!');
+        }
+        const { pendingRequests } = group.data();
+        transaction.update(groupRef, { pendingRequests: pendingRequests + 1 });
+        transaction.set(membersRef, payload);
+      });
       dThrowDissmissSnackbar(
         'Your request has been sent to the group creator !'
       );
-      this.redirectTo('/create-group');
+      this.setState({ dialogOpen: false });
     } catch (err) {
       logErrorIfDevEnv(err);
       dThrowAccentSnackbar('Ooops, try again later please :/');
@@ -162,11 +189,11 @@ class GroupCardRequestButton extends React.Component<Props, State> {
     const { icon, dialog } = this.requestComponents;
     const { redirectTo } = this.state;
     if (redirectTo) {
-      return <Redirect to={redirectTo} />;
+      return <Redirect to={redirectTo} push />;
     }
     return (
       <div>
-        <IconButton onClick={this.handleOpen}>{icon}</IconButton>
+        <IconButton onClick={this.handleClick}>{icon}</IconButton>
         {dialog}
       </div>
     );
@@ -174,13 +201,13 @@ class GroupCardRequestButton extends React.Component<Props, State> {
 }
 
 const styles = ({ palette }) => ({
-  checkIconPending: {
+  iconPending: {
     color: palette.warning.main,
   },
-  checkIconConfirmed: {
+  iconConfirmed: {
     color: palette.success.main,
   },
-  checkIconRefused: {
+  iconRefused: {
     color: palette.error.main,
   },
 });

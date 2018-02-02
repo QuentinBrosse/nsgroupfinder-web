@@ -15,7 +15,7 @@ export type SnackbarState = {
   +button: SnackbarButton,
 };
 
-// Actions
+// Actions Creators
 export type ThrowSnackbar = {
   +type: 'SNACKBAR_THROW',
   +payload: {

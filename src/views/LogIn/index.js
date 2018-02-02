@@ -63,15 +63,17 @@ class LogIn extends React.Component<Props, State> {
           <Typography type="headline" align="center">
             NS Group Finder
           </Typography>
-          <Typography type="subheading" align="center" color="secondary">
+          <Typography type="subheading" align="center" color="primary">
             Connect or Leave{' '}
             <span role="img" aria-label="Sad emojy">
               😘
             </span>
           </Typography>
+
           <Button
+            raised
             className={classes.button}
-            color="inherit"
+            color="primary"
             onClick={this.logIn}
           >
             Login with Facebook
