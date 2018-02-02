@@ -17,7 +17,9 @@ import { throwAccentSnackbar } from 'actions/snackbar';
 import { logErrorIfDevEnv } from 'utils/env';
 import type { Member } from 'types/user';
 import type { Group, RequestStatus } from 'types/group';
+import type Moment from 'moment';
 import GroupFilterForm from './GroupFilterForm';
+import ResultsDescription from './ResultsDescription';
 
 type Props = {
   classes?: Object,
@@ -28,6 +30,12 @@ type Props = {
 
 type State = {
   results: Array<Object>,
+  resultsDescrption: null | {
+    departureStation: string,
+    arrivalStation: string,
+    startDate: Moment,
+    endDate: Moment,
+  },
 };
 
 class Home extends React.Component<Props, State> {
@@ -41,6 +49,7 @@ class Home extends React.Component<Props, State> {
 
   state = {
     results: [],
+    resultsDescrption: null,
   };
 
   getRequestStatus(currentGroupId: string): RequestStatus {
@@ -56,8 +65,8 @@ class Home extends React.Component<Props, State> {
   async handleSubmit(values) {
     const { firestore, dThrowAccentSnackbar } = this.props;
     const {
-      departure_obj: { code: departureStationId },
-      arrival_obj: { code: arrivalStationId },
+      departure_obj: { code: departureStationId, name: departureStationName },
+      arrival_obj: { code: arrivalStationId, name: arrivalStationName },
       date,
       start_time: startTime,
       end_time: endTime,
@@ -76,13 +85,21 @@ class Home extends React.Component<Props, State> {
           ['dateTime', '>=', startDate.toDate()],
           ['dateTime', '<=', endDate.toDate()],
         ],
-        orderBy: ['dateTime', 'desc'], // : cf #19
+        orderBy: ['dateTime', 'desc'],
       });
       const results = snapshot.docs.map(result => ({
         id: result.id,
         ...result.data(),
       }));
-      this.setState({ results });
+      this.setState({
+        results,
+        resultsDescrption: {
+          departureStation: departureStationName,
+          arrivalStation: arrivalStationName,
+          startDate,
+          endDate,
+        },
+      });
     } catch (err) {
       logErrorIfDevEnv(err);
       dThrowAccentSnackbar('Ooops, try again later please :/');
@@ -91,7 +108,7 @@ class Home extends React.Component<Props, State> {
 
   render() {
     const { firestore } = this.props;
-    const { results } = this.state;
+    const { results, resultsDescrption } = this.state;
 
     return (
       <div>
@@ -110,9 +127,8 @@ class Home extends React.Component<Props, State> {
 
         {results.length > 0 ? (
           <div>
-            <Typography type="title" paragraph>
-              Groups
-            </Typography>
+            <Typography type="title">Groups</Typography>
+            {resultsDescrption && <ResultsDescription {...resultsDescrption} />}
             <GroupCardContainer>
               {results.map((result: Group) => (
                 <GroupCard
