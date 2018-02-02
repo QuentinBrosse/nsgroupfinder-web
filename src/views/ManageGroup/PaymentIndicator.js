@@ -29,6 +29,12 @@ class PaymentIndicator extends React.Component<Props, State> {
     paid: false,
   };
 
+  componentWillMount() {
+    if (this.props.paid) {
+      this.setState({ paid: true });
+    }
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.paid !== this.props.paid) {
       this.setState({ paid: nextProps.paid });
