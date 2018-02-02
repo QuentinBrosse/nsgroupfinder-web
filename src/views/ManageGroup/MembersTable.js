@@ -13,6 +13,8 @@ import Table, {
   TableRow,
 } from 'material-ui/Table';
 import { updateMember } from 'actions/groups';
+import Button from 'material-ui/Button';
+import Tooltip from 'material-ui/Tooltip';
 // import AdminActionsMenu from './AdminActionsMenu';
 import PaymentIndicator from './PaymentIndicator';
 import DateFromNow from './DateFromNow';
@@ -39,18 +41,30 @@ class MembersTable extends React.Component<Props, State> {
     const { isAdmin, classes } = this.props;
     return (
       <TableRow key={member.id} className={classes.row}>
-        <TableCell>
+        <TableCell padding="checkbox">
           <PaymentIndicator
             isAdmin={isAdmin}
             paid={member.paid}
             onClick={() => this.handlePaymentClick(member)}
           />
         </TableCell>
-        <TableCell>{member.user.displayName}</TableCell>
-        <TableCell>
+        <TableCell padding="none">
+          <Tooltip id="tooltip-right" title="Open Facebook" placement="right">
+            <Button
+              className={classes.buttonFacebook}
+              size="small"
+              color="primary"
+            >
+              {member.user.displayName}
+            </Button>
+          </Tooltip>
+        </TableCell>
+        <TableCell padding="dense" numeric>
+          {member.ticketUnits}
+        </TableCell>
+        <TableCell numeric className={classes.confirmedCell}>
           <DateFromNow dateTime={member.confirmedAt} />
         </TableCell>
-        <TableCell numeric>{member.ticketUnits}</TableCell>
         {/* {isAdmin && (
           <TableCell>
             <AdminActionsMenu />
@@ -76,10 +90,14 @@ class MembersTable extends React.Component<Props, State> {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>Paid</TableCell>
-              <TableCell>Facebook</TableCell>
-              <TableCell>Confirmed</TableCell>
-              <TableCell numeric>Tickets</TableCell>
+              <TableCell padding="checkbox">Paid</TableCell>
+              <TableCell padding="dense">Facebook</TableCell>
+              <TableCell padding="dense" numeric>
+                Tickets
+              </TableCell>
+              <TableCell numeric className={classes.confirmedCell}>
+                Confirmed
+              </TableCell>
               {/* {isAdmin && <TableCell>Actions</TableCell>} */}
             </TableRow>
           </TableHead>
@@ -90,7 +108,7 @@ class MembersTable extends React.Component<Props, State> {
   }
 }
 
-const styles = {
+const styles = ({ spacing, breakpoints }) => ({
   container: {
     width: '100%',
     overflowX: 'auto',
@@ -98,7 +116,15 @@ const styles = {
   row: {
     height: 60,
   },
-};
+  rightIcon: {
+    marginLeft: spacing.unit,
+  },
+  [breakpoints.down('sm')]: {
+    confirmedCell: {
+      display: 'none',
+    },
+  },
+});
 
 const mapDispatchToProps = {
   dUpdateMember: updateMember,

@@ -188,7 +188,7 @@ const updateMember = (
       .flatMap(() =>
         Observable.concat(
           Observable.of(updateMemberLocally(memberId, changes)),
-          Observable.of(throwDissmissSnackbar('Paiement registered'))
+          Observable.of(throwDissmissSnackbar('Paiement status updated'))
         )
       )
       .catch(err => {

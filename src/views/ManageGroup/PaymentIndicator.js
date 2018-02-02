@@ -3,7 +3,7 @@
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import PaidIcon from 'material-ui-icons/CheckCircle';
-import NoPaidIcon from 'material-ui-icons/Cancel';
+import NoPaidIcon from 'material-ui-icons/RadioButtonUnchecked';
 import Switch from 'material-ui/Switch';
 
 type Props = {
@@ -63,15 +63,17 @@ class PaymentIndicator extends React.Component<Props, State> {
     }
 
     return paid ? (
-      <PaidIcon className={classes.paid} />
+      <PaidIcon color="secondary" className={classes.paid} />
     ) : (
-      <NoPaidIcon className={classes.noPaid} />
+      <NoPaidIcon color="error" className={classes.noPaid} />
     );
   }
 }
 
 const styles = {
-  paid: {},
+  paid: {
+    color: '#8BC34A',
+  },
   noPair: {},
 };
 
