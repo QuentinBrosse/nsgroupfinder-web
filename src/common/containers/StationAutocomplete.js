@@ -3,9 +3,9 @@
 import React from 'react';
 import type { Node } from 'react';
 import { withStyles } from 'material-ui/styles';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
-import _ from 'lodash';
+import debounce from 'lodash/debounce';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
@@ -116,7 +116,7 @@ class StationAutocomplete extends React.Component<Props, State> {
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(
       this
     );
-    this.fetchSuggestions = _.debounce(this.fetchSuggestions, 500);
+    this.fetchSuggestions = debounce(this.fetchSuggestions, 500);
   }
 
   state = {

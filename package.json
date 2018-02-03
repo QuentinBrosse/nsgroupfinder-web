@@ -23,7 +23,8 @@
     "redux-form-material-ui": "^5.0.0-beta.2",
     "redux-form-validators": "^2.3.2",
     "redux-observable": "^0.17.0",
-    "rxjs": "^5.5.6"
+    "rxjs": "^5.5.6",
+    "source-map-explorer": "^1.5.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css,scss,less,md}": [
@@ -39,6 +40,7 @@
     "eject": "react-scripts eject",
     "flow": "flow",
     "prettier": "npx prettier --config .prettierrc.json --write 'src/**/*.{js,jsx,json,css,scss,less,md}'",
+    "analyze": "source-map-explorer build/static/js/main.*",
     "precommit": "lint-staged"
   },
   "devDependencies": {

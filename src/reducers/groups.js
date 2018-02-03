@@ -2,7 +2,7 @@
 
 import type { Group, GroupsState, GroupsActions } from 'types/group';
 import type { Member, MemberStatus } from 'types/user';
-import _ from 'lodash';
+import merge from 'lodash/merge';
 
 const changeMemberStatus = (
   members: Member[],
@@ -13,8 +13,12 @@ const changeMemberStatus = (
     m => (m.id === memberId ? { ...m, status, confirmedAt: new Date() } : m)
   );
 
-const merge = (array: Object[], matchId: string, changes: Object): Group[] =>
-  array.map(oldG => (oldG.id === matchId ? _.merge(oldG, changes) : oldG));
+const mergeArray = (
+  array: Object[],
+  matchId: string,
+  changes: Object
+): Group[] =>
+  array.map(oldG => (oldG.id === matchId ? merge(oldG, changes) : oldG));
 
 const initialState: GroupsState = {
   isLoading: false,
@@ -57,7 +61,7 @@ export default (
       const { groupId, changes } = action.payload;
       return {
         ...state,
-        groups: merge(state.groups, groupId, changes),
+        groups: mergeArray(state.groups, groupId, changes),
       };
     }
     case 'FETCH_CURRENT_GROUP_MEMBERS':
@@ -105,7 +109,7 @@ export default (
         ...state,
         currentGroup: {
           ...state.currentGroup,
-          groups: merge(state.currentGroup.members, memberId, changes),
+          groups: mergeArray(state.currentGroup.members, memberId, changes),
         },
       };
     }

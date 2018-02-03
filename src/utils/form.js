@@ -1,6 +1,6 @@
 // @flow
 
-import _ from 'lodash';
+import mapValues from 'lodash/mapValues';
 import Validators from 'redux-form-validators';
 
 /* eslint-disable import/prefer-default-export */
@@ -13,7 +13,7 @@ Object.assign(Validators.messages, {
 });
 
 export const validatorFactory = (validators: Object) => (values: Object) =>
-  _.mapValues(validators, (validator: Array<Function>, field: string) => {
+  mapValues(validators, (validator: Array<Function>, field: string) => {
     const value = values[field];
     return validator
       .map(validateField => validateField(value, values))

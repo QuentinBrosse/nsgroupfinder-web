@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import 'firebase/firestore';
 import { getFirebase, reactReduxFirebase } from 'react-redux-firebase';
 import { reduxFirestore } from 'redux-firestore';

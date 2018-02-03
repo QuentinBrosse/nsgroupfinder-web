@@ -23,8 +23,9 @@ import type {
 import type { Member } from 'types/user';
 import type { Store } from 'types/store';
 import { logErrorIfDevEnv } from 'utils/env';
-import { Observable } from 'rxjs';
-import firebase from 'firebase';
+import { Observable } from 'rxjs/Observable';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const fetchGroup = (
   action$: Observable<GroupsActions>,

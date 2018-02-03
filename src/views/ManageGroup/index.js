@@ -11,7 +11,7 @@ import { throwAccentSnackbar } from 'actions/snackbar';
 import { fetchGroups, fetchCurrentGroupMembers } from 'actions/groups';
 import { Redirect } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
-import _ from 'lodash';
+import differenceWith from 'lodash/differenceWith';
 import MembersTable from './MembersTable';
 import AdminTabs from './AdminTabs';
 import Header from './Header';
@@ -83,7 +83,7 @@ class ManageGroup extends React.Component<Props, State> {
     }
 
     // If new members
-    const membersDiff = _.differenceWith(nextMembers, members);
+    const membersDiff = differenceWith(nextMembers, members);
     if (membersDiff.length > 0) {
       const pendingMembers = nextMembers.filter(
         member => member.status === 'pending'

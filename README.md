@@ -16,6 +16,7 @@ You can find the most recent version of this guide [here](https://github.com/fac
   * [yarn lint](#yarn-lint)
   * [yarn flow](#yarn-flow)
   * [yarn prettier](#yarn-prettier)
+  * [yarn analyze](#yarn-analyze)
   * [yarn build](#yarn-build)
   * [yarn eject](#yarn-eject)
 * [Folder Structure](#folder-structure)
@@ -73,6 +74,10 @@ Runs [flow](https://flow.org/) to check the files for type errors.
 
 Format all the project files with Prettier.<br>
 See the section about [prettier](#formatting-code-automatically) for more information.
+
+### `yarn analyze`
+
+Analyze JavaScript bundles using the source maps. This helps you understand where code bloat is coming from.
 
 ### `yarn build`
 

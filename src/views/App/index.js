@@ -16,7 +16,7 @@ import CreateGroup from 'views/CreateGroup';
 import MyGroups from 'views/MyGroups';
 import ManageGroup from 'views/ManageGroup';
 import { isConnected } from 'utils/user';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import NavBar from './NavBar';
 
 type Props = {
@@ -45,7 +45,7 @@ class App extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    if (!_.isEmpty(this.listener)) {
+    if (!isEmpty(this.listener)) {
       const { firestore } = this.props;
       firestore.unsetListener(this.listener);
     }

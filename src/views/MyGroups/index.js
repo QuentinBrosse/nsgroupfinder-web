@@ -4,7 +4,7 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import Typography from 'material-ui/Typography';
 import type { Member } from 'types/user';
 import type { Group, GroupsState, RequestStatus } from 'types/group';
@@ -100,7 +100,7 @@ class MyGroups extends React.Component<Props, State> {
       return 'Loading...';
     }
 
-    if (_.isEmpty(groups)) {
+    if (isEmpty(groups)) {
       return 'Empty';
     }
 
