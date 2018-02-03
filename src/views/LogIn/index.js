@@ -17,6 +17,7 @@ type Props = {
   classes: Object,
   firebase: Object,
   auth: Object,
+  location: Object,
   dThrowDissmissSnackbar: Function,
   dThrowAccentSnackbar: Function,
 };
@@ -53,9 +54,10 @@ class LogIn extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, auth } = this.props;
+    const { classes, auth, location } = this.props;
     if (isConnected(auth)) {
-      return <Redirect to="/app" />;
+      const { state } = location;
+      return <Redirect to={state.returnTo || '/app'} />;
     }
     return (
       <div className={classes.container}>

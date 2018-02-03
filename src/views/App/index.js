@@ -20,11 +20,18 @@ import NavBar from './NavBar';
 type Props = {
   classes: Object,
   auth: Object,
+  location: Object,
+  firestore: Object,
 };
 
-const App = ({ classes, auth }: Props): Node => {
+const App = ({ classes, auth, location }: Props): Node => {
+  const { pathname: returnTo } = location;
   if (!isConnected(auth)) {
-    return <Redirect to="/login" />;
+    const redirectLocation = {
+      pathname: '/login',
+      state: { returnTo },
+    };
+    return <Redirect to={redirectLocation} />;
   }
   return (
     <Router basename="/app">
