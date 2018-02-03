@@ -8,6 +8,7 @@ import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import { LinearProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
+import Tooltip from 'material-ui/Tooltip';
 import ShareIcon from 'material-ui-icons/Share';
 import moment from 'moment';
 
@@ -28,12 +29,18 @@ const Header = ({ classes, group }: Props): Node => {
       <CardHeader
         action={
           <div>
-            <Button className={classes.button} raised color="secondary">
-              <Typography type="button" color="primary">
-                Share
-              </Typography>
-              <ShareIcon color="primary" className={classes.rightIcon} />
-            </Button>
+            <Tooltip
+              id="tooltip-right"
+              title="Available soon"
+              placement="right"
+            >
+              <Button className={classes.button} raised color="secondary">
+                <Typography type="button" color="primary">
+                  Share
+                </Typography>
+                <ShareIcon color="primary" className={classes.rightIcon} />
+              </Button>
+            </Tooltip>
           </div>
         }
         title={`${group.departureStation.name} to ${group.arrivalStation.name}`}

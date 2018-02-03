@@ -21,12 +21,14 @@ import CheckIcon from 'material-ui-icons/Check';
 import DoNotDisturbOnIcon from 'material-ui-icons/DoNotDisturbOn';
 import GroupAddIcon from 'material-ui-icons/GroupAdd';
 import ModeEditIcon from 'material-ui-icons/ModeEdit';
+import Tooltip from 'material-ui/Tooltip';
 import { getUserFromAuth } from 'utils/user';
 import RequestDialogRequest from './RequestDialogRequest';
 
 type RequestComponents = {
   icon: Node,
   dialog: Node,
+  tooltip: String,
 };
 
 type Props = {
@@ -76,6 +78,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
               onClose={this.handleCloseDialog}
             />
           ),
+          tooltip: 'Pending..',
         };
       case 'confirmed':
         return {
@@ -87,6 +90,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
               viewGroup={() => this.redirectTo(`/group/${groupId}`)}
             />
           ),
+          tooltip: 'Request accepted !',
         };
       case 'refused':
         return {
@@ -97,11 +101,13 @@ class GroupCardRequestButton extends React.Component<Props, State> {
               onClose={this.handleCloseDialog}
             />
           ),
+          tooltip: 'Request rejected..',
         };
       case 'admin':
         return {
           icon: <ModeEditIcon />,
           dialog: null,
+          tooltip: 'Edit your group',
         };
       default:
         return {
@@ -114,6 +120,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
               sendRequest={this.sendRequest}
             />
           ),
+          tooltip: 'Join the group !',
         };
     }
   }
@@ -186,14 +193,16 @@ class GroupCardRequestButton extends React.Component<Props, State> {
   }
 
   render() {
-    const { icon, dialog } = this.requestComponents;
+    const { icon, dialog, tooltip } = this.requestComponents;
     const { redirectTo } = this.state;
     if (redirectTo) {
       return <Redirect to={redirectTo} push />;
     }
     return (
       <div>
-        <IconButton onClick={this.handleClick}>{icon}</IconButton>
+        <Tooltip id="tooltip-icon" title={tooltip} placement="left">
+          <IconButton onClick={this.handleClick}>{icon}</IconButton>
+        </Tooltip>
         {dialog}
       </div>
     );

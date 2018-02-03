@@ -137,7 +137,7 @@ const styles = ({ breakpoints, palette }) => ({
     },
   },
   badge: {
-    color: palette.error.main,
+    color: palette.secondary.dark,
   },
 });
 

@@ -48,7 +48,13 @@ class ConfirmationButton extends React.Component<Props, State> {
             {children}
           </Tooltip>
         </IconButton>
-        {loading && <CircularProgress size={30} className={classes.progress} />}
+        {loading && (
+          <CircularProgress
+            color="secondary"
+            size={30}
+            className={classes.progress}
+          />
+        )}
       </div>
     );
   }

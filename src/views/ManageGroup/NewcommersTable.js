@@ -68,14 +68,14 @@ class NewcommersTable extends React.Component<Props, State> {
             memberId={member.id}
             onClick={() => dUpdateMemberStatus(member.id, 'confirmed')}
           >
-            <ConfirmIcon />
+            <ConfirmIcon color="primary" />
           </ConfirmationButton>
           <ConfirmationButton
             tooltipTitle="Refuse"
             memberId={member.id}
             onClick={() => dUpdateMemberStatus(member.id, 'refused')}
           >
-            <RejectIcon />
+            <RejectIcon color="primary" />
           </ConfirmationButton>
         </TableCell>
       </TableRow>
