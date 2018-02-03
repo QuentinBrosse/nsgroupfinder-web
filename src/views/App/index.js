@@ -1,10 +1,9 @@
 // @flow
 
 import React from 'react';
-import type { Node } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firebaseConnect } from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import { withStyles } from 'material-ui/styles';
 import {
   BrowserRouter as Router,
@@ -14,7 +13,10 @@ import {
 } from 'react-router-dom';
 import Home from 'views/Home';
 import CreateGroup from 'views/CreateGroup';
+import MyGroups from 'views/MyGroups';
+import ManageGroup from 'views/ManageGroup';
 import { isConnected } from 'utils/user';
+import _ from 'lodash';
 import NavBar from './NavBar';
 
 type Props = {
@@ -24,45 +26,75 @@ type Props = {
   firestore: Object,
 };
 
-const App = ({ classes, auth, location }: Props): Node => {
-  const { pathname: returnTo } = location;
-  if (!isConnected(auth)) {
-    const redirectLocation = {
-      pathname: '/login',
-      state: { returnTo },
+type State = {};
+
+class App extends React.Component<Props, State> {
+  static defaultProps = {};
+
+  componentWillMount() {
+    const { auth, firestore } = this.props;
+    if (!auth.uid) {
+      return;
+    }
+    this.listener = {
+      collection: 'members',
+      storeAs: 'memberships',
+      where: [['user.uid', '==', auth.uid], ['obsolete', '==', false]],
     };
-    return <Redirect to={redirectLocation} />;
+    firestore.setListener(this.listener);
   }
-  return (
-    <Router basename="/app">
-      <div>
-        <NavBar />
-        <div className={classes.container}>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/create-group" component={CreateGroup} />
-            <Redirect to="/" />
-          </Switch>
+
+  componentWillUnmount() {
+    if (!_.isEmpty(this.listener)) {
+      const { firestore } = this.props;
+      firestore.unsetListener(this.listener);
+    }
+  }
+
+  listener = {};
+
+  render() {
+    const { classes, auth, location } = this.props;
+    const { pathname: returnTo } = location;
+    if (!isConnected(auth)) {
+      const redirectLocation = {
+        pathname: '/login',
+        state: { returnTo },
+      };
+      return <Redirect to={redirectLocation} />;
+    }
+    return (
+      <Router basename="/app">
+        <div>
+          <NavBar />
+          <div className={classes.container}>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/create-group" component={CreateGroup} />
+              <Route exact path="/my-groups" component={MyGroups} />
+              <Route exact path="/group/:groupId" component={ManageGroup} />
+              <Redirect to="/" />
+            </Switch>
+          </div>
         </div>
-      </div>
-    </Router>
-  );
-};
+      </Router>
+    );
+  }
+}
 
-App.defaultProps = {};
-
-const styles = {
+const styles = ({ spacing }) => ({
   container: {
-    padding: 20,
+    padding: spacing.unit * 2,
+    paddingTop: spacing.unit * 4,
   },
-};
+});
 
 const mapStateToProps = ({ firebase: { auth } }) => ({
   auth,
 });
 
 export default compose(
-  firebaseConnect(),
   withStyles(styles),
+  firestoreConnect(),
   connect(mapStateToProps)
 )(App);

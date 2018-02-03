@@ -4718,9 +4718,9 @@ material-ui-icons@^1.0.0-beta.17:
   dependencies:
     recompose "^0.26.0"
 
-material-ui@^1.0.0-beta.28:
-  version "1.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.29.tgz#21ddf110d7aae4a6582584fc10ce948f144b1f2b"
+material-ui@^1.0.0-beta.31:
+  version "1.0.0-beta.31"
+  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.31.tgz#5d832d0c4d9eceea2cbf1647dc7f57a4031f0243"
   dependencies:
     "@types/jss" "^9.3.0"
     "@types/react-transition-group" "^2.0.6"
@@ -6263,9 +6263,9 @@ redux-devtools-extension@^2.13.2:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.2.tgz#e0f9a8e8dfca7c17be92c7124958a3b94eb2911d"
 
-redux-firestore@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/redux-firestore/-/redux-firestore-0.2.5.tgz#c0c5ffdbb8759b2a3f61d7df48d61e29d9195377"
+redux-firestore@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/redux-firestore/-/redux-firestore-0.2.6.tgz#3ea35ddd276479abc23638ae437febf35cc9e8b5"
   dependencies:
     lodash "^4.17.4"
     prop-types "^15.6.0"

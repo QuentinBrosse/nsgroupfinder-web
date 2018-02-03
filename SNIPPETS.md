@@ -48,7 +48,7 @@ To goal is to create new snippets during the development and to share them here!
       "",
       "${1:Component}.defaultProps = {};",
       "",
-      "const styles = {}",
+      "const styles = {};",
       "",
       "export default withStyles(styles)(${1:Component});",
       ""

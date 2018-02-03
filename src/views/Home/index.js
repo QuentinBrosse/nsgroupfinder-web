@@ -15,17 +15,27 @@ import {
 import { GroupCard } from 'common/containers';
 import { throwAccentSnackbar } from 'actions/snackbar';
 import { logErrorIfDevEnv } from 'utils/env';
+import type { Member } from 'types/user';
+import type { Group, RequestStatus } from 'types/group';
+import type Moment from 'moment';
 import GroupFilterForm from './GroupFilterForm';
-import fakeCards from './fakeCards';
+import ResultsDescription from './ResultsDescription';
 
 type Props = {
   classes?: Object,
   firestore: Object,
   dThrowAccentSnackbar: Function,
+  memberships: Member[],
 };
 
 type State = {
   results: Array<Object>,
+  resultsDescrption: null | {
+    departureStation: string,
+    arrivalStation: string,
+    startDate: Moment,
+    endDate: Moment,
+  },
 };
 
 class Home extends React.Component<Props, State> {
@@ -34,21 +44,29 @@ class Home extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getRequestStatus = this.getRequestStatus.bind(this);
   }
 
   state = {
     results: [],
+    resultsDescrption: null,
   };
 
-  handleSubmit: Function;
+  getRequestStatus(currentGroupId: string): RequestStatus {
+    const { memberships } = this.props;
+    const isMemberToGroup = membership => membership.groupId === currentGroupId;
+    const matchedMembership = memberships.find(isMemberToGroup);
+    return matchedMembership ? matchedMembership.status : null;
+  }
 
-  fakeCards = false;
+  handleSubmit: Function;
+  getRequestStatus: Function;
 
   async handleSubmit(values) {
     const { firestore, dThrowAccentSnackbar } = this.props;
     const {
-      departure_obj: { code: departureStationId },
-      arrival_obj: { code: arrivalStationId },
+      departure_obj: { code: departureStationId, name: departureStationName },
+      arrival_obj: { code: arrivalStationId, name: arrivalStationName },
       date,
       start_time: startTime,
       end_time: endTime,
@@ -67,13 +85,21 @@ class Home extends React.Component<Props, State> {
           ['dateTime', '>=', startDate.toDate()],
           ['dateTime', '<=', endDate.toDate()],
         ],
-        // orderBy: ['dateTime', 'desc'], : cf #19
+        orderBy: ['dateTime', 'desc'],
       });
       const results = snapshot.docs.map(result => ({
         id: result.id,
         ...result.data(),
       }));
-      this.setState({ results });
+      this.setState({
+        results,
+        resultsDescrption: {
+          departureStation: departureStationName,
+          arrivalStation: arrivalStationName,
+          startDate,
+          endDate,
+        },
+      });
     } catch (err) {
       logErrorIfDevEnv(err);
       dThrowAccentSnackbar('Ooops, try again later please :/');
@@ -81,31 +107,30 @@ class Home extends React.Component<Props, State> {
   }
 
   render() {
-    const { results } = this.state;
+    const { firestore } = this.props;
+    const { results, resultsDescrption } = this.state;
+
     return (
       <div>
         <GroupFilterForm onSubmit={this.handleSubmit} />
 
-        {this.fakeCards && (
-          <div>
-            <Typography type="title" paragraph>
-              Groups
-            </Typography>
-            <pre>
-              You see these cards because this.examples = true (in
-              Views/Home/index)
-            </pre>
-            {fakeCards}
-          </div>
-        )}
+        <button
+          onClick={() => {
+            firestore.get('groups').then(s => {
+              const rs = s.docs.map(r => ({ id: r.id, ...r.data() }));
+              this.setState({ results: rs });
+            });
+          }}
+        >
+          Load all (debug)
+        </button>
 
         {results.length > 0 ? (
           <div>
-            <Typography type="title" paragraph>
-              Groups
-            </Typography>
+            <Typography type="title">Groups</Typography>
+            {resultsDescrption && <ResultsDescription {...resultsDescrption} />}
             <GroupCardContainer>
-              {results.map(result => (
+              {results.map((result: Group) => (
                 <GroupCard
                   key={result.id}
                   id={result.id}
@@ -116,10 +141,12 @@ class Home extends React.Component<Props, State> {
                   }}
                   dateTime={result.dateTime}
                   members={{
-                    current: 1,
+                    current: result.ticketUnits,
                     target: 7,
                   }}
                   info={result.info}
+                  pendingRequests={result.pendingRequests}
+                  requestStatus={this.getRequestStatus(result.id)}
                 />
               ))}
             </GroupCardContainer>
@@ -135,6 +162,10 @@ class Home extends React.Component<Props, State> {
 
 const styles = {};
 
+const mapStateToProps = ({ firestore: { ordered } }) => ({
+  memberships: ordered.memberships,
+});
+
 const mapDispatchToProps = {
   dThrowAccentSnackbar: throwAccentSnackbar,
 };
@@ -142,5 +173,5 @@ const mapDispatchToProps = {
 export default compose(
   withStyles(styles),
   firestoreConnect(),
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(Home);

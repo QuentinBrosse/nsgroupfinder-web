@@ -4,8 +4,8 @@ import type { ThrowSnackbar, DismissSnackbar } from 'types/snackbar';
 
 export const throwDefaultSnackbar = (
   message: string,
-  buttonLabel: string,
-  actionOnClickButton: Object
+  buttonLabel: null | string = null,
+  actionOnClickButton: null | Object = null
 ): ThrowSnackbar => ({
   type: 'SNACKBAR_THROW',
   payload: {
@@ -32,8 +32,8 @@ export const throwDissmissSnackbar = (message: string): ThrowSnackbar => ({
 
 export const throwAccentSnackbar = (
   message: string,
-  buttonLabel: string,
-  actionOnClickButton: Object
+  buttonLabel: null | string = null,
+  actionOnClickButton: null | Object = null
 ): ThrowSnackbar => ({
   type: 'SNACKBAR_THROW',
   payload: {

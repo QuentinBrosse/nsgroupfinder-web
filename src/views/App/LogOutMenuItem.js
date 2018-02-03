@@ -4,13 +4,11 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firebaseConnect } from 'react-redux-firebase';
-import { withStyles } from 'material-ui/styles';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { logErrorIfDevEnv } from 'utils/env';
 
 type Props = {
-  classes: Object,
   firebase: Object,
   dThrowDissmissSnackbar: Function,
   dThrowAccentSnackbar: Function,
@@ -44,26 +42,15 @@ class LogOutMenuItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes } = this.props;
-    return (
-      <MenuItem className={classes.item} onClick={this.logOut}>
-        Log Out
-      </MenuItem>
-    );
+    return <MenuItem onClick={this.logOut}>Log Out</MenuItem>;
   }
 }
-
-const styles = {
-  item: {},
-};
 
 const mapDispatchToProps = {
   dThrowDissmissSnackbar: throwDissmissSnackbar,
   dThrowAccentSnackbar: throwAccentSnackbar,
 };
 
-export default compose(
-  firebaseConnect(),
-  withStyles(styles),
-  connect(null, mapDispatchToProps)
-)(LogOutMenuItem);
+export default compose(firebaseConnect(), connect(null, mapDispatchToProps))(
+  LogOutMenuItem
+);

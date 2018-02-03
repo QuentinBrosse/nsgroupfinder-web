@@ -17,7 +17,7 @@ const EmptyGroupResults = ({ classes }: Props): Node => (
       type="subheading"
       align="center"
       headlineMapping={{ subheading: 'p' }}
-      color="secondary"
+      color="textSecondary"
     >
       No group was found for these criteria..{' '}
       <span role="img" aria-label="Sad emojy">
