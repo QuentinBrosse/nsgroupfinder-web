@@ -179,7 +179,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
           confirmedAt: null,
           obsolete: groupObsolete,
           paid: false,
-          ticketUnits: ticketUnits || 1,
+          ticketUnits: parseInt(ticketUnits, 10) || 1,
         };
         transaction.set(membersRef, payload);
       });
