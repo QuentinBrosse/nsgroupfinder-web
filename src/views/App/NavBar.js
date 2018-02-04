@@ -45,7 +45,7 @@ class NavBar extends React.Component<Props, State> {
 
 const styles = ({ breakpoints, typography }) => ({
   appName: {
-    flex: 1,
+    marginRight: 'auto',
     textDecoration: 'none',
     [breakpoints.down('xs')]: {
       fontSize: typography.pxToRem(13),
