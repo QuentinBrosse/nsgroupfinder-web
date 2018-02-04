@@ -157,18 +157,6 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       auth,
     } = this.props;
     const db = getFirebase().firestore();
-    const payload = {
-      user: getUserFromAuth(auth),
-      groupId,
-      adminUid,
-      status: 'pending',
-      message,
-      createdAt: firestore.FieldValue.serverTimestamp(),
-      confirmedAt: null,
-      obsolete: false,
-      paid: false,
-      ticketUnits: ticketUnits || 1,
-    };
     try {
       const groupRef = db.collection('groups').doc(groupId);
       const membersRef = db.collection('members').doc();
@@ -178,8 +166,21 @@ class GroupCardRequestButton extends React.Component<Props, State> {
           dThrowAccentSnackbar('Ooops, this group does not exist.');
           throw new Error('Document does not exist!');
         }
-        const { pendingRequests } = group.data();
+        const { obsolete: groupObsolete, pendingRequests } = group.data();
         transaction.update(groupRef, { pendingRequests: pendingRequests + 1 });
+
+        const payload = {
+          user: getUserFromAuth(auth),
+          groupId,
+          adminUid,
+          status: 'pending',
+          message,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          confirmedAt: null,
+          obsolete: groupObsolete,
+          paid: false,
+          ticketUnits: ticketUnits || 1,
+        };
         transaction.set(membersRef, payload);
       });
       dThrowDissmissSnackbar(

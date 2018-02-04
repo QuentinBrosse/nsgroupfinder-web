@@ -116,10 +116,15 @@ class Home extends React.Component<Props, State> {
 
         <button
           onClick={() => {
-            firestore.get('groups').then(s => {
-              const rs = s.docs.map(r => ({ id: r.id, ...r.data() }));
-              this.setState({ results: rs });
-            });
+            firestore
+              .get({
+                collection: 'groups',
+                where: [['obsolete', '>', new Date()]],
+              })
+              .then(s => {
+                const rs = s.docs.map(r => ({ id: r.id, ...r.data() }));
+                this.setState({ results: rs });
+              });
           }}
         >
           Load all (debug)

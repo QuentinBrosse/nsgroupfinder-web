@@ -39,7 +39,7 @@ class App extends React.Component<Props, State> {
     this.listener = {
       collection: 'members',
       storeAs: 'memberships',
-      where: [['user.uid', '==', auth.uid], ['obsolete', '==', false]],
+      where: [['user.uid', '==', auth.uid], ['obsolete', '>', new Date()]],
     };
     firestore.setListener(this.listener);
   }

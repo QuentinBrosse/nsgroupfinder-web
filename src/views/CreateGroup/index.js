@@ -56,7 +56,7 @@ class CreateGroup extends React.Component<Props, State> {
         status: 'admin',
         message: null,
         createdAt: firestore.FieldValue.serverTimestamp(),
-        obsolete: false,
+        obsolete: groupPayload.obsolete,
         confirmedAt: firestore.FieldValue.serverTimestamp(),
         paid: false,
         ticketUnits: 1,
@@ -81,6 +81,7 @@ class CreateGroup extends React.Component<Props, State> {
       public_info: publicInfo = null,
       private_info: privateInfo = null,
     } = values;
+    const dateTime = moment(date).hour(+time);
     return {
       admin: getUserFromAuth(auth),
       departureStation: {
@@ -91,14 +92,13 @@ class CreateGroup extends React.Component<Props, State> {
         name: arrival.name,
         id: arrival.code,
       },
-      dateTime: moment(date)
-        .hour(+time)
-        .toDate(),
+      dateTime: dateTime.toDate(),
       publicInfo,
       privateInfo,
       createdAt: firestore.FieldValue.serverTimestamp(),
       pendingRequests: 0,
       ticketUnits: 1,
+      obsolete: dateTime.add(1, 'hour').toDate(),
     };
   }
 
