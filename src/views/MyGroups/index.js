@@ -124,7 +124,7 @@ class MyGroups extends React.Component<Props, State> {
                 current: result.ticketUnits,
                 target: 7,
               }}
-              info={result.info}
+              info={result.publicInfo}
               pendingRequests={result.pendingRequests}
               requestStatus={this.getRequestStatus(result.id)}
             />

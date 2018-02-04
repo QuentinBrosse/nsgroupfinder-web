@@ -28,7 +28,7 @@ import RequestDialogRequest from './RequestDialogRequest';
 type RequestComponents = {
   icon: Node,
   dialog: Node,
-  tooltip: String,
+  tooltip: string,
 };
 
 type Props = {

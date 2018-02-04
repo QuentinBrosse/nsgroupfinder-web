@@ -1,13 +1,10 @@
 // @flow
 
 import React from 'react';
-import { withStyles } from 'material-ui/styles';
 import ActionIcon from 'material-ui-icons/MoreVert';
 import IconButton from 'material-ui/IconButton';
 
-type Props = {
-  classes: Object,
-};
+type Props = {};
 
 type State = {};
 
@@ -22,6 +19,4 @@ class AdminActionsMenu extends React.Component<Props, State> {
   }
 }
 
-const styles = {};
-
-export default withStyles(styles)(AdminActionsMenu);
+export default AdminActionsMenu;

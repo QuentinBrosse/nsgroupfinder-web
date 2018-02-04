@@ -4,7 +4,6 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { withStyles } from 'material-ui/styles';
 import moment from 'moment';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { Redirect } from 'react-router-dom';
@@ -13,7 +12,6 @@ import { getUserFromAuth } from 'utils/user';
 import CreateGroupForm from './CreateGroupForm';
 
 type Props = {
-  classes?: Object,
   auth: Object,
   firestore: Object,
   dThrowDissmissSnackbar: Function,
@@ -114,8 +112,6 @@ class CreateGroup extends React.Component<Props, State> {
   }
 }
 
-const styles = {};
-
 const mapPropsToState = ({ firebase }) => ({
   auth: firebase.auth,
 });
@@ -126,7 +122,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-  withStyles(styles),
   firestoreConnect(),
   connect(mapPropsToState, mapDispatchToProps)
 )(CreateGroup);

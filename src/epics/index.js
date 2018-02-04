@@ -1,5 +1,4 @@
 import { combineEpics } from 'redux-observable';
-// import 'rxjs';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';

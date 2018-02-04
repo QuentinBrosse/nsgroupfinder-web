@@ -43,7 +43,7 @@ class NavBar extends React.Component<Props, State> {
   }
 }
 
-const styles = ({ palette, breakpoints, typography }) => ({
+const styles = ({ breakpoints, typography }) => ({
   appName: {
     flex: 1,
     textDecoration: 'none',

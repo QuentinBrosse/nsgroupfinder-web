@@ -85,7 +85,7 @@ class Home extends React.Component<Props, State> {
           ['dateTime', '>=', startDate.toDate()],
           ['dateTime', '<=', endDate.toDate()],
         ],
-        orderBy: ['dateTime', 'desc'],
+        orderBy: ['dateTime', 'asc'],
       });
       const results = snapshot.docs.map(result => ({
         id: result.id,
@@ -144,7 +144,7 @@ class Home extends React.Component<Props, State> {
                     current: result.ticketUnits,
                     target: 7,
                   }}
-                  info={result.info}
+                  info={result.publicInfo}
                   pendingRequests={result.pendingRequests}
                   requestStatus={this.getRequestStatus(result.id)}
                 />
