@@ -113,6 +113,7 @@ class MyGroups extends React.Component<Props, State> {
           {groups.map((result: Group) => (
             <GroupCard
               key={result.id}
+              group={result}
               requestStatus={this.getRequestStatus(result.id)}
             />
           ))}
