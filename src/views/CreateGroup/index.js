@@ -30,7 +30,7 @@ class CreateGroup extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.prepareData = this.prepareData.bind(this);
+    this.prepareGroup = this.prepareGroup.bind(this);
   }
 
   state = {
@@ -38,7 +38,7 @@ class CreateGroup extends React.Component<Props, State> {
   };
 
   handleSubmit: Function;
-  prepareData: Function;
+  prepareGroup: Function;
 
   async handleSubmit(values: Object) {
     const {
@@ -49,7 +49,7 @@ class CreateGroup extends React.Component<Props, State> {
       dThrowAccentSnackbar,
     } = this.props;
 
-    const groupPayload = this.prepareData(values);
+    const groupPayload = this.prepareGroup(values);
     try {
       const { id: groupId } = await firestore.add('groups', groupPayload);
       const memberPayload = {
@@ -62,7 +62,7 @@ class CreateGroup extends React.Component<Props, State> {
         obsolete: groupPayload.obsolete,
         statusUpdatedAt: firestore.FieldValue.serverTimestamp(),
         paid: false,
-        ticketUnits: 1,
+        ticketUnits: groupPayload.ticketUnits,
       };
       await firestore.add('members', memberPayload);
       dThrowDissmissSnackbar('Your group has been successfully created !');
@@ -73,7 +73,7 @@ class CreateGroup extends React.Component<Props, State> {
     }
   }
 
-  prepareData(values: Object): Object {
+  prepareGroup(values: Object): Object {
     const { auth, profile, firestore } = this.props;
 
     const {
@@ -100,7 +100,7 @@ class CreateGroup extends React.Component<Props, State> {
       privateInfo,
       createdAt: firestore.FieldValue.serverTimestamp(),
       pendingRequests: 0,
-      ticketUnits: 1,
+      ticketUnits: parseInt(values.ticketUnits, 10),
       obsolete: dateTime.add(1, 'hour').toDate(),
     };
   }

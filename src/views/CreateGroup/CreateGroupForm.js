@@ -120,6 +120,23 @@ const CreateGroupForm = ({
         >
           <Grid item xs={12}>
             <Field
+              id="ticketUnits"
+              name="ticketUnits"
+              component={TextField}
+              label="Number of Tickets"
+              type="number"
+              fullWidth
+              helperText="How many tickets do you want for yourself?"
+              InputProps={{
+                inputProps: {
+                  min: '1',
+                  max: '6',
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Field
               id="public_info"
               name="public_info"
               label="Public Info"
@@ -200,6 +217,7 @@ const formConfig = {
       .add(2, 'day')
       .format('YYYY-MM-DD'),
     time: String(moment().hour()),
+    ticketUnits: 1,
   },
   validate: validatorFactory({
     departure: [required()],
@@ -208,6 +226,7 @@ const formConfig = {
     time: [required(), numericality({ '>=': 0, '<=': 23 })],
     public_info: [length({ max: 500 })],
     private_info: [length({ max: 500 })],
+    ticketUnits: [required(), numericality({ '>=': 1, '<=': 6 })],
   }),
 };
 
