@@ -8,7 +8,7 @@ import { Redirect, Route } from 'react-router-dom';
 
 type Props = {
   classes: Object,
-  component: Node,
+  component: Function,
   firebase: Object,
   location: Object,
 };
