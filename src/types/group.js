@@ -6,7 +6,7 @@ import type { FirebaseStationOpti } from './station';
 export type RequestStatus = null | MemberStatus;
 
 export type Group = {
-  +id?: string,
+  +id: string,
   +admin: FirebaseUserOpti,
   +arrivalStation: FirebaseStationOpti,
   +departureStation: FirebaseStationOpti,

@@ -19,17 +19,26 @@ type State = {
 class UserMenu extends React.Component<Props, State> {
   static defaultProps = {};
 
+  constructor(props: Props) {
+    super(props);
+    this.handleMenu = this.handleMenu.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
+
   state = {
     anchorEl: null,
   };
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+  handleMenu: Function;
+  handleClose: Function;
 
-  handleClose = () => {
+  handleMenu(event: SyntheticEvent<*>) {
+    this.setState({ anchorEl: event.currentTarget });
+  }
+
+  handleClose() {
     this.setState({ anchorEl: null });
-  };
+  }
 
   render() {
     const { classes } = this.props;

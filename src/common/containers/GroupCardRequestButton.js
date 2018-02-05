@@ -176,7 +176,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
           status: 'pending',
           message,
           createdAt: firestore.FieldValue.serverTimestamp(),
-          confirmedAt: null,
+          statusUpdatedAt: null,
           obsolete: groupObsolete,
           paid: false,
           ticketUnits: parseInt(ticketUnits, 10) || 1,

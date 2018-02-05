@@ -57,11 +57,11 @@ const Header = ({ classes, group }: Props): Node => {
         </Typography>
         <div className={classes.progressContaier}>
           <LinearProgress mode="determinate" value={groupCompletion} />
-          <div className={classes.members}>
-            <Typography type="body1" classes={{ body1: classes.membersText }}>
-              Members
+          <div className={classes.tickets}>
+            <Typography type="body1" classes={{ body1: classes.ticketsText }}>
+              Tickets
             </Typography>
-            <Typography type="body1" classes={{ body1: classes.membersText }}>
+            <Typography type="body1" classes={{ body1: classes.ticketsText }}>
               {group.ticketUnits}/{memberCompletionTarget}
             </Typography>
           </div>
@@ -80,12 +80,12 @@ const styles = ({ spacing, palette }) => ({
   progressContaier: {
     marginTop: spacing.unit * 4,
   },
-  members: {
+  tickets: {
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: 3,
   },
-  membersText: {
+  ticketsText: {
     fontSize: '0.7rem',
     fontWeight: 500,
     color: palette.text.secondary,

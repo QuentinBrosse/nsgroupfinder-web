@@ -57,7 +57,7 @@ class CreateGroup extends React.Component<Props, State> {
         message: null,
         createdAt: firestore.FieldValue.serverTimestamp(),
         obsolete: groupPayload.obsolete,
-        confirmedAt: firestore.FieldValue.serverTimestamp(),
+        statusUpdatedAt: firestore.FieldValue.serverTimestamp(),
         paid: false,
         ticketUnits: 1,
       };

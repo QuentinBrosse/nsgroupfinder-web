@@ -10,7 +10,7 @@ const changeMemberStatus = (
   status: MemberStatus
 ): Member[] =>
   members.map(
-    m => (m.id === memberId ? { ...m, status, confirmedAt: new Date() } : m)
+    m => (m.id === memberId ? { ...m, status, statusUpdatedAt: new Date() } : m)
   );
 
 const mergeArray = (

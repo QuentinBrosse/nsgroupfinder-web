@@ -113,19 +113,6 @@ class MyGroups extends React.Component<Props, State> {
           {groups.map((result: Group) => (
             <GroupCard
               key={result.id}
-              id={result.id}
-              admin={result.admin}
-              stations={{
-                departure: result.departureStation.name,
-                arrival: result.arrivalStation.name,
-              }}
-              dateTime={result.dateTime}
-              members={{
-                current: result.ticketUnits,
-                target: 7,
-              }}
-              info={result.publicInfo}
-              pendingRequests={result.pendingRequests}
               requestStatus={this.getRequestStatus(result.id)}
             />
           ))}

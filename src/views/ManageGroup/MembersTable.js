@@ -15,7 +15,7 @@ import Table, {
 import { updateMember } from 'actions/groups';
 import Button from 'material-ui/Button';
 import Tooltip from 'material-ui/Tooltip';
-// import AdminActionsMenu from './AdminActionsMenu';
+import MembersTableActionsMenu from './MembersTableActionsMenu';
 import PaymentIndicator from './PaymentIndicator';
 import DateFromNow from './DateFromNow';
 
@@ -63,13 +63,11 @@ class MembersTable extends React.Component<Props, State> {
           {member.ticketUnits}
         </TableCell>
         <TableCell numeric className={classes.confirmedCell}>
-          <DateFromNow dateTime={member.confirmedAt} />
+          <DateFromNow dateTime={member.statusUpdatedAt} />
         </TableCell>
-        {/* {isAdmin && (
-          <TableCell>
-            <AdminActionsMenu />
-          </TableCell>
-        )} */}
+        <TableCell className={classes.adminActionCell}>
+          <MembersTableActionsMenu isAdmin={isAdmin} member={member} />
+        </TableCell>
       </TableRow>
     );
   }
@@ -84,7 +82,7 @@ class MembersTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, confirmedMembers } = this.props; // isAdmin
+    const { classes, confirmedMembers } = this.props;
     return (
       <div className={classes.container}>
         <Table className={classes.table}>
@@ -98,7 +96,7 @@ class MembersTable extends React.Component<Props, State> {
               <TableCell numeric className={classes.confirmedCell}>
                 Confirmed
               </TableCell>
-              {/* {isAdmin && <TableCell>Actions</TableCell>} */}
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>{confirmedMembers.map(this.getRow)}</TableBody>
@@ -123,6 +121,9 @@ const styles = ({ spacing, breakpoints }) => ({
     confirmedCell: {
       display: 'none',
     },
+  },
+  adminActionCell: {
+    textAlign: 'right',
   },
 });
 

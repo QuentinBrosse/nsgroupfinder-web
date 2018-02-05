@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { withStyles } from 'material-ui/styles';
-import type { RequestStatus } from 'types/group';
+import type { Group, RequestStatus } from 'types/group';
 import moment from 'moment';
 import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
@@ -20,26 +20,10 @@ import { Link } from 'react-router-dom';
 import GroupCardRequestButton from './GroupCardRequestButton';
 
 type Props = {
-  id: string,
   classes: Object,
-  admin: {
-    uid: string,
-    displayName: string,
-    avatarUrl: string,
-  },
-  stations: {
-    departure: string,
-    arrival: string,
-  },
-  dateTime: Object,
-  members: {
-    current: number,
-    target: number,
-  },
-  requestStatus: RequestStatus,
-  info?: string,
-  pendingRequests: number,
+  group: Group,
   auth?: Object,
+  requestStatus: RequestStatus,
   managerMode?: boolean,
 };
 
@@ -71,7 +55,7 @@ class GroupCard extends React.Component<Props, State> {
   };
 
   get avatar() {
-    const { classes, admin, auth, managerMode } = this.props;
+    const { classes, group: { admin }, auth, managerMode } = this.props;
     const isAdmin = managerMode && auth && admin.uid === auth.uid;
 
     return (
@@ -87,7 +71,7 @@ class GroupCard extends React.Component<Props, State> {
   }
 
   get requestButton() {
-    const { id, admin, requestStatus, managerMode } = this.props;
+    const { group: { id, admin }, requestStatus, managerMode } = this.props;
     return (
       <GroupCardRequestButton
         groupId={id}
@@ -98,19 +82,20 @@ class GroupCard extends React.Component<Props, State> {
     );
   }
 
-  get members() {
-    const { classes, members } = this.props;
-    const groupCompletion = members.current / members.target * 100;
+  get tickets() {
+    const { classes, group: { ticketUnits } } = this.props;
+    const ticketUnitsTarget = 7;
+    const groupCompletion = ticketUnits / ticketUnitsTarget * 100;
 
     return (
       <div>
         <LinearProgress mode="determinate" value={groupCompletion} />
-        <div className={classes.members}>
-          <Typography type="body1" classes={{ body1: classes.membersText }}>
-            Members
+        <div className={classes.tickets}>
+          <Typography type="body1" classes={{ body1: classes.ticketsText }}>
+            Tickets
           </Typography>
-          <Typography type="body1" classes={{ body1: classes.membersText }}>
-            {members.current}/{members.target}
+          <Typography type="body1" classes={{ body1: classes.ticketsText }}>
+            {ticketUnits}/{ticketUnitsTarget}
           </Typography>
         </div>
       </div>
@@ -118,8 +103,8 @@ class GroupCard extends React.Component<Props, State> {
   }
 
   get infoAction() {
-    const { info } = this.props;
-    if (!info) {
+    const { publicInfo } = this.props.group;
+    if (!publicInfo) {
       return null;
     }
 
@@ -131,13 +116,13 @@ class GroupCard extends React.Component<Props, State> {
         >
           <InfoOutlineIcon />
         </IconButton>
-        {this.getPopover('info', info)}
+        {this.getPopover('info', publicInfo)}
       </div>
     );
   }
 
   get pendingRequestsAction() {
-    const { classes, pendingRequests } = this.props;
+    const { classes, group: { pendingRequests } } = this.props;
 
     if (pendingRequests < 1) {
       return null;
@@ -167,7 +152,7 @@ class GroupCard extends React.Component<Props, State> {
   }
 
   get createdBy() {
-    const { classes, admin } = this.props;
+    const { classes, group: { admin } } = this.props;
     return (
       <Typography
         type="body1"
@@ -180,8 +165,11 @@ class GroupCard extends React.Component<Props, State> {
   }
 
   get title() {
-    const { requestStatus, id, stations } = this.props;
-    const title = `${stations.departure} to ${stations.arrival}`;
+    const {
+      requestStatus,
+      group: { id, departureStation, arrivalStation },
+    } = this.props;
+    const title = `${departureStation.name} to ${arrivalStation.name}`;
     if (requestStatus === 'confirmed' || requestStatus === 'admin') {
       return <Link to={`/group/${id}`}>{title}</Link>;
     }
@@ -228,7 +216,7 @@ class GroupCard extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, dateTime } = this.props;
+    const { classes, group: { dateTime } } = this.props;
     const mDateTime = moment(dateTime);
     const fDate = mDateTime.format('MMM Do');
     const fTimeStart = mDateTime.format('ha');
@@ -243,7 +231,7 @@ class GroupCard extends React.Component<Props, State> {
           classes={{ title: classes.title }}
         />
         <CardContent classes={{ root: classes.cardContent }}>
-          {this.members}
+          {this.tickets}
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           {this.infoAction}
@@ -265,12 +253,12 @@ const styles = ({ typography, spacing, palette }) => ({
     '& a': typography.body2,
     '& a:visited': typography.body2,
   },
-  members: {
+  tickets: {
     display: 'flex',
     justifyContent: 'space-between',
     marginTop: 3,
   },
-  membersText: {
+  ticketsText: {
     fontSize: '0.7rem',
     fontWeight: 500,
     color: palette.text.secondary,

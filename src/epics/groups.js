@@ -89,7 +89,7 @@ const updateMemberStatus = (
   action$
     .ofType('UPDATE_MEMBER_STATUS')
     .mergeMap((action: UpdateMemberStatus) => {
-      const { memberId, status } = action.payload;
+      const { memberId, status: nextMemberStatus } = action.payload;
       const db = getFirebase().firestore();
       const memberRef = db.collection('members').doc(memberId);
 
@@ -98,18 +98,33 @@ const updateMemberStatus = (
         if (!member.exists) {
           throw new Error('Ooops, this member does not exist.');
         }
-        const { groupId, ticketUnits: memberTicketUnits } = member.data();
+        const {
+          groupId,
+          ticketUnits: memberTicketUnits,
+          status: currentMemberStatus,
+        } = member.data();
+
         const groupRef = db.collection('groups').doc(groupId);
         const group = await transaction.get(groupRef);
         if (!group.exists) {
           throw new Error('Ooops, this group does not exist.');
         }
         const { pendingRequests, ticketUnits: groupTicketUnits } = group.data();
-        const updatedPendingRequests = pendingRequests - 1;
-        const updatedTicketUnits = +groupTicketUnits + +memberTicketUnits;
+
+        const userIsAlreadyConfirmed =
+          currentMemberStatus === 'confirmed' && nextMemberStatus === 'refused';
+
+        const updatedPendingRequests = userIsAlreadyConfirmed
+          ? pendingRequests
+          : pendingRequests - 1;
+
+        const updatedTicketUnits = userIsAlreadyConfirmed
+          ? parseInt(groupTicketUnits, 10) - parseInt(memberTicketUnits, 10)
+          : parseInt(groupTicketUnits, 10) + parseInt(memberTicketUnits, 10);
+
         transaction.update(memberRef, {
-          status,
-          confirmedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          status: nextMemberStatus,
+          statusUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
         transaction.update(groupRef, {
           pendingRequests: updatedPendingRequests,
@@ -125,7 +140,9 @@ const updateMemberStatus = (
       return Observable.fromPromise(snapshot$)
         .flatMap(({ groupId, updatedPendingRequests, updatedTicketUnits }) =>
           Observable.concat(
-            Observable.of(updateMemberStatusSuccess(memberId, status)),
+            Observable.of(
+              updateMemberStatusSuccess(memberId, nextMemberStatus)
+            ),
             Observable.of(
               updateGroupLocally(groupId, {
                 pendingRequests: updatedPendingRequests,
