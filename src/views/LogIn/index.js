@@ -3,7 +3,7 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firebaseConnect } from 'react-redux-firebase';
+import { withFirebase } from 'react-redux-firebase';
 import { Redirect } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
@@ -45,7 +45,22 @@ class LogIn extends React.Component<Props, State> {
         provider: 'facebook',
         type: 'popup',
       });
-      const { first_name: firstName } = additionalUserInfo.profile;
+      const {
+        first_name: firstName,
+        last_name: lastName,
+        age_range: ageRange,
+        gender,
+        id: facebookAppId,
+        link: facebookLink,
+      } = additionalUserInfo.profile;
+      firebase.updateProfile({
+        firstName,
+        lastName,
+        ageRange,
+        gender,
+        facebookAppId,
+        facebookLink,
+      });
       dThrowDissmissSnackbar(`Welcome ${firstName} !`);
     } catch (err) {
       logErrorIfDevEnv(err);
@@ -111,7 +126,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-  firebaseConnect(),
+  withFirebase,
   withStyles(styles),
   connect(mapStateToProps, mapDispatchToProps)
 )(LogIn);
