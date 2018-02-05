@@ -23,12 +23,12 @@ const mergeArray = (
 const initialState: GroupsState = {
   isLoading: false,
   groups: [],
-  error: false,
+  error: null,
   currentGroup: {
     isLoading: false,
     groupIdx: null,
     members: [],
-    error: false,
+    error: null,
   },
 };
 
@@ -49,13 +49,13 @@ export default (
         ...state,
         isLoading: false,
         groups: action.payload.groups,
-        error: false,
+        error: null,
       };
     case 'FETCH_GROUPS_FAILURE':
       return {
         ...state,
         isLoading: false,
-        error: true,
+        error: action.payload.error,
       };
     case 'UPDATE_GROUP_LOCALLY': {
       const { groupId, changes } = action.payload;
@@ -89,7 +89,7 @@ export default (
           ...state.currentGroup,
           isLoading: false,
           groupId: null,
-          error: true,
+          error: action.payload.error,
         },
       };
     case 'UPDATE_MEMBER_STATUS_SUCCESS': {

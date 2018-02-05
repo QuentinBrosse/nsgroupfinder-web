@@ -64,7 +64,7 @@ class ManageGroup extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { match: { params }, dThrowAccentSnackbar } = this.props;
+    const { match: { params }, dThrowAccentSnackbar, auth } = this.props;
     const { groups } = this.props.groups;
     const { groups: nextGroups } = nextProps.groups;
     const { members } = this.props.groups.currentGroup;
@@ -85,6 +85,11 @@ class ManageGroup extends React.Component<Props, State> {
     // If new members
     const membersDiff = differenceWith(nextMembers, members);
     if (membersDiff.length > 0) {
+      if (nextMembers.find(m => m.user.uid === auth.uid) === undefined) {
+        dThrowAccentSnackbar('You are not member of this group.');
+        this.setState({ redirectTo: '/my-groups' });
+        return;
+      }
       const pendingMembers = nextMembers.filter(
         member => member.status === 'pending'
       );
@@ -95,10 +100,20 @@ class ManageGroup extends React.Component<Props, State> {
       return;
     }
 
-    // If errors
-    if (nextGroups.error || nextProps.groups.error) {
-      dThrowAccentSnackbar('Unable to fetch group..');
-      this.setState({ redirectTo: '/' });
+    // Group Fetching
+    if (nextProps.groups.error) {
+      if (nextProps.groups.error === 404) {
+        dThrowAccentSnackbar('This group does not exist.');
+      } else {
+        dThrowAccentSnackbar('Unable to fetch group.');
+      }
+      this.setState({ redirectTo: '/my-groups' });
+    }
+
+    // Member fetching
+    if (nextProps.groups.currentGroup.error) {
+      dThrowAccentSnackbar('Unable to fetch group members.');
+      this.setState({ redirectTo: '/my-groups' });
     }
   }
 
@@ -117,20 +132,20 @@ class ManageGroup extends React.Component<Props, State> {
   render() {
     const { classes, auth, groups } = this.props;
     const { redirectTo, pendingMembers, confirmedMembers } = this.state;
-    if (groups.isLoading || groups.currentGroup.isLoading) {
-      return 'Loading..';
-    }
-
-    if (groups.currentGroup.groupIdx === null) {
-      return 'Empty...';
-    }
-
-    const currentGroup = groups.groups[groups.currentGroup.groupIdx];
 
     if (redirectTo) {
       return <Redirect to={redirectTo} />;
     }
 
+    if (
+      groups.isLoading ||
+      groups.currentGroup.isLoading ||
+      groups.currentGroup.groupIdx === null
+    ) {
+      return 'Loading..';
+    }
+
+    const currentGroup = groups.groups[groups.currentGroup.groupIdx];
     const isAdmin = currentGroup.admin.uid === auth.uid;
 
     return (

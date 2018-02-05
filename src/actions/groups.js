@@ -31,9 +31,11 @@ export const fetchGroupsSuccess = (groups: Group[]): FetchGroupsSuccess => ({
   },
 });
 
-export const fetchGroupsFailure = (): FetchGroupsFailure => ({
+export const fetchGroupsFailure = (error: number): FetchGroupsFailure => ({
   type: 'FETCH_GROUPS_FAILURE',
-  payload: {},
+  payload: {
+    error,
+  },
 });
 
 export const updateGroup = (groupId: string, changes: Object): UpdateGroup => ({
@@ -75,9 +77,13 @@ export const fetchCurrentGroupMembersSuccess = (
   },
 });
 
-export const fetchCurrentGroupMembersFailure = (): FetchCurrentGroupMembersFailure => ({
+export const fetchCurrentGroupMembersFailure = (
+  error: number
+): FetchCurrentGroupMembersFailure => ({
   type: 'FETCH_CURRENT_GROUP_MEMBERS_FAILURE',
-  payload: {},
+  payload: {
+    error,
+  },
 });
 
 export const updateMemberStatus = (

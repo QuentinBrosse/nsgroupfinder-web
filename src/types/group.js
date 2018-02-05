@@ -22,14 +22,14 @@ export type CurrentGroup = {
   +isLoading: boolean,
   +groupIdx: null | number,
   +members: Member[],
-  +error: boolean,
+  +error: null | number,
 };
 
 // State
 export type GroupsState = {
   +isLoading: boolean,
   +groups: Group[],
-  +error: boolean,
+  +error: null | number,
   +currentGroup: CurrentGroup,
 };
 
@@ -50,7 +50,9 @@ export type FetchGroupsSuccess = {
 
 export type FetchGroupsFailure = {
   +type: 'FETCH_GROUPS_FAILURE',
-  +payload: {},
+  +payload: {
+    error: number,
+  },
 };
 
 export type UpdateGroup = {
@@ -86,7 +88,9 @@ export type FetchCurrentGroupMembersSuccess = {
 
 export type FetchCurrentGroupMembersFailure = {
   +type: 'FETCH_CURRENT_GROUP_MEMBERS_FAILURE',
-  +payload: {},
+  +payload: {
+    error: number,
+  },
 };
 
 export type UpdateMemberStatus = {

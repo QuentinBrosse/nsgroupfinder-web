@@ -43,14 +43,14 @@ const fetchGroup = (
         const nonexistent = snapshot.findIndex(g => !g.exists) !== -1;
         if (nonexistent) {
           logErrorIfDevEnv(`Groups (${groupIds.join(', ')}) are nonexistent.`);
-          return fetchGroupsFailure();
+          return fetchGroupsFailure(404);
         }
         const groups: Group[] = snapshot.map(s => ({ id: s.id, ...s.data() }));
         return fetchGroupsSuccess(groups);
       })
       .catch(err => {
         logErrorIfDevEnv(err);
-        return Observable.of(fetchGroupsFailure());
+        return Observable.of(fetchGroupsFailure(400));
       });
   });
 
@@ -77,7 +77,7 @@ const fetchGroupMembers = (
         })
         .catch(err => {
           logErrorIfDevEnv(err);
-          return Observable.of(fetchCurrentGroupMembersFailure());
+          return Observable.of(fetchCurrentGroupMembersFailure(400));
         });
     });
 
