@@ -1,19 +1,19 @@
 // @flow
 
-export type Profile = {
-  +avatarUrl: string,
-  +displayName: string,
-  +email: string,
-};
-
 export type FirebaseUserOpti = {
   uid: string,
   avatarUrl: string,
   displayName: string,
   email: string,
+  facebookLink: string,
 };
 
 export type MemberStatus = 'pending' | 'confirmed' | 'refused' | 'admin';
+
+export type MemberAgeRange =
+  | { min: number }
+  | { max: number }
+  | { min: number, max: number };
 
 export type Member = {
   id: string,
@@ -26,5 +26,14 @@ export type Member = {
   statusUpdatedAt: null | Date,
   obsolete: boolean,
   paid: boolean,
-  +ticketUnits: number,
+  ticketUnits: number,
+  firstName: string,
+  lastName: string,
+  ageRange: MemberAgeRange,
+  gender: 'male' | 'female',
+  facebookAppId: string,
+  facebookLink: string,
+  email: string,
+  displayName: string,
+  avatarUrl: string,
 };

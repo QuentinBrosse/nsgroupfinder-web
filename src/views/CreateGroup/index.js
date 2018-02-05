@@ -9,10 +9,12 @@ import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { Redirect } from 'react-router-dom';
 import { logErrorIfDevEnv } from 'utils/env';
 import { getUserFromAuth } from 'utils/user';
+import type { Member } from 'types/user';
 import CreateGroupForm from './CreateGroupForm';
 
 type Props = {
   auth: Object,
+  profile: Member,
   firestore: Object,
   dThrowDissmissSnackbar: Function,
   dThrowAccentSnackbar: Function,
@@ -42,6 +44,7 @@ class CreateGroup extends React.Component<Props, State> {
     const {
       firestore,
       auth,
+      profile,
       dThrowDissmissSnackbar,
       dThrowAccentSnackbar,
     } = this.props;
@@ -50,7 +53,7 @@ class CreateGroup extends React.Component<Props, State> {
     try {
       const { id: groupId } = await firestore.add('groups', groupPayload);
       const memberPayload = {
-        user: getUserFromAuth(auth),
+        user: getUserFromAuth(auth, profile),
         groupId,
         adminUid: auth.uid,
         status: 'admin',
@@ -71,7 +74,7 @@ class CreateGroup extends React.Component<Props, State> {
   }
 
   prepareData(values: Object): Object {
-    const { auth, firestore } = this.props;
+    const { auth, profile, firestore } = this.props;
 
     const {
       departure_obj: departure,
@@ -83,7 +86,7 @@ class CreateGroup extends React.Component<Props, State> {
     } = values;
     const dateTime = moment(date).hour(+time);
     return {
-      admin: getUserFromAuth(auth),
+      admin: getUserFromAuth(auth, profile),
       departureStation: {
         name: departure.name,
         id: departure.code,
@@ -114,6 +117,7 @@ class CreateGroup extends React.Component<Props, State> {
 
 const mapPropsToState = ({ firebase }) => ({
   auth: firebase.auth,
+  profile: firebase.profile,
 });
 
 const mapDispatchToProps = {

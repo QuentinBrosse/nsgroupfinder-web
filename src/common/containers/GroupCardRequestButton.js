@@ -4,6 +4,7 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import type { Node } from 'react';
 import type { RequestStatus } from 'types/group';
+import type { Member } from 'types/user';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
@@ -40,6 +41,7 @@ type Props = {
   dThrowAccentSnackbar: Function,
   firestore: Object,
   auth: Object,
+  profile: Member,
 };
 
 type State = {
@@ -155,6 +157,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
       groupId,
       adminUid,
       auth,
+      profile,
     } = this.props;
     const db = getFirebase().firestore();
     try {
@@ -170,7 +173,7 @@ class GroupCardRequestButton extends React.Component<Props, State> {
         transaction.update(groupRef, { pendingRequests: pendingRequests + 1 });
 
         const payload = {
-          user: getUserFromAuth(auth),
+          user: getUserFromAuth(auth, profile),
           groupId,
           adminUid,
           status: 'pending',
@@ -224,6 +227,7 @@ const styles = ({ palette }) => ({
 
 const mapPropsToState = ({ firebase }) => ({
   auth: firebase.auth,
+  profile: firebase.profile,
 });
 
 const mapDispatchToProps = {

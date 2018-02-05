@@ -13,11 +13,10 @@ import Table, {
   TableRow,
 } from 'material-ui/Table';
 import { updateMember } from 'actions/groups';
-import Button from 'material-ui/Button';
-import Tooltip from 'material-ui/Tooltip';
 import MembersTableActionsMenu from './MembersTableActionsMenu';
 import PaymentIndicator from './PaymentIndicator';
 import DateFromNow from './DateFromNow';
+import FacebookLink from './FacebookLink';
 
 type Props = {
   classes: Object,
@@ -49,15 +48,7 @@ class MembersTable extends React.Component<Props, State> {
           />
         </TableCell>
         <TableCell padding="none">
-          <Tooltip id="tooltip-right" title="Open Facebook" placement="right">
-            <Button
-              className={classes.buttonFacebook}
-              size="small"
-              color="primary"
-            >
-              {member.user.displayName}
-            </Button>
-          </Tooltip>
+          <FacebookLink member={member} />
         </TableCell>
         <TableCell padding="dense" numeric>
           {member.ticketUnits}
