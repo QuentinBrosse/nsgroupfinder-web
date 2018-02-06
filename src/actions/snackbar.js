@@ -24,6 +24,7 @@ export const throwDissmissSnackbar = (message: string): ThrowSnackbar => ({
     message,
     button: {
       type: 'default',
+      color: 'secondary',
       label: 'Dismiss',
       actionOnClickButton: null,
     },
@@ -39,7 +40,7 @@ export const throwAccentSnackbar = (
   payload: {
     message,
     button: {
-      type: 'accent',
+      color: 'secondary',
       label: buttonLabel,
       actionOnClickButton,
     },

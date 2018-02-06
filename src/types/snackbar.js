@@ -1,7 +1,7 @@
 // @flow
 
 // State
-export type SnackbarButtonType = 'default' | 'accent';
+export type SnackbarButtonType = 'default' | 'secondary';
 
 export type SnackbarButton = {
   +type: SnackbarButtonType,
