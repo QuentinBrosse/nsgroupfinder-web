@@ -18,7 +18,9 @@ import { logErrorIfDevEnv } from 'utils/env';
 import type { Member } from 'types/user';
 import type { Group, RequestStatus } from 'types/group';
 import type Moment from 'moment';
+import Grid from 'material-ui/Grid';
 import GroupFilterForm from './GroupFilterForm';
+import RulesCard from './RulesCard';
 import ResultsDescription from './ResultsDescription';
 
 type Props = {
@@ -112,7 +114,14 @@ class Home extends React.Component<Props, State> {
 
     return (
       <div>
-        <GroupFilterForm onSubmit={this.handleSubmit} />
+        <Grid container>
+          <Grid item sm={12} xs={12}>
+            <RulesCard />
+          </Grid>
+          <Grid item sm={12} xs={12}>
+            <GroupFilterForm onSubmit={this.handleSubmit} />
+          </Grid>
+        </Grid>
 
         <button
           onClick={() => {
@@ -132,7 +141,7 @@ class Home extends React.Component<Props, State> {
 
         {results.length > 0 ? (
           <div>
-            <Typography type="title">Groups</Typography>
+            <Typography variant="title">Groups</Typography>
             {resultsDescrption && <ResultsDescription {...resultsDescrption} />}
             <GroupCardContainer>
               {results.map((result: Group) => (

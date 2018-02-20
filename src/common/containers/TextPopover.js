@@ -69,7 +69,7 @@ class TextPopover extends React.Component<Props, State> {
           }}
           onClose={this.handleClose}
         >
-          <Typography type="body1">{children}</Typography>
+          <Typography variant="body1">{children}</Typography>
         </Popover>
       </div>
     );

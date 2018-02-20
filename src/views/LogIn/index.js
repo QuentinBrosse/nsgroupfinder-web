@@ -77,18 +77,18 @@ class LogIn extends React.Component<Props, State> {
     return (
       <div className={classes.container}>
         <Paper className={classes.paper}>
-          <Typography type="headline" align="center">
+          <Typography variant="headline" align="center">
             NS Group Finder
           </Typography>
-          <Typography type="subheading" align="center" color="primary">
-            Connect or Leave{' '}
+          <Typography variant="subheading" align="center" color="primary">
+            Connect using Facebook{' '}
             <span role="img" aria-label="Sad emojy">
               😘
             </span>
           </Typography>
 
           <Button
-            raised
+            variant="raised"
             className={classes.button}
             color="primary"
             onClick={this.logIn}

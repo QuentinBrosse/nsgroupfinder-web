@@ -89,12 +89,12 @@ class GroupCard extends React.Component<Props, State> {
 
     return (
       <div>
-        <LinearProgress mode="determinate" value={groupCompletion} />
+        <LinearProgress variant="determinate" value={groupCompletion} />
         <div className={classes.tickets}>
-          <Typography type="body1" classes={{ body1: classes.ticketsText }}>
+          <Typography variant="body1" classes={{ body1: classes.ticketsText }}>
             Tickets
           </Typography>
-          <Typography type="body1" classes={{ body1: classes.ticketsText }}>
+          <Typography variant="body1" classes={{ body1: classes.ticketsText }}>
             {ticketUnits}/{ticketUnitsTarget}
           </Typography>
         </div>
@@ -155,7 +155,7 @@ class GroupCard extends React.Component<Props, State> {
     const { classes, group: { admin } } = this.props;
     return (
       <Typography
-        type="body1"
+        variant="body1"
         color="textSecondary"
         className={classes.createdBy}
       >
@@ -198,7 +198,7 @@ class GroupCard extends React.Component<Props, State> {
         }}
         onClose={e => this.handlePopoverClick(e, type)}
       >
-        <Typography type="body1">{content}</Typography>
+        <Typography variant="body1">{content}</Typography>
       </Popover>
     );
   }

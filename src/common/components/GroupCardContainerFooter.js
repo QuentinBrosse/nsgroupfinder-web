@@ -16,7 +16,7 @@ const GroupCardContainerFooter = ({ classes }: Props): Node => (
   <div className={classes.container}>
     <Divider className={classes.divider} />
     <Typography
-      type="subheading"
+      variant="subheading"
       align="center"
       headlineMapping={{ subheading: 'p' }}
       color="textSecondary"
