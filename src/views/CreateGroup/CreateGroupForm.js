@@ -40,11 +40,7 @@ const CreateGroupForm = ({
       <CardHeader title="Create a Group" />
       <CardContent>
         <Grid item xs={12} md={12}>
-          <Typography
-            color="primary"
-            variant="display3"
-            className={classes.title}
-          >
+          <Typography color="primary" variant="title" className={classes.title}>
             Informations !
           </Typography>
           <div className={classes.demo}>
