@@ -10,7 +10,6 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
 import Icon from 'material-ui/Icon';
-import Typography from 'material-ui/Typography';
 import Divider from 'material-ui/Divider/Divider';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import LabelIcon from 'material-ui-icons/Label';
@@ -40,11 +39,8 @@ const CreateGroupForm = ({
       <CardHeader title="Create a Group" />
       <CardContent>
         <Grid item xs={12} md={12}>
-          <Typography color="primary" variant="title" className={classes.title}>
-            Informations !
-          </Typography>
           <div className={classes.demo}>
-            <List dense="true">
+            <List dense={true} disablePadding={true}>
               <ListItem>
                 <ListItemIcon>
                   <LabelIcon />
