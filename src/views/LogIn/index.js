@@ -9,8 +9,6 @@ import { withStyles } from 'material-ui/styles';
 import red from 'material-ui/colors/red';
 import indigo from 'material-ui/colors/indigo';
 import Button from 'material-ui/Button';
-import Paper from 'material-ui/Paper';
-import Stepper, { Step, StepButton } from 'material-ui/Stepper';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { isConnected } from 'utils/user';
 import { logErrorIfDevEnv } from 'utils/env';
@@ -84,19 +82,23 @@ class LogIn extends React.Component<Props, State> {
           Messenger.
         </div>
         <div className={classes.top}>
-          <img className={classes.img} src="https://i.imgur.com/pbCT0Uh.jpg" />
+          <img
+            alt="NSLogo"
+            className={classes.img}
+            src="https://i.imgur.com/pbCT0Uh.jpg"
+          />
         </div>
         <div className={classes.center}>
           <div className={classes.step}>
             <i className={'material-icons ' + classes.stepIcon}>search</i>
             Search for your travel
           </div>
-          <i class="material-icons">arrow_forward</i>
+          <i className={'material-icons ' + classes.arrowIcon}>arrow_forward</i>
           <div className={classes.step}>
             <i className={'material-icons ' + classes.stepIcon}>group_work</i>
             Connect with people
           </div>
-          <i class="material-icons">arrow_forward</i>
+          <i className={'material-icons ' + classes.arrowIcon}>arrow_forward</i>
           <div className={classes.step}>
             <i className={'material-icons ' + classes.stepIcon}>train</i>
             Get your tickets & travel
@@ -110,15 +112,36 @@ class LogIn extends React.Component<Props, State> {
             onClick={this.logIn}
           >
             FIND A GROUP
-            <i class="material-icons">arrow_forward</i>
+            <i className="material-icons">arrow_forward</i>
           </Button>
+        </div>
+        <div className={classes.footer}>
+          <div className={classes.footerLeft}>
+            <a href="https://www.facebook.com/nsgroupfinder/" target="_blank">
+              <img
+                alt="sociallogo"
+                className={classes.socialLogos}
+                src="http://webiconspng.com/wp-content/uploads/2017/09/Facebook-PNG-Image-38915.png"
+              />
+            </a>
+            <a href="https://twitter.com/finder_ns" target="_blank">
+              <img
+                alt="sociallogo"
+                className={classes.socialLogos}
+                src="http://pngimg.com/uploads/twitter/twitter_PNG29.png"
+              />
+            </a>
+          </div>
+          <div className={classes.footerRight}>
+            Copyright © 2008 NSGroupFinder Inc.
+          </div>
         </div>
       </div>
     );
   }
 }
 
-const styles = ({ spacing }) => ({
+const styles = ({ spacing, breakpoints }) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -144,6 +167,10 @@ const styles = ({ spacing }) => ({
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 'auto',
+
+    [breakpoints.down('xs')]: {
+      flexDirection: 'column',
+    },
   },
   step: {
     fontSize: 30,
@@ -151,17 +178,56 @@ const styles = ({ spacing }) => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    marginTop: '3vh',
+
+    [breakpoints.down('xs')]: {
+      fontSize: 20,
+    },
   },
   stepIcon: {
     fontSize: 100,
     color: indigo['500'],
     marginBottom: '3vh',
+
+    [breakpoints.down('xs')]: {
+      fontSize: 60,
+    },
+  },
+  arrowIcon: {
+    [breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
   bottom: {
     flex: 1,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  footer: {
+    height: '3vh',
+    display: 'flex',
+    padding: '0px 10px',
+    fontSize: 11,
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+  },
+
+  footerLeft: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+
+  footerRight: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+
+  socialLogos: {
+    height: 30,
+    width: 30,
   },
 });
 
