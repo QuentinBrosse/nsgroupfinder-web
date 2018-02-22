@@ -143,7 +143,7 @@ const styles = ({ spacing }) => ({
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: '30vh',
+    height: 'auto',
   },
   step: {
     fontSize: 30,
