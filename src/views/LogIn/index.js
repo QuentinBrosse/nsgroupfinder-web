@@ -160,7 +160,6 @@ const styles = ({ spacing }) => ({
   bottom: {
     flex: 1,
     display: 'flex',
-    flexDirection: 'center',
     justifyContent: 'center',
     alignItems: 'center',
   },
