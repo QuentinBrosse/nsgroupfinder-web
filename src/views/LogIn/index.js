@@ -127,7 +127,8 @@ const styles = ({ spacing }) => ({
     height: '100vh',
   },
   beta: {
-    height: '5vh',
+    height: 'auto',
+    padding: 10,
     color: 'white',
     display: 'flex',
     justifyContent: 'center',
