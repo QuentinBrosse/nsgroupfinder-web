@@ -94,17 +94,19 @@ class LogIn extends React.Component<Props, State> {
         <div className={classes.center}>
           <div className={classes.step}>
             <i className={'material-icons ' + classes.stepIcon}>search</i>
-            Search for your travel
+            <Typography variant="display1">Search for your travel</Typography>
           </div>
           <i className={'material-icons ' + classes.arrowIcon}>arrow_forward</i>
           <div className={classes.step}>
             <i className={'material-icons ' + classes.stepIcon}>group_work</i>
-            Connect with people
+            <Typography variant="display1">Connect with people</Typography>
           </div>
           <i className={'material-icons ' + classes.arrowIcon}>arrow_forward</i>
           <div className={classes.step}>
             <i className={'material-icons ' + classes.stepIcon}>train</i>
-            Get your tickets & travel
+            <Typography variant="display1">
+              Get your tickets & travel
+            </Typography>
           </div>
         </div>
         <div className={classes.bottom}>
