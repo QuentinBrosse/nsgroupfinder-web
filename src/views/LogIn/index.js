@@ -78,7 +78,7 @@ class LogIn extends React.Component<Props, State> {
     return (
       <div className={classes.container}>
         <div className={classes.beta}>
-          <Typography style={{ color: 'white' }}>
+          <Typography align="center" style={{ color: 'white' }}>
             Please remember that this product is in beta. If find anything wrong
             or want to give a feedback, do no hesitate to write on Twitter or
             Messenger.
@@ -94,18 +94,22 @@ class LogIn extends React.Component<Props, State> {
         <div className={classes.center}>
           <div className={classes.step}>
             <i className={'material-icons ' + classes.stepIcon}>search</i>
-            <Typography variant="display1">Search for your travel</Typography>
+            <Typography align="center" variant="display1">
+              Search for your travel
+            </Typography>
           </div>
           <i className={'material-icons ' + classes.arrowIcon}>arrow_forward</i>
           <div className={classes.step}>
             <i className={'material-icons ' + classes.stepIcon}>group_work</i>
-            <Typography variant="display1">Connect with people</Typography>
+            <Typography align="center" variant="display1">
+              Connect with people
+            </Typography>
           </div>
           <i className={'material-icons ' + classes.arrowIcon}>arrow_forward</i>
           <div className={classes.step}>
             <i className={'material-icons ' + classes.stepIcon}>train</i>
-            <Typography variant="display1">
-              Get your tickets & travel
+            <Typography align="center" variant="display1">
+              Get your tickets
             </Typography>
           </div>
         </div>
@@ -146,7 +150,9 @@ class LogIn extends React.Component<Props, State> {
             </a>
           </div>
           <div className={classes.footerRight}>
-            Copyright © 2008 NSGroupFinder Inc.
+            <Typography variant="caption">
+              Copyright © 2008 NSGroupFinder Inc.
+            </Typography>
           </div>
         </div>
       </div>
