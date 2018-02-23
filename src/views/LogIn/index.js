@@ -9,6 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import red from 'material-ui/colors/red';
 import indigo from 'material-ui/colors/indigo';
 import Button from 'material-ui/Button';
+import Typography from 'material-ui/Typography';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { isConnected } from 'utils/user';
 import { logErrorIfDevEnv } from 'utils/env';
@@ -77,9 +78,11 @@ class LogIn extends React.Component<Props, State> {
     return (
       <div className={classes.container}>
         <div className={classes.beta}>
-          Please remember that this product is in beta. If find anything wrong
-          or want to give a feedback, do no hesitate to write on Twitter or
-          Messenger.
+          <Typography style={{ color: 'white' }}>
+            Please remember that this product is in beta. If find anything wrong
+            or want to give a feedback, do no hesitate to write on Twitter or
+            Messenger.
+          </Typography>
         </div>
         <div className={classes.top}>
           <img
@@ -152,7 +155,6 @@ const styles = ({ spacing, breakpoints }) => ({
   beta: {
     height: 'auto',
     padding: 10,
-    color: 'white',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
