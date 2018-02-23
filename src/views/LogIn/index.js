@@ -179,6 +179,7 @@ const styles = ({ spacing, breakpoints }) => ({
   step: {
     fontSize: 30,
     display: 'flex',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
@@ -195,6 +196,7 @@ const styles = ({ spacing, breakpoints }) => ({
 
     [breakpoints.down('xs')]: {
       fontSize: 60,
+      marginBottom: 0,
     },
   },
   arrowIcon: {
