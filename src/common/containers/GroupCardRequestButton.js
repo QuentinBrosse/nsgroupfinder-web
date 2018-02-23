@@ -7,10 +7,7 @@ import type { RequestStatus } from 'types/group';
 import type { Member } from 'types/user';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { firestoreConnect, getFirebase } from 'react-redux-firebase';
-import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { Redirect } from 'react-router-dom';
-import { logErrorIfDevEnv } from 'utils/env';
 import {
   RequestDialogConfirmed,
   RequestDialogRejected,
@@ -23,7 +20,7 @@ import DoNotDisturbOnIcon from 'material-ui-icons/DoNotDisturbOn';
 import GroupAddIcon from 'material-ui-icons/GroupAdd';
 import ModeEditIcon from 'material-ui-icons/ModeEdit';
 import Tooltip from 'material-ui/Tooltip';
-import { getUserFromAuth } from 'utils/user';
+import { createMember } from 'services/groups';
 import RequestDialogRequest from './RequestDialogRequest';
 
 type RequestComponents = {
@@ -36,12 +33,9 @@ type Props = {
   classes: Object,
   requestStatus?: RequestStatus,
   groupId: string,
-  adminUid: string,
-  dThrowDissmissSnackbar: Function,
-  dThrowAccentSnackbar: Function,
-  firestore: Object,
   auth: Object,
   profile: Member,
+  dispatch: Function,
 };
 
 type State = {
@@ -149,51 +143,14 @@ class GroupCardRequestButton extends React.Component<Props, State> {
     this.setState({ redirectTo: route });
   }
 
-  async sendRequest(message: string, ticketUnits: number) {
-    const {
-      dThrowAccentSnackbar,
-      dThrowDissmissSnackbar,
-      firestore,
-      groupId,
-      adminUid,
-      auth,
-      profile,
-    } = this.props;
-    const db = getFirebase().firestore();
-    try {
-      const groupRef = db.collection('groups').doc(groupId);
-      const membersRef = db.collection('members').doc();
-      await db.runTransaction(async transaction => {
-        const group = await transaction.get(groupRef);
-        if (!group.exists) {
-          dThrowAccentSnackbar('Ooops, this group does not exist.');
-          throw new Error('Document does not exist!');
-        }
-        const { obsolete: groupObsolete, pendingRequests } = group.data();
-        transaction.update(groupRef, { pendingRequests: pendingRequests + 1 });
+  sendRequest(message: string, ticketUnits: number) {
+    const { groupId, auth, profile, dispatch } = this.props;
 
-        const payload = {
-          user: getUserFromAuth(auth, profile),
-          groupId,
-          adminUid,
-          status: 'pending',
-          message,
-          createdAt: firestore.FieldValue.serverTimestamp(),
-          statusUpdatedAt: null,
-          obsolete: groupObsolete,
-          paid: false,
-          ticketUnits: parseInt(ticketUnits, 10) || 1,
-        };
-        transaction.set(membersRef, payload);
-      });
-      dThrowDissmissSnackbar(
-        'Your request has been sent to the group creator !'
-      );
-      this.setState({ dialogOpen: false });
-    } catch (err) {
-      logErrorIfDevEnv(err);
-      dThrowAccentSnackbar('Ooops, try again later please :/');
-    }
+    createMember(dispatch, groupId, auth, profile, message, ticketUnits).then(
+      () => {
+        this.setState({ dialogOpen: false });
+      }
+    );
   }
 
   render() {
@@ -230,13 +187,6 @@ const mapPropsToState = ({ firebase }) => ({
   profile: firebase.profile,
 });
 
-const mapDispatchToProps = {
-  dThrowDissmissSnackbar: throwDissmissSnackbar,
-  dThrowAccentSnackbar: throwAccentSnackbar,
-};
-
-export default compose(
-  firestoreConnect(),
-  withStyles(styles),
-  connect(mapPropsToState, mapDispatchToProps)
-)(GroupCardRequestButton);
+export default compose(withStyles(styles), connect(mapPropsToState))(
+  GroupCardRequestButton
+);

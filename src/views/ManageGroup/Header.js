@@ -5,11 +5,11 @@ import type { Node } from 'react';
 import type { Group } from 'types/group';
 import { withStyles } from 'material-ui/styles';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
-import { LinearProgress } from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import Tooltip from 'material-ui/Tooltip';
 import ShareIcon from 'material-ui-icons/Share';
+import TicketsProgess from 'common/components/TicketsProgress';
 import moment from 'moment';
 
 type Props = {
@@ -18,8 +18,6 @@ type Props = {
 };
 
 const Header = ({ classes, group }: Props): Node => {
-  const memberCompletionTarget = 7;
-  const groupCompletion = group.ticketUnits / memberCompletionTarget * 100;
   const mDateTime = moment(group.dateTime);
   const fDate = mDateTime.format('MMM Do');
   const fTimeStart = mDateTime.format('ha');
@@ -56,15 +54,7 @@ const Header = ({ classes, group }: Props): Node => {
           {group.privateInfo}
         </Typography>
         <div className={classes.progressContaier}>
-          <LinearProgress mode="determinate" value={groupCompletion} />
-          <div className={classes.tickets}>
-            <Typography type="body1" classes={{ body1: classes.ticketsText }}>
-              Tickets
-            </Typography>
-            <Typography type="body1" classes={{ body1: classes.ticketsText }}>
-              {group.ticketUnits}/{memberCompletionTarget}
-            </Typography>
-          </div>
+          <TicketsProgess ticketUnits={group.ticketUnits} />
         </div>
       </CardContent>
     </Card>
@@ -73,23 +63,12 @@ const Header = ({ classes, group }: Props): Node => {
 
 Header.defaultProps = {};
 
-const styles = ({ spacing, palette }) => ({
+const styles = ({ spacing }) => ({
   card: {
     marginBottom: spacing.unit * 2,
   },
   progressContaier: {
     marginTop: spacing.unit * 4,
-  },
-  tickets: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: 3,
-  },
-  ticketsText: {
-    fontSize: '0.7rem',
-    fontWeight: 500,
-    color: palette.text.secondary,
-    textTransform: 'uppercase',
   },
   button: {
     margin: spacing.unit,

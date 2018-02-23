@@ -10,13 +10,13 @@ import Icon from 'material-ui/Icon';
 import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
 import Badge from 'material-ui/Badge';
 import Typography from 'material-ui/Typography';
-import { LinearProgress } from 'material-ui/Progress';
 import Avatar from 'material-ui/Avatar';
 import Popover from 'material-ui/Popover';
 import AdminIcon from 'material-ui-icons/Star';
 import amber from 'material-ui/colors/amber';
 import red from 'material-ui/colors/red';
 import { Link } from 'react-router-dom';
+import TicketsProgess from 'common/components/TicketsProgress';
 import GroupCardRequestButton from './GroupCardRequestButton';
 
 type Props = {
@@ -71,34 +71,13 @@ class GroupCard extends React.Component<Props, State> {
   }
 
   get requestButton() {
-    const { group: { id, admin }, requestStatus, managerMode } = this.props;
+    const { group: { id }, requestStatus, managerMode } = this.props;
     return (
       <GroupCardRequestButton
         groupId={id}
-        adminUid={admin.uid}
         requestStatus={requestStatus}
         disable={managerMode}
       />
-    );
-  }
-
-  get tickets() {
-    const { classes, group: { ticketUnits } } = this.props;
-    const ticketUnitsTarget = 7;
-    const groupCompletion = ticketUnits / ticketUnitsTarget * 100;
-
-    return (
-      <div>
-        <LinearProgress mode="determinate" value={groupCompletion} />
-        <div className={classes.tickets}>
-          <Typography type="body1" classes={{ body1: classes.ticketsText }}>
-            Tickets
-          </Typography>
-          <Typography type="body1" classes={{ body1: classes.ticketsText }}>
-            {ticketUnits}/{ticketUnitsTarget}
-          </Typography>
-        </div>
-      </div>
     );
   }
 
@@ -216,7 +195,7 @@ class GroupCard extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, group: { dateTime } } = this.props;
+    const { classes, group: { dateTime, ticketUnits } } = this.props;
     const mDateTime = moment(dateTime);
     const fDate = mDateTime.format('MMM Do');
     const fTimeStart = mDateTime.format('ha');
@@ -231,7 +210,7 @@ class GroupCard extends React.Component<Props, State> {
           classes={{ title: classes.title }}
         />
         <CardContent classes={{ root: classes.cardContent }}>
-          {this.tickets}
+          <TicketsProgess ticketUnits={ticketUnits} />
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           {this.infoAction}
@@ -243,7 +222,7 @@ class GroupCard extends React.Component<Props, State> {
   }
 }
 
-const styles = ({ typography, spacing, palette }) => ({
+const styles = ({ typography, spacing }) => ({
   cardContent: {
     '&:last-child': {
       paddingBottom: spacing.unit * 2,
@@ -252,17 +231,6 @@ const styles = ({ typography, spacing, palette }) => ({
   title: {
     '& a': typography.body2,
     '& a:visited': typography.body2,
-  },
-  tickets: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: 3,
-  },
-  ticketsText: {
-    fontSize: '0.7rem',
-    fontWeight: 500,
-    color: palette.text.secondary,
-    textTransform: 'uppercase',
   },
   paper: {
     padding: spacing.unit,
