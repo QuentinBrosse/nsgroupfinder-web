@@ -84,7 +84,7 @@ class LogInButton extends React.Component<Props, State> {
     }
 
     return (
-      <Button raised color="primary" onClick={this.logIn}>
+      <Button variant="raised" color="primary" onClick={this.logIn}>
         {children}
       </Button>
     );

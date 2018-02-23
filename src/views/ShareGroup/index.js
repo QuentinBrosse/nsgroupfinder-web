@@ -193,7 +193,7 @@ class ShareGroup extends React.Component<Props, State> {
               <CardContent className={classes.cardContent}>
                 <div className={classes.headerContainer}>
                   <Typography
-                    type="display1"
+                    variant="display1"
                     gutterBottom
                     noWrap
                     className={classes.groupTitle}
@@ -202,7 +202,7 @@ class ShareGroup extends React.Component<Props, State> {
                     {' to '}
                     {currentGroup.arrivalStation.name}
                   </Typography>
-                  <Typography type="subheading" gutterBottom noWrap>
+                  <Typography variant="subheading" gutterBottom noWrap>
                     {`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
                   </Typography>
                 </div>
@@ -211,7 +211,7 @@ class ShareGroup extends React.Component<Props, State> {
 
                 <div className={classes.requestContainer}>
                   <Typography
-                    type="title"
+                    variant="title"
                     gutterBottom
                     noWrap
                     className={classes.groupTitle}
@@ -220,7 +220,7 @@ class ShareGroup extends React.Component<Props, State> {
                   </Typography>
 
                   <Typography
-                    type="body1"
+                    variant="body1"
                     paragraph
                     className={classes.requestInstructions}
                   >

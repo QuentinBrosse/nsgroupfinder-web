@@ -17,12 +17,12 @@ const TicketsProgress = ({ classes, ticketUnits }: Props): Node => {
 
   return (
     <div>
-      <LinearProgress mode="determinate" value={groupCompletion} />
+      <LinearProgress variant="determinate" value={groupCompletion} />
       <div className={classes.tickets}>
-        <Typography type="body1" classes={{ body1: classes.ticketsText }}>
+        <Typography variant="body1" classes={{ body1: classes.ticketsText }}>
           Tickets
         </Typography>
-        <Typography type="body1" classes={{ body1: classes.ticketsText }}>
+        <Typography variant="body1" classes={{ body1: classes.ticketsText }}>
           {ticketUnits}/{ticketUnitsTarget}
         </Typography>
       </div>
