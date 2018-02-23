@@ -5,3 +5,4 @@ export { default as GroupCard } from './GroupCard';
 export { default as GroupCardRequestButton } from './GroupCardRequestButton';
 export { default as RequestDialogRequest } from './RequestDialogRequest';
 export { default as TextPopover } from './TextPopover';
+export { default as LogInButton } from './LogInButton';

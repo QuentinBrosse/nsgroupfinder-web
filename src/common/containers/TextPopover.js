@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
+import type { Node } from 'react';
 import { withStyles } from 'material-ui/styles';
-import ViewMessageIcon from 'material-ui-icons/RemoveRedEye';
 import IconButton from 'material-ui/IconButton';
 import Popover from 'material-ui/Popover';
 import Typography from 'material-ui/Typography';
@@ -10,6 +10,7 @@ import Typography from 'material-ui/Typography';
 type Props = {
   classes: Object,
   children: string,
+  icon: Node,
 };
 
 type State = {
@@ -44,13 +45,13 @@ class TextPopover extends React.Component<Props, State> {
   }
 
   render() {
-    const { classes, children } = this.props;
+    const { classes, children, icon } = this.props;
     const { popover } = this.state;
     const popoverOpened = !!popover;
     return (
       <div>
         <IconButton disabled={!children} onClick={this.handleClick}>
-          <ViewMessageIcon />
+          {icon}
         </IconButton>
         <Popover
           className={classes.popover}
