@@ -7,7 +7,6 @@ import { withFirebase } from 'react-redux-firebase';
 import { Redirect } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import red from 'material-ui/colors/red';
-import indigo from 'material-ui/colors/indigo';
 import Button from 'material-ui/Button';
 import Icon from 'material-ui/Icon';
 import Typography from 'material-ui/Typography';
@@ -186,7 +185,7 @@ class LogIn extends React.Component<Props, State> {
   }
 }
 
-const styles = ({ spacing, breakpoints }) => ({
+const styles = ({ spacing, breakpoints, palette }) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -281,7 +280,7 @@ const styles = ({ spacing, breakpoints }) => ({
   },
 
   whiteFont: {
-    color: 'white',
+    color: palette.common.white,
   },
 });
 
