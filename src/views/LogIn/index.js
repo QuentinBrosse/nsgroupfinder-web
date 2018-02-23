@@ -122,14 +122,22 @@ class LogIn extends React.Component<Props, State> {
         </div>
         <div className={classes.footer}>
           <div className={classes.footerLeft}>
-            <a href="https://www.facebook.com/nsgroupfinder/" target="_blank">
+            <a
+              className={classes.socialinks}
+              href="https://www.facebook.com/nsgroupfinder/"
+              target="_blank"
+            >
               <img
                 alt="sociallogo"
                 className={classes.socialLogos}
                 src="http://webiconspng.com/wp-content/uploads/2017/09/Facebook-PNG-Image-38915.png"
               />
             </a>
-            <a href="https://twitter.com/finder_ns" target="_blank">
+            <a
+              className={classes.socialinks}
+              href="https://twitter.com/finder_ns"
+              target="_blank"
+            >
               <img
                 alt="sociallogo"
                 className={classes.socialLogos}
@@ -211,9 +219,9 @@ const styles = ({ spacing, breakpoints }) => ({
     alignItems: 'center',
   },
   footer: {
-    height: '3vh',
+    height: 'auto',
     display: 'flex',
-    padding: '0px 10px',
+    padding: 5,
     fontSize: 11,
     justifyContent: 'space-between',
     alignItems: 'stretch',
@@ -234,6 +242,12 @@ const styles = ({ spacing, breakpoints }) => ({
   socialLogos: {
     height: 30,
     width: 30,
+  },
+
+  socialinks: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
