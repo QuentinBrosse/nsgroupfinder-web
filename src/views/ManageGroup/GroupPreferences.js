@@ -49,7 +49,7 @@ const GroupPreferences = ({
       </Grid>
     </Grid>
     <Button
-      raised
+      variant="raised"
       type="submit"
       disabled={pristine || submitting}
       className={classes.button}

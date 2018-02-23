@@ -32,8 +32,12 @@ const Header = ({ classes, group }: Props): Node => {
               title="Available soon"
               placement="right"
             >
-              <Button className={classes.button} raised color="secondary">
-                <Typography type="button" color="primary">
+              <Button
+                className={classes.button}
+                variant="raised"
+                color="secondary"
+              >
+                <Typography variant="button" color="primary">
                   Share
                 </Typography>
                 <ShareIcon color="primary" className={classes.rightIcon} />
@@ -45,11 +49,11 @@ const Header = ({ classes, group }: Props): Node => {
         subheader={`${fDate}, ${fTimeStart} - ${fTimeEnd}`}
       />
       <CardContent>
-        <Typography type="subheading">Public Info</Typography>
+        <Typography variant="subheading">Public Info</Typography>
         <Typography component="p" paragraph>
           {group.publicInfo}
         </Typography>
-        <Typography type="subheading">Private Info</Typography>
+        <Typography variant="subheading">Private Info</Typography>
         <Typography component="p" paragraph>
           {group.privateInfo}
         </Typography>

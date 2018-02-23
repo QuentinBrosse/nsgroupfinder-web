@@ -14,7 +14,7 @@ type Props = {
 const EmptyGroupResults = ({ classes }: Props): Node => (
   <div className={classes.container}>
     <Typography
-      type="subheading"
+      variant="subheading"
       align="center"
       headlineMapping={{ subheading: 'p' }}
       color="textSecondary"

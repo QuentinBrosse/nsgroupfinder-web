@@ -134,7 +134,7 @@ class GroupCard extends React.Component<Props, State> {
     const { classes, group: { admin } } = this.props;
     return (
       <Typography
-        type="body1"
+        variant="body1"
         color="textSecondary"
         className={classes.createdBy}
       >
@@ -177,7 +177,7 @@ class GroupCard extends React.Component<Props, State> {
         }}
         onClose={e => this.handlePopoverClick(e, type)}
       >
-        <Typography type="body1">{content}</Typography>
+        <Typography variant="body1">{content}</Typography>
       </Popover>
     );
   }

@@ -24,7 +24,7 @@ class NavBar extends React.Component<Props, State> {
       <AppBar position="static">
         <Toolbar>
           <Typography
-            type="title"
+            variant="title"
             color="inherit"
             className={classes.appName}
             component={Link}
@@ -32,7 +32,6 @@ class NavBar extends React.Component<Props, State> {
           >
             NS Group Finder
           </Typography>
-
           <Button color="inherit" component={NavLink} to="/create-group">
             Create a Group
           </Button>

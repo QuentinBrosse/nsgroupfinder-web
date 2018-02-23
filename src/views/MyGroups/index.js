@@ -106,7 +106,7 @@ class MyGroups extends React.Component<Props, State> {
 
     return (
       <div className={classes.container}>
-        <Typography type="title" paragraph>
+        <Typography variant="title" paragraph>
           My Groups
         </Typography>
         <GroupCardContainer>

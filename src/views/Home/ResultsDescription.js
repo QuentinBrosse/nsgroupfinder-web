@@ -21,7 +21,7 @@ const ResultsDescription = ({
   startDate,
   endDate,
 }: Props): Node => (
-  <Typography type="body2" paragraph className={classes.text}>
+  <Typography variant="body2" paragraph className={classes.text}>
     Results for <strong>{departureStation}</strong> to{' '}
     <strong>{arrivalStation}</strong> between the{' '}
     <strong>{startDate.calendar()}</strong> and{' '}

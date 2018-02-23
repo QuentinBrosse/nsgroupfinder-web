@@ -9,6 +9,7 @@ const initialState: SnackbarState = {
     type: 'default',
     label: null,
     actionOnClickButton: null,
+    color: 'secondary',
   },
 };
 

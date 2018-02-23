@@ -22,7 +22,7 @@ const CreateGroupButton = ({
 }: Props): Node => (
   <Button
     className={classes.button}
-    raised
+    variant="raised"
     color="primary"
     onClick={onClick}
     {...rest}

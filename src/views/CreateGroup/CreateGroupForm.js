@@ -10,8 +10,9 @@ import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Card, { CardHeader, CardContent, CardActions } from 'material-ui/Card';
 import Icon from 'material-ui/Icon';
-import Typography from 'material-ui/Typography';
 import Divider from 'material-ui/Divider/Divider';
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import LabelIcon from 'material-ui-icons/Label';
 import { StationAutocomplete } from 'common/containers';
 import { InputIconAdornment } from 'common/components';
 import { TextField } from 'redux-form-material-ui';
@@ -37,17 +38,34 @@ const CreateGroupForm = ({
     <Card>
       <CardHeader title="Create a Group" />
       <CardContent>
-        <Typography type="body1">
-          Some informations...
-          <br />
-          Dolor dolor tempor ad aliquip do laborum mollit. Cupidatat est esse
-          eiusmod elit qui cupidatat in. Labore consectetur ex tempor tempor
-          fugiat minim cupidatat esse sunt do labore qui.
-          <br />
-          Velit excepteur est occaecat nisi in do ut in voluptate dolor. Ipsum
-          sint eiusmod officia anim Lorem. Laboris nostrud consequat proident
-          anim ex ut ullamco.
-        </Typography>
+        <Grid item xs={12} md={12}>
+          <div className={classes.demo}>
+            <List dense={true} disablePadding={true}>
+              <ListItem>
+                <ListItemIcon>
+                  <LabelIcon />
+                </ListItemIcon>
+                <ListItemText primary="you MUST travel with the guy who created the group and bought the tickets" />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <LabelIcon />
+                </ListItemIcon>
+                <ListItemText primary="The Group Ticket only lets you travel at off-peak hours.
+                  On Monday to Friday : before 06:30, between 09:00 and 16:00 and after 18:30.
+                  At weekends, it is all day from 18:30 on Friday evening until 06:30 on Monday morning. You're not allowed to BE in the train at those peak hours" />
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <LabelIcon />
+                </ListItemIcon>
+                <ListItemText primary="You have to sit
+as near as possible to each others! Sum up: be able to prove that you travel with your
+book leader." />
+              </ListItem>
+            </List>
+          </div>
+        </Grid>
         <Divider className={classes.divdier} />
         <Grid container>
           <Grid item xs={12}>
@@ -160,7 +178,11 @@ const CreateGroupForm = ({
         </Grid>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button raised type="submit" disabled={pristine || submitting}>
+        <Button
+          variant="raised"
+          type="submit"
+          disabled={pristine || submitting}
+        >
           Create
         </Button>
       </CardActions>
