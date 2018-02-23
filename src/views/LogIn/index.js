@@ -9,6 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import red from 'material-ui/colors/red';
 import indigo from 'material-ui/colors/indigo';
 import Button from 'material-ui/Button';
+import Icon from 'material-ui/Icon';
 import Typography from 'material-ui/Typography';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
 import { isConnected } from 'utils/user';
@@ -78,10 +79,25 @@ class LogIn extends React.Component<Props, State> {
     return (
       <div className={classes.container}>
         <div className={classes.beta}>
-          <Typography align="center" style={{ color: 'white' }}>
-            Please remember that this product is in beta. If find anything wrong
-            or want to give a feedback, do no hesitate to write on Twitter or
-            Messenger.
+          <Typography align="center" className={classes.whiteFont}>
+            <b>This tool is in beta</b>. Some bugs may still be around. If you
+            find anything wrong, want to give a feedback or ask for a feature,
+            please write to us on{' '}
+            <a
+              className={classes.whiteFont}
+              href="https://twitter.com/finder_ns"
+              target="_blank"
+            >
+              Twitter
+            </a>{' '}
+            or{' '}
+            <a
+              className={classes.whiteFont}
+              href="https://twitter.com/finder_ns"
+              target="_blank"
+            >
+              Messenger
+            </a>
           </Typography>
         </div>
         <div className={classes.top}>
@@ -93,21 +109,31 @@ class LogIn extends React.Component<Props, State> {
         </div>
         <div className={classes.center}>
           <div className={classes.step}>
-            <i className={'material-icons ' + classes.stepIcon}>search</i>
+            <Icon className={classes.stepIcon} color="primary">
+              search
+            </Icon>
             <Typography align="center" variant="display1">
               Search for your travel
             </Typography>
           </div>
-          <i className={'material-icons ' + classes.arrowIcon}>arrow_forward</i>
+          <Icon className={classes.arrowIcon} color="primary">
+            arrow_forward
+          </Icon>
           <div className={classes.step}>
-            <i className={'material-icons ' + classes.stepIcon}>group_work</i>
+            <Icon className={classes.stepIcon} color="primary">
+              group
+            </Icon>
             <Typography align="center" variant="display1">
               Connect with people
             </Typography>
           </div>
-          <i className={'material-icons ' + classes.arrowIcon}>arrow_forward</i>
+          <Icon className={classes.arrowIcon} color="primary">
+            arrow_forward
+          </Icon>
           <div className={classes.step}>
-            <i className={'material-icons ' + classes.stepIcon}>train</i>
+            <Icon className={classes.stepIcon} color="primary">
+              train
+            </Icon>
             <Typography align="center" variant="display1">
               Get your tickets
             </Typography>
@@ -151,7 +177,7 @@ class LogIn extends React.Component<Props, State> {
           </div>
           <div className={classes.footerRight}>
             <Typography variant="caption">
-              Copyright © 2008 NSGroupFinder Inc.
+              Copyright © 2018 NSGroupFinder Inc.
             </Typography>
           </div>
         </div>
@@ -179,7 +205,6 @@ const styles = ({ spacing, breakpoints }) => ({
   img: {
     width: '100%',
   },
-  top: {},
   center: {
     display: 'flex',
     justifyContent: 'space-around',
@@ -205,7 +230,6 @@ const styles = ({ spacing, breakpoints }) => ({
   },
   stepIcon: {
     fontSize: 100,
-    color: indigo['500'],
     marginBottom: '3vh',
 
     [breakpoints.down('xs')]: {
@@ -254,6 +278,10 @@ const styles = ({ spacing, breakpoints }) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  whiteFont: {
+    color: 'white',
   },
 });
 
