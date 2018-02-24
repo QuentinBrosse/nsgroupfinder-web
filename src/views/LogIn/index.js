@@ -352,7 +352,9 @@ class LogIn extends React.Component<Props, State> {
         </div>
         <div className={classes.bodyContent}>
           <Paper className={classes.paper}>
-            <Typography variant="headline">What&apos;s the plan ?</Typography>
+            <Typography variant="headline" className={classes.paperTitle}>
+              What&apos;s the plan ?
+            </Typography>
             <Typography variant="body1">
               As you already may know, Ns rules have changed since 15 th January
               2018. Many people argues they are binding rules since they make
