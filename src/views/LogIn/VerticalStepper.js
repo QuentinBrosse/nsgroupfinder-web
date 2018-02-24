@@ -89,7 +89,7 @@ class VerticalLinearStepper extends React.Component<Props, State> {
                     </Button>
                     <Button
                       variant="raised"
-                      color="primary"
+                      color="secondary"
                       onClick={this.handleNext}
                       className={classes.button}
                     >

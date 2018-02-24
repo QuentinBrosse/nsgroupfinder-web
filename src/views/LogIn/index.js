@@ -129,7 +129,7 @@ class LogIn extends React.Component<Props, State> {
                       onClick={this.logIn}
                     >
                       <Typography color="primary" variant="button">
-                        Discover the WebApp
+                        Find your Tickets
                       </Typography>
                       <Icon className={classes.rightIcon}>send</Icon>
                     </Button>
@@ -141,7 +141,7 @@ class LogIn extends React.Component<Props, State> {
                       onClick={this.logIn}
                     >
                       <Typography color="primary" variant="button">
-                        Open the WebApp
+                        Find your group
                       </Typography>
                     </Button>
                   </Grid>
