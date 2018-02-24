@@ -433,7 +433,7 @@ const styles = ({ spacing, breakpoints }) => ({
       marginLeft: spacing.unit,
     },
     titleContent: {
-      marginTop: spacing.unit * 6,
+      marginTop: spacing.unit,
     },
     paddingDiv: {
       padding: [[spacing.unit * 3, spacing.unit * 3]],
