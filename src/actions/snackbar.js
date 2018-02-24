@@ -40,7 +40,7 @@ export const throwAccentSnackbar = (
   payload: {
     message,
     button: {
-      color: 'secondary',
+      type: 'secondary',
       label: buttonLabel,
       actionOnClickButton,
     },

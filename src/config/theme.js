@@ -17,10 +17,16 @@ export default {
       contrastText: '#000',
     },
     success: {
+      light: lightGreen[300],
       main: lightGreen[500],
+      dark: lightGreen[700],
+      contrastText: '#fff',
     },
     warning: {
+      light: amber[300],
       main: amber[500],
+      dark: amber[700],
+      contrastText: '#fff',
     },
   },
 };

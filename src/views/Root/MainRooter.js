@@ -13,6 +13,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { PrivateRoute } from 'common/containers';
+import ShareGroup from 'views/ShareGroup';
 import App from 'views/App';
 import LogIn from 'views/LogIn';
 import CircularProgress from 'material-ui/Progress/CircularProgress';
@@ -35,6 +36,7 @@ const MainRooter = ({ classes, auth }: Props): Node => {
       <Switch>
         <PrivateRoute path="/app" component={App} />
         <Route exact path="/login" component={LogIn} />
+        <Route exact path="/s/:groupId" component={ShareGroup} />
         <Redirect to="/app" />
       </Switch>
     </Router>

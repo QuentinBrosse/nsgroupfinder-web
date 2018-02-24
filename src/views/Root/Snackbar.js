@@ -3,10 +3,19 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { MuiThemeProvider } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import DefaultSnackbar from 'material-ui/Snackbar';
 import { dismissSnackbar } from 'actions/snackbar';
 import type { SnackbarState } from 'types/snackbar';
+
+const snackbarTheme = outerTheme => ({
+  ...outerTheme,
+  palette: {
+    ...outerTheme.palette,
+    primary: outerTheme.palette.success,
+  },
+});
 
 type Props = {
   dispatch: Function,
@@ -38,31 +47,33 @@ class Snackbar extends React.Component<Props, State> {
   render() {
     const { snackbar, dDismissSnackbar } = this.props;
     const { opened, message, button } = snackbar;
-    // const buttonColor = button.type === 'default' ? 'secondary' : button.type;
+    const buttonColor = button.type === 'default' ? 'primary' : 'secondary';
     return (
-      <DefaultSnackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={opened}
-        autoHideDuration={6000}
-        onClose={dDismissSnackbar}
-        SnackbarContentProps={{
-          'aria-describedby': 'snackbar-message',
-        }}
-        message={<span id="snackbar-message">{message}</span>}
-        action={[
-          <Button
-            key={1}
-            color="secondary"
-            size="small"
-            onClick={this.handleClick}
-          >
-            {button.label || 'Dismiss'}
-          </Button>,
-        ]}
-      />
+      <MuiThemeProvider theme={snackbarTheme}>
+        <DefaultSnackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={opened}
+          autoHideDuration={6000}
+          onClose={dDismissSnackbar}
+          SnackbarContentProps={{
+            'aria-describedby': 'snackbar-message',
+          }}
+          message={<span id="snackbar-message">{message}</span>}
+          action={[
+            <Button
+              key={1}
+              color={buttonColor}
+              size="small"
+              onClick={this.handleClick}
+            >
+              {button.label || 'Dismiss'}
+            </Button>,
+          ]}
+        />
+      </MuiThemeProvider>
     );
   }
 }

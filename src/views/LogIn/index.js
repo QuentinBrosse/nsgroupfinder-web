@@ -1,16 +1,16 @@
 // @flow
 
 import React from 'react';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { withFirebase } from 'react-redux-firebase';
-import { Redirect } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import red from 'material-ui/colors/red';
 import Button from 'material-ui/Button';
 import Icon from 'material-ui/Icon';
 import Typography from 'material-ui/Typography';
 import { throwDissmissSnackbar, throwAccentSnackbar } from 'actions/snackbar';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withFirebase } from 'react-redux-firebase';
+import { Redirect } from 'react-router-dom';
 import { isConnected } from 'utils/user';
 import { logErrorIfDevEnv } from 'utils/env';
 
@@ -75,6 +75,7 @@ class LogIn extends React.Component<Props, State> {
       const { state } = location;
       return <Redirect to={state.returnTo || '/app'} />;
     }
+
     return (
       <div className={classes.container}>
         <div className={classes.beta}>
@@ -86,6 +87,7 @@ class LogIn extends React.Component<Props, State> {
               className={classes.whiteFont}
               href="https://twitter.com/finder_ns"
               target="_blank"
+              rel="noopener noreferrer"
             >
               Twitter
             </a>{' '}
@@ -94,6 +96,7 @@ class LogIn extends React.Component<Props, State> {
               className={classes.whiteFont}
               href="https://twitter.com/finder_ns"
               target="_blank"
+              rel="noopener noreferrer"
             >
               Messenger
             </a>
@@ -155,6 +158,7 @@ class LogIn extends React.Component<Props, State> {
               className={classes.socialinks}
               href="https://www.facebook.com/nsgroupfinder/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <img
                 alt="sociallogo"
@@ -166,6 +170,7 @@ class LogIn extends React.Component<Props, State> {
               className={classes.socialinks}
               href="https://twitter.com/finder_ns"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <img
                 alt="sociallogo"
@@ -185,7 +190,7 @@ class LogIn extends React.Component<Props, State> {
   }
 }
 
-const styles = ({ spacing, breakpoints, palette }) => ({
+const styles = ({ breakpoints, palette }) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -199,7 +204,7 @@ const styles = ({ spacing, breakpoints, palette }) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: red['A700'],
+    backgroundColor: red.A700,
   },
   img: {
     width: '100%',

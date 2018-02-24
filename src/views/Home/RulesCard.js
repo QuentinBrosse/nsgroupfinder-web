@@ -24,7 +24,11 @@ type Props = {
   fullScreen: Boolean,
 };
 
-class ResponsiveDialog extends React.Component<Props> {
+type State = {
+  open: boolean,
+};
+
+class ResponsiveDialog extends React.Component<Props, State> {
   state = {
     open: false,
   };
@@ -53,14 +57,18 @@ class ResponsiveDialog extends React.Component<Props> {
           />
           <CardContent>
             <Typography>
-              You MUST to travel with your lead booker and during off-peak
-              hours. You're not allowed to BE in the train at those peak hours.
+              {`
+                You MUST to travel with your lead booker and during off-peak
+                hours. You're not allowed to BE in the train at those peak hours.
+              `}
             </Typography>
             <Typography>
-              If you don't find any groups with your departure station, try to
-              use bigger departure station. As you don't need to start the train
-              journey with your group leader, you can always jump in/out the
-              train at a later station.{' '}
+              {`
+                If you don't find any groups with your departure station, try to
+                use bigger departure station. As you don't need to start the train
+                journey with your group leader, you can always jump in/out the
+                train at a later station. 
+              `}
             </Typography>
             <br />
             <Typography>
@@ -134,8 +142,10 @@ class ResponsiveDialog extends React.Component<Props> {
             <br />
             <Typography variant="body2">One way ticket</Typography>
             <Typography>
-              You can't use the ticket for return in the same day. Group tickets
-              are one way only now.
+              {`
+                You can't use the ticket for return in the same day. Group tickets
+                are one way only now.
+              `}
             </Typography>
             <br />
             <Typography variant="body2">Sit close to each other</Typography>
@@ -162,17 +172,18 @@ class ResponsiveDialog extends React.Component<Props> {
               <span className={classes.station}> 06:30</span> on Monday morning.
               <br />
               <span className={classes.underline}>
-                {' '}
-                You're not allowed to be IN the train during the peak hours{' '}
+                {` You're not allowed to be IN the train during the peak hours `}
               </span>
             </Typography>
             <br />
             <Typography variant="body2">Use bigger station</Typography>
             <Typography>
-              You can always jump in the train at a later station than the
-              group. So if you don't find any group. Try to find the best route
-              on the ns.nl website. That means, a route that is passing by a big
-              station.
+              {`
+                You can always jump in the train at a later station than the
+                group. So if you don't find any group. Try to find the best route
+                on the ns.nl website. That means, a route that is passing by a big
+                station.
+              `}
             </Typography>
           </DialogContent>
           <DialogActions>

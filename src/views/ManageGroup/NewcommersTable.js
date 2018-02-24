@@ -16,6 +16,7 @@ import Avatar from 'material-ui/Avatar';
 import { TextPopover } from 'common/containers';
 import ConfirmIcon from 'material-ui-icons/Check';
 import RejectIcon from 'material-ui-icons/Close';
+import ViewMessageIcon from 'material-ui-icons/RemoveRedEye';
 import { updateMemberStatus } from 'actions/groups';
 import ConfirmationButton from './ConfirmationButton';
 
@@ -59,7 +60,7 @@ class NewcommersTable extends React.Component<Props, State> {
           </div>
         </TableCell>
         <TableCell>
-          <TextPopover>{member.message}</TextPopover>
+          <TextPopover icon={<ViewMessageIcon />}>{member.message}</TextPopover>
         </TableCell>
         <TableCell numeric>{member.ticketUnits}</TableCell>
         <TableCell className={classes.actionCell}>
