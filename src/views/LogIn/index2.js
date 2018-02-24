@@ -116,6 +116,9 @@ class LogIn extends React.Component<Props, State> {
                     >
                       NsGroupFinder
                     </Typography>
+                    <Typography color="textSecondary" variant="subheading">
+                      The best way to your ticket
+                    </Typography>
                   </Grid>
                   <Grid item>
                     <Button
@@ -146,26 +149,126 @@ class LogIn extends React.Component<Props, State> {
               </Grid>
             </Grid>
             <div className={classes.titleContent}>
-              <Typography variant="headline">What&apos;s the plan ?</Typography>
-              <Typography variant="body1">
-                As you already may know, Ns rules have changed since 15 th
-                January 2018. Many people argues they are binding rules since
-                they make travelling a complex matter.<br />
-                WE HAVE A SOLUTION ! In fact, we developed a fancy new platform
-                from which you can make/find a group ticket in a very easy way.
-                It is pretty straightforward, accessible and easy to use. To
-                give a brief explanation, the website we set up is aimed at
-                gathering people who want to travel in the Netherlands together.
-                By selecting the departure station, arrival station and starting
-                time trip, we suggest travelers some groups they can join. The
-                first option is that these groups have already been created by
-                other fellow travelers, so you can join and be part of the group
-                until it’s full (7 people max.) The second option is that there
-                is no existing group that suits your route and your schedule. In
-                that case, you have the possibility to create a new group that
-                fits your criteria. Once you created a group, travelers
-                interested in may ask to join it.
-              </Typography>
+              <Grid
+                container
+                direction="row"
+                justify="space-around"
+                alignItems="center"
+                className={classes.stepGridDesktop}
+              >
+                <Grid item>
+                  <div className={classes.step}>
+                    <Icon className={classes.stepIcon} color="primary">
+                      search
+                    </Icon>
+                    <Typography
+                      className={classes.stepText}
+                      align="center"
+                      variant="headline"
+                    >
+                      Search for your travel
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item>
+                  <Icon className={classes.stepArrow} color="secondary">
+                    keyboard_arrow_right
+                  </Icon>
+                </Grid>
+                <Grid item>
+                  <div className={classes.step}>
+                    <Icon className={classes.stepIcon} color="primary">
+                      group
+                    </Icon>
+                    <Typography
+                      className={classes.stepText}
+                      align="center"
+                      variant="headline"
+                    >
+                      Connect with people
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item>
+                  <Icon className={classes.stepArrow} color="secondary">
+                    keyboard_arrow_right
+                  </Icon>
+                </Grid>
+                <Grid item>
+                  <div className={classes.step}>
+                    <Icon className={classes.stepIcon} color="primary">
+                      train
+                    </Icon>
+                    <Typography
+                      className={classes.stepText}
+                      align="center"
+                      variant="headline"
+                    >
+                      Enjoy your tickets
+                    </Typography>
+                  </div>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                direction="column"
+                justify="space-around"
+                alignItems="center"
+                className={classes.stepGridMobile}
+              >
+                <Grid item>
+                  <div className={classes.step}>
+                    <Icon className={classes.stepIcon} color="primary">
+                      search
+                    </Icon>
+                    <Typography
+                      className={classes.stepText}
+                      align="center"
+                      variant="headline"
+                    >
+                      Search for your travel
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item>
+                  <Icon className={classes.stepArrow} color="secondary">
+                    expand_more
+                  </Icon>
+                </Grid>
+                <Grid item>
+                  <div className={classes.step}>
+                    <Icon className={classes.stepIcon} color="primary">
+                      group
+                    </Icon>
+                    <Typography
+                      className={classes.stepText}
+                      align="center"
+                      variant="headline"
+                    >
+                      Connect with people
+                    </Typography>
+                  </div>
+                </Grid>
+                <Grid item>
+                  <Icon className={classes.stepArrow} color="secondary">
+                    expand_more
+                  </Icon>
+                </Grid>
+                <Grid item>
+                  <div className={classes.step}>
+                    <Icon className={classes.stepIcon} color="primary">
+                      train
+                    </Icon>
+                    <Typography
+                      className={classes.stepText}
+                      align="center"
+                      variant="headline"
+                    >
+                      Enjoy your tickets
+                    </Typography>
+                  </div>
+                </Grid>
+              </Grid>
             </div>
           </Paper>
         </div>
@@ -176,28 +279,8 @@ class LogIn extends React.Component<Props, State> {
           </Paper>
         </div>
         <div className={classes.bodyContent}>
-          <Paper className={classes.paper}>
-            <Typography variant="headline" className={classes.paperTitle}>
-              Why should I use this WebApp ?
-            </Typography>
-            <Typography variant="body1">
-              It&apos;s simpler, cleaner and easier to manage your group.
-              Don&apos;t waste time searching on facebook where things can get a
-              bit messy.
-            </Typography>
-            <Typography variant="body1">
-              Keep your group clean and plan your journey in a better way by
-              using the group admin tools. You can also inform they other
-              members about who already paid. As a Admin you can share your
-              group on other socials medias by using a unique link, where people
-              can directly enter the number of tickets they need. And much more
-              is coming !
-            </Typography>
-          </Paper>
-        </div>
-        <div className={classes.bodyContent}>
           <Grid container direction="row" alignItems="center" justify="center">
-            <Grid item sm={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
@@ -214,7 +297,7 @@ class LogIn extends React.Component<Props, State> {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item sm={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
@@ -231,7 +314,7 @@ class LogIn extends React.Component<Props, State> {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item sm={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
@@ -248,7 +331,7 @@ class LogIn extends React.Component<Props, State> {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item sm={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
@@ -268,103 +351,46 @@ class LogIn extends React.Component<Props, State> {
           </Grid>
         </div>
         <div className={classes.bodyContent}>
-          <Paper className={classes.paperSteper}>
+          <Paper className={classes.paper}>
+            <Typography variant="headline">What&apos;s the plan ?</Typography>
+            <Typography variant="body1">
+              As you already may know, Ns rules have changed since 15 th January
+              2018. Many people argues they are binding rules since they make
+              travelling a complex matter.<br />
+              WE HAVE A SOLUTION ! In fact, we developed a fancy new platform
+              from which you can make/find a group ticket in a very easy way. It
+              is pretty straightforward, accessible and easy to use. To give a
+              brief explanation, the website we set up is aimed at gathering
+              people who want to travel in the Netherlands together. By
+              selecting the departure station, arrival station and starting time
+              trip, we suggest travelers some groups they can join. The first
+              option is that these groups have already been created by other
+              fellow travelers, so you can join and be part of the group until
+              it’s full (7 people max.) The second option is that there is no
+              existing group that suits your route and your schedule. In that
+              case, you have the possibility to create a new group that fits
+              your criteria. Once you created a group, travelers interested in
+              may ask to join it.
+            </Typography>
+          </Paper>
+        </div>
+        <div className={classes.bodyContent}>
+          <Paper className={classes.paper}>
             <Typography variant="headline" className={classes.paperTitle}>
-              Is there any rules ?
+              Why should I use this WebApp ?
             </Typography>
             <Typography variant="body1">
-              The only rules that you need to know are the one from NS.
+              It&apos;s simpler, cleaner and easier to manage your group.
+              Don&apos;t waste time searching on facebook where things can get a
+              bit messy.
             </Typography>
-            <Typography variant="body2">The cost :</Typography>
-            <Typography>- 4 people = 7€50/p</Typography>
-            <Typography>- 5 people = 6€30/p</Typography>
-            <Typography>- 6 people = 5€50/p</Typography>
-            <Typography>- 7 people = 4€93/p</Typography>
-            <br />
-            <Typography variant="body2">
-              You must travel with your leadbooker
-            </Typography>
-            <Typography>
-              That, of course, make the thing a bit more complicated since you
-              MUST travel with the guy who created the group and bought the
-              tickets (Ticket holder).
-            </Typography>
-            <br />
-            <Typography>
-              <span className={classes.underline}> Here is an exemple:</span>
-              <br />
-              Four people are travelling from{' '}
-              <span className={classes.station}>Groningen</span> to{' '}
-              <span className={classes.station}>Amsterdam</span>,
-              <span className={classes.adam}> Adam</span>,
-              <span className={classes.eve}> Eve</span>,
-              <span className={classes.jack}> Jack </span>
-              and
-              <span className={classes.rose}> Rose</span>.
-              <br />
-              <span className={classes.adam}> Adam</span> is the ticket holder
-              (group leader), he MUST have the longest route, that is{' '}
-              <span className={classes.station}>Groningen</span> -{' '}
-              <span className={classes.station}>Amsterdam</span>.
-              <br /> <span className={classes.jack}> Jack </span> has the same
-              route, he must meet
-              <span className={classes.adam}> Adam</span> in the train at{' '}
-              <span className={classes.station}>Groningen</span>.
-              <br />
-              <span className={classes.eve}> Eve</span> and{' '}
-              <span className={classes.rose}> Rose</span> are taking the same
-              train but they get on it in{' '}
-              <span className={classes.station}>Zwolle</span> and they stop in{' '}
-              <span className={classes.station}>Almere centrum</span>. Once in
-              the train, they have to find their lead booker and travel
-              together.
-            </Typography>
-            <Typography>
-              Therefore, it’s not a messy deal as long as you travel with your
-              lead booker.
-            </Typography>
-            <br />
-            <Typography variant="body2">One way ticket</Typography>
-            <Typography>
-              You can&apos;t use the ticket for return in the same day. Group
-              tickets are one way only now.
-            </Typography>
-            <br />
-            <Typography variant="body2">Sit close to each other</Typography>
-            <Typography>
-              However, it’s not always possible to sit near each other, so you
-              have to sit as near as possible!
-              <br />
-              <span className={classes.underline}> Sum up:</span> be able to
-              prove that you travel with your book leader.
-            </Typography>
-            <br />
-            <Typography variant="body2">Your journey schedule</Typography>
-            <Typography>
-              The Group Ticket only lets you travel at off-peak hours.
-              <br /> On Monday to Friday, you can travel before
-              <span className={classes.station}> 06:30</span> , between
-              <span className={classes.station}> 09:00</span> and
-              <span className={classes.station}> 16:00</span> and after
-              <span className={classes.station}> 18:30</span>.
-              <br /> At weekends, you can travel
-              <span className={classes.station}> all day</span> from
-              <span className={classes.station}> 18:30</span> on Friday evening
-              until
-              <span className={classes.station}> 06:30</span> on Monday morning.
-              <br />
-              <span className={classes.underline}>
-                {' '}
-                You&apos;re not allowed to be IN the train during the peak hours{' '}
-              </span>
-            </Typography>
-            <br />
-            <Typography variant="body2">Use bigger station</Typography>
-            <Typography>
-              You can always jump in the train at a later station than the
-              group. So if you don&apos;t find any group. Try to find the best
-              route on the ns.nl website. That means, a route that is passing by
-              a big station.
+            <Typography variant="body1">
+              Keep your group clean and plan your journey in a better way by
+              using the group admin tools. You can also inform they other
+              members about who already paid. As a Admin you can share your
+              group on other socials medias by using a unique link, where people
+              can directly enter the number of tickets they need. And much more
+              is coming !
             </Typography>
           </Paper>
         </div>
@@ -414,6 +440,7 @@ const styles = ({ spacing, breakpoints }) => ({
     },
     paper: {
       padding: [[spacing.unit * 3, spacing.unit * 3]],
+      width: '100%',
     },
     paperSteper: {
       padding: [[spacing.unit * 3, spacing.unit * 3]],
@@ -448,8 +475,74 @@ const styles = ({ spacing, breakpoints }) => ({
     appButtonMobile: {
       display: 'none',
     },
+    stepArrow: {
+      fontSize: '38px',
+    },
+    stepIcon: {
+      fontSize: 60,
+      marginBottom: 0,
+    },
+    stepText: {
+      fontSize: '1rem',
+    },
+    stepGridMobile: {
+      display: 'none',
+    },
   },
-  [breakpoints.up('lg')]: {
+  [breakpoints.up('sm')]: {
+    headContent: {
+      zIndex: '1',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: [
+        [
+          spacing.unit * 10,
+          spacing.unit * 3,
+          spacing.unit * 2,
+          spacing.unit * 3,
+        ],
+      ],
+    },
+    bodyContent: {
+      zIndex: '1',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: [[spacing.unit * 2, spacing.unit * 3]],
+    },
+  },
+  [breakpoints.up('md')]: {
+    headContent: {
+      zIndex: '1',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: [
+        [
+          spacing.unit * 20,
+          spacing.unit * 7,
+          spacing.unit * 2,
+          spacing.unit * 7,
+        ],
+      ],
+    },
+    bodyContent: {
+      zIndex: '1',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: [[spacing.unit * 2, spacing.unit * 7]],
+    },
+    stepIcon: {
+      fontSize: 100,
+      marginBottom: '3vh',
+    },
+    stepText: {
+      fontSize: '1.5rem',
+    },
+  },
+  [breakpoints.up('xl')]: {
     headContent: {
       zIndex: '1',
       display: 'flex',
@@ -470,6 +563,9 @@ const styles = ({ spacing, breakpoints }) => ({
       alignItems: 'center',
       justifyContent: 'center',
       padding: [[spacing.unit * 2, spacing.unit * 50]],
+    },
+    stepArrow: {
+      fontSize: '50px',
     },
   },
   [breakpoints.down('xs')]: {
@@ -508,8 +604,22 @@ const styles = ({ spacing, breakpoints }) => ({
     appButtonMobile: {
       display: 'inline',
     },
+    stepGridDesktop: {
+      display: 'none',
+    },
+    stepGridMobile: {
+      display: 'flex',
+    },
   },
-
+  step: {
+    fontSize: 30,
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: '3vh',
+  },
   adam: {
     color: blue[500],
     fontStyle: 'italic',
@@ -533,6 +643,9 @@ const styles = ({ spacing, breakpoints }) => ({
   underline: {
     textDecoration: 'underline',
     color: '#000000ad',
+  },
+  media: {
+    height: 200,
   },
 });
 
