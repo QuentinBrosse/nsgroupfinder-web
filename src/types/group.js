@@ -16,6 +16,8 @@ export type Group = {
   +privateInfo: string,
   +pendingRequests: number,
   +ticketUnits: number,
+  +membersUids: string[],
+  +obsolete: Date,
 };
 
 export type CurrentGroup = {

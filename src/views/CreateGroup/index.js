@@ -102,6 +102,7 @@ class CreateGroup extends React.Component<Props, State> {
       pendingRequests: 0,
       ticketUnits: parseInt(values.ticketUnits, 10),
       obsolete: dateTime.add(1, 'hour').toDate(),
+      membersUids: [auth.uid],
     };
   }
 
