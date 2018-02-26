@@ -117,7 +117,7 @@ class LogIn extends React.Component<Props, State> {
                       NsGroupFinder
                     </Typography>
                     <Typography color="textSecondary" variant="subheading">
-                      The best way to your ticket
+                      The best way to book your tickets
                     </Typography>
                   </Grid>
                   <Grid item>
