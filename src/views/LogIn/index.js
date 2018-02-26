@@ -22,6 +22,11 @@ import pink from 'material-ui/colors/pink';
 import blue from 'material-ui/colors/blue';
 import VerticalStepper from './VerticalStepper';
 
+import joinScreen from 'assets/img/join.png';
+import searchScreen from 'assets/img/search.png';
+import createScreen from 'assets/img/create.png';
+import connectScreen from 'assets/img/connect.png';
+
 type Props = {
   classes: Object,
   firebase: Object,
@@ -114,7 +119,7 @@ class LogIn extends React.Component<Props, State> {
                       variant="display3"
                       align="left"
                     >
-                      NsGroupFinder
+                      NSGoupFinder
                     </Typography>
                     <Typography color="textSecondary" variant="subheading">
                       The best way to book your tickets
@@ -284,15 +289,15 @@ class LogIn extends React.Component<Props, State> {
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
-                  image="http://marketing-digital.audencia.com/wp-content/uploads/2016/10/minititle-5342-q90-h900-ml99-rz3-b75.jpg"
-                  title="Contemplative Reptile"
+                  image={searchScreen}
+                  title="Find your group"
                 />
                 <CardContent>
                   <Typography variant="headline" component="h2">
-                    Screenshots of the app
+                    Find a group
                   </Typography>
                   <Typography component="p">
-                    missing explanation of the picture
+                    The search is simple and intuitive
                   </Typography>
                 </CardContent>
               </Card>
@@ -301,15 +306,15 @@ class LogIn extends React.Component<Props, State> {
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
-                  image="https://prodesign.in.ua/wp-content/uploads/material-design-title-960x420.jpg"
-                  title="Contemplative Reptile"
+                  image={joinScreen}
+                  title="Join the group"
                 />
                 <CardContent>
                   <Typography variant="headline" component="h2">
-                    Screenshots of the app
+                    Join a group
                   </Typography>
                   <Typography component="p">
-                    missing explanation of the picture
+                    You'll be connected to the other members
                   </Typography>
                 </CardContent>
               </Card>
@@ -318,16 +323,14 @@ class LogIn extends React.Component<Props, State> {
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
-                  image="http://marketing-digital.audencia.com/wp-content/uploads/2016/10/minititle-5342-q90-h900-ml99-rz3-b75.jpg"
-                  title="Contemplative Reptile"
+                  image={createScreen}
+                  title="Create a group"
                 />
                 <CardContent>
                   <Typography variant="headline" component="h2">
-                    Screenshots of the app
+                    Create your group
                   </Typography>
-                  <Typography component="p">
-                    missing explanation of the picture
-                  </Typography>
+                  <Typography component="p">If you didn't find</Typography>
                 </CardContent>
               </Card>
             </Grid>
@@ -335,15 +338,15 @@ class LogIn extends React.Component<Props, State> {
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
-                  image="https://prodesign.in.ua/wp-content/uploads/material-design-title-960x420.jpg"
+                  image={connectScreen}
                   title="Contemplative Reptile"
                 />
                 <CardContent>
                   <Typography variant="headline" component="h2">
-                    Screenshots of the app
+                    Connect with people
                   </Typography>
                   <Typography component="p">
-                    missing explanation of the picture
+                    Contact other members via Facebook
                   </Typography>
                 </CardContent>
               </Card>
