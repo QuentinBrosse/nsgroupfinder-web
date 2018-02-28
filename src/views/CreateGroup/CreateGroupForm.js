@@ -59,9 +59,7 @@ const CreateGroupForm = ({
                 <ListItemIcon>
                   <LabelIcon />
                 </ListItemIcon>
-                <ListItemText primary="You have to sit
-as near as possible to each others! Sum up: be able to prove that you travel with your
-book leader." />
+                <ListItemText primary="You have to sit as near as possible to each others! Sum up: be able to prove that you travel with your book leader." />
               </ListItem>
             </List>
           </div>
