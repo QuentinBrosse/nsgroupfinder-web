@@ -4,7 +4,6 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import type { Node } from 'react';
 import type { RequestStatus } from 'types/group';
-import type { Member } from 'types/user';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -20,7 +19,8 @@ import DoNotDisturbOnIcon from 'material-ui-icons/DoNotDisturbOn';
 import GroupAddIcon from 'material-ui-icons/GroupAdd';
 import ModeEditIcon from 'material-ui-icons/ModeEdit';
 import Tooltip from 'material-ui/Tooltip';
-import { createMember } from 'services/groups';
+import { withFetch } from 'common/containers';
+import { throwDissmissSnackbar } from 'actions/snackbar';
 import RequestDialogRequest from './RequestDialogRequest';
 
 type RequestComponents = {
@@ -33,9 +33,7 @@ type Props = {
   classes: Object,
   requestStatus?: RequestStatus,
   groupId: string,
-  auth: Object,
-  profile: Member,
-  dispatch: Function,
+  dThrowDissmissSnackbar: typeof throwDissmissSnackbar,
 };
 
 type State = {
@@ -47,14 +45,6 @@ class GroupCardRequestButton extends React.Component<Props, State> {
   static defaultProps = {
     requestStatus: 'default',
   };
-
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleCloseDialog = this.handleCloseDialog.bind(this);
-    this.redirectTo = this.redirectTo.bind(this);
-    this.sendRequest = this.sendRequest.bind(this);
-  }
 
   state = {
     dialogOpen: false,
@@ -105,53 +95,48 @@ class GroupCardRequestButton extends React.Component<Props, State> {
           dialog: null,
           tooltip: 'Edit your group',
         };
-      default:
+      default: {
+        const FetchRequestDialogRequest = withFetch(RequestDialogRequest, {
+          onSuccess: this.handleRequestSent,
+        });
         return {
           icon: <GroupAddIcon />,
           dialog: (
-            <RequestDialogRequest
+            <FetchRequestDialogRequest
               groupId={groupId}
               opened={dialogOpen}
               onClose={this.handleCloseDialog}
-              sendRequest={this.sendRequest}
             />
           ),
           tooltip: 'Join the group !',
         };
+      }
     }
   }
 
-  handleClick: Function;
-  handleCloseDialog: Function;
-  redirectTo: Function;
-  sendRequest: Function;
-
-  handleClick() {
+  handleClick = () => {
     const { requestStatus, groupId } = this.props;
     if (requestStatus !== 'admin') {
       this.setState({ dialogOpen: true });
     } else {
       this.redirectTo(`/group/${groupId}`);
     }
-  }
+  };
 
-  handleCloseDialog() {
+  handleCloseDialog = () => {
     this.setState({ dialogOpen: false });
-  }
+  };
 
-  redirectTo(route: string) {
+  redirectTo = (route: string) => {
     this.setState({ redirectTo: route });
-  }
+  };
 
-  sendRequest(message: string, ticketUnits: number) {
-    const { groupId, auth, profile, dispatch } = this.props;
-
-    createMember(dispatch, groupId, auth, profile, message, ticketUnits).then(
-      () => {
-        this.setState({ dialogOpen: false });
-      }
-    );
-  }
+  handleRequestSent = () => {
+    const { dThrowDissmissSnackbar } = this.props;
+    const successMessage = 'Your request has been sent to the group creator !';
+    this.handleCloseDialog();
+    dThrowDissmissSnackbar(successMessage);
+  };
 
   render() {
     const { icon, dialog, tooltip } = this.requestComponents;
@@ -182,11 +167,10 @@ const styles = ({ palette }) => ({
   },
 });
 
-const mapPropsToState = ({ firebase }) => ({
-  auth: firebase.auth,
-  profile: firebase.profile,
-});
+const mapDispatchToProos = {
+  dThrowDissmissSnackbar: throwDissmissSnackbar,
+};
 
-export default compose(withStyles(styles), connect(mapPropsToState))(
+export default compose(withStyles(styles), connect(null, mapDispatchToProos))(
   GroupCardRequestButton
 );

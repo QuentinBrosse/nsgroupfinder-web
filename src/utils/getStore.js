@@ -9,8 +9,9 @@ import makeRootReducer from 'reducers';
 import makeRootEpic from 'epics';
 import { credential, config } from 'config/firebase';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+import once from 'lodash/once';
 
-export default initialState => {
+export default once(initialState => {
   firebase.initializeApp(credential);
 
   firebase.firestore();
@@ -30,4 +31,4 @@ export default initialState => {
   );
 
   return store;
-};
+});

@@ -40,7 +40,7 @@ const CreateGroupForm = ({
       <CardContent>
         <Grid item xs={12} md={12}>
           <div className={classes.demo}>
-            <List dense={true} disablePadding={true}>
+            <List dense disablePadding>
               <ListItem>
                 <ListItemIcon>
                   <LabelIcon />

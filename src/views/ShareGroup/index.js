@@ -8,19 +8,16 @@ import { withStyles } from 'material-ui/styles';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
-import TextField from 'material-ui/TextField';
 import Avatar from 'material-ui/Avatar';
 import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
-import Button from 'material-ui/Button';
 import { TicketsProgress, NSGroupFinderIcon } from 'common/components';
-import { TextPopover, LogInButton } from 'common/containers';
+import { TextPopover, withFetch } from 'common/containers';
 import moment from 'moment';
-import { isConnected } from 'utils/user';
-import { throwAccentSnackbar } from 'actions/snackbar';
+import { throwAccentSnackbar, throwDissmissSnackbar } from 'actions/snackbar';
 import { fetchGroups, fetchCurrentGroupMembers } from 'actions/groups';
 import type { GroupsState, Group } from 'types/group';
 import { Redirect } from 'react-router-dom';
-import { createMember } from 'services/groups';
+import RequestForm from './RequestForm';
 
 type Props = {
   classes: Object,
@@ -31,15 +28,12 @@ type Props = {
   },
   groups: GroupsState,
   auth: Object,
-  profile: Object,
-  dispatch: Function,
   dFetchGroups: typeof fetchGroups,
   dThrowAccentSnackbar: typeof throwAccentSnackbar,
+  dThrowDissmissSnackbar: typeof throwDissmissSnackbar,
 };
 
 type State = {
-  message: string,
-  ticketUnits: number,
   redirectTo: null | string,
   currentGroup: null | Group,
 };
@@ -48,8 +42,6 @@ class ShareGroup extends React.Component<Props, State> {
   static defaultProps = {};
 
   state = {
-    message: '',
-    ticketUnits: 1,
     redirectTo: null,
     currentGroup: null,
   };
@@ -116,49 +108,20 @@ class ShareGroup extends React.Component<Props, State> {
     );
   }
 
-  get requestButton() {
-    const { auth } = this.props;
-
-    if (isConnected(auth)) {
-      return (
-        <Button raised color="primary" onClick={this.sendRequest}>
-          Request Tickets
-        </Button>
-      );
-    }
-    return (
-      <LogInButton onLoggedIn={this.sendRequest}>
-        Connect and Request Tickets
-      </LogInButton>
-    );
-  }
-
-  handleChanges = (field: string) => event => {
-    this.setState({ [field]: event.target.value });
+  redirectTo = (path: string) => {
+    this.setState({ redirectTo: path || null });
   };
 
-  sendRequest = () => {
-    const { auth, profile, dispatch } = this.props;
-    const { currentGroup, message, ticketUnits } = this.state;
-    if (!currentGroup) {
-      return null;
-    }
-
-    return createMember(
-      dispatch,
-      currentGroup.id,
-      auth,
-      profile,
-      message,
-      ticketUnits
-    ).then(() => {
-      this.setState({ redirectTo: '/' });
-    });
+  handleRequestSent = () => {
+    const { dThrowDissmissSnackbar } = this.props;
+    const successMessage = 'Your request has been sent to the group creator !';
+    this.redirectTo('/');
+    dThrowDissmissSnackbar(successMessage);
   };
 
   render() {
-    const { classes, groups } = this.props;
-    const { message, ticketUnits, redirectTo, currentGroup } = this.state;
+    const { classes, groups, auth } = this.props;
+    const { redirectTo, currentGroup } = this.state;
 
     if (redirectTo) {
       return <Redirect to={redirectTo} />;
@@ -172,6 +135,10 @@ class ShareGroup extends React.Component<Props, State> {
     const fDate = mDateTime.format('MMM Do');
     const fTimeStart = mDateTime.format('ha');
     const fTimeEnd = mDateTime.add(1, 'h').format('ha');
+
+    const FetchRequestForm = withFetch(RequestForm, {
+      onSuccess: this.handleRequestSent,
+    });
 
     return (
       <div className={classes.container}>
@@ -231,40 +198,7 @@ class ShareGroup extends React.Component<Props, State> {
                     quis. Aliquip dolore aliqua velit et.
                   </Typography>
 
-                  <Grid container>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        margin="dense"
-                        id="message"
-                        label="Message"
-                        helperText="A nice message for the creator of the group."
-                        type="text"
-                        fullWidth
-                        onChange={this.handleChanges('message')}
-                        value={message}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        margin="dense"
-                        id="ticketUnits"
-                        label="Number of Tickets"
-                        type="number"
-                        InputProps={{
-                          inputProps: {
-                            min: '1',
-                            max: '6',
-                          },
-                        }}
-                        fullWidth
-                        onChange={this.handleChanges('ticketUnits')}
-                        value={ticketUnits}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      {this.requestButton}
-                    </Grid>
-                  </Grid>
+                  <FetchRequestForm auth={auth} groupId={currentGroup.id} />
                 </div>
               </CardContent>
             </Card>
@@ -320,6 +254,7 @@ const mapDispatchToProps = dispatch =>
       dFetchGroups: fetchGroups,
       dFetchCurrentGroupMembers: fetchCurrentGroupMembers,
       dThrowAccentSnackbar: throwAccentSnackbar,
+      dThrowDissmissSnackbar: throwDissmissSnackbar,
       dispatch,
     },
     dispatch

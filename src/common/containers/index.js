@@ -6,3 +6,4 @@ export { default as GroupCardRequestButton } from './GroupCardRequestButton';
 export { default as RequestDialogRequest } from './RequestDialogRequest';
 export { default as TextPopover } from './TextPopover';
 export { default as LogInButton } from './LogInButton';
+export { default as withFetch } from './withFetch';
