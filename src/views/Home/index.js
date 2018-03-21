@@ -14,7 +14,7 @@ import {
 } from 'common/components';
 import { GroupCard } from 'common/containers';
 import { throwAccentSnackbar } from 'actions/snackbar';
-import { logErrorIfDevEnv } from 'utils/env';
+import { logErrorIfDevEnv, inDevEnv } from 'utils/env';
 import type { Member } from 'types/user';
 import type { Group, RequestStatus } from 'types/group';
 import type Moment from 'moment';
@@ -123,21 +123,23 @@ class Home extends React.Component<Props, State> {
           </Grid>
         </Grid>
 
-        <button
-          onClick={() => {
-            firestore
-              .get({
-                collection: 'groups',
-                where: [['obsolete', '>', new Date()]],
-              })
-              .then(s => {
-                const rs = s.docs.map(r => ({ id: r.id, ...r.data() }));
-                this.setState({ results: rs });
-              });
-          }}
-        >
-          Load all (debug)
-        </button>
+        {inDevEnv() && (
+          <button
+            onClick={() => {
+              firestore
+                .get({
+                  collection: 'groups',
+                  where: [['obsolete', '>', new Date()]],
+                })
+                .then(s => {
+                  const rs = s.docs.map(r => ({ id: r.id, ...r.data() }));
+                  this.setState({ results: rs });
+                });
+            }}
+          >
+            Load all (debug)
+          </button>
+        )}
 
         {results.length > 0 ? (
           <div>
